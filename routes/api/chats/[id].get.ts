@@ -1,6 +1,6 @@
 import { defineEventHandler, getValidatedRouterParams } from 'h3'
 import { useUserSession } from '../../../utils/session'
-import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
+import { useDrizzle, and } from '../../../utils/drizzle'
 import { z } from 'zod'
 
 

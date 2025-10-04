@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { DefineComponent } from 'vue'
 import { ref, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { Chat } from '@ai-sdk/vue'
@@ -7,16 +6,10 @@ import { DefaultChatTransport } from 'ai'
 import type { UIMessage } from 'ai'
 import { useClipboard } from '@vueuse/core'
 import { getTextFromMessage } from '@nuxt/ui/utils/ai'
-import ProseStreamPre from '../../components/prose/PreStream.vue'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
-import MDCRenderer from '@nuxtjs/mdc/runtime/components/MDCRenderer.vue'
 import { useRoute } from 'vue-router'
-import { parseMarkdown } from '@nuxtjs/mdc/runtime'
-
-const components = {
-  pre: ProseStreamPre as unknown as DefineComponent
-}
+import MarkdownRender from 'vue-renderer-markdown'
 
 const route = useRoute()
 const toast = useToast()
@@ -44,8 +37,6 @@ const chat = new Chat({
   onData: (dataPart) => {
     if (dataPart.type === 'data-chat-title') {
       fetchChats()
-    } else {
-      console.log(dataPart)
     }
   },
   onError(error) {
@@ -123,11 +114,8 @@ onMounted(() => {
                   loading
                 />
               </template>
-              <MDCRenderer
-                :body="getTextFromMessage(message)"
-                unwrap="p"
-                :components="components"
-                :parser-options="{ highlight: false }"
+              <MarkdownRender
+                :content="getTextFromMessage(message)"
               />
             </div>
           </template>

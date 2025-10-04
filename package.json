@@ -12,18 +12,22 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.0.0",
-    "@nuxtjs/mdc": "^0.17.4",
     "ai": "^5.0.59",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.44.5",
     "h3": "beta",
+    "katex": "^0.16.23",
+    "mermaid": "^11.12.0",
     "nitro": "npm:nitro-nightly",
     "ofetch": "^1.4.1",
     "pg": "^8.16.3",
     "shiki-stream": "^0.1.2",
     "vue": "^3.5.22",
+    "vue-renderer-markdown": "0.0.55-beta.2",
     "vue-router": "^4.5.1",
+    "vue-use-monaco": "^0.0.33",
     "zod": "^4.1.11"
   },
   "devDependencies": {
