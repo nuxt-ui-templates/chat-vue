@@ -171,6 +171,6 @@ defineShortcuts({
       }, ...groups]"
     />
 
-    <slot />
+    <RouterView />
   </UDashboardGroup>
 </template>

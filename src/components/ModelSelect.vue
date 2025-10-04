@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useModels } from '../composables/useModels'
 const { model, models } = useModels()
 
 const items = computed(() => models.map(model => ({
