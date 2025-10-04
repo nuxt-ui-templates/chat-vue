@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import path from 'path'
 import { nitro } from 'nitro/vite'
 import vue from '@vitejs/plugin-vue'
 import vueRouter from 'unplugin-vue-router/vite'
@@ -27,5 +28,12 @@ export default defineConfig({
       }
     }),
     vueDevtools()
-  ]
+  ],
+  // https://github.com/nuxt-content/mdc#stub-nuxt-module-imports
+  resolve: {
+    alias: {
+      '#mdc-imports': path.resolve(__dirname, './stub-mdc-imports.js'),
+      '#mdc-configs': path.resolve(__dirname, './stub-mdc-imports.js'),
+    }
+  }
 })

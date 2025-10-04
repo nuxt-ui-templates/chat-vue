@@ -171,6 +171,6 @@ defineShortcuts({
       }, ...groups]"
     />
 
-    <RouterView />
+    <RouterView :key="route.path" />
   </UDashboardGroup>
 </template>

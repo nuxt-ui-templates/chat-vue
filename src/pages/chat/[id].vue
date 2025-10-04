@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import type { DefineComponent } from 'vue'
+import { ref, onMounted } from 'vue'
+import { $fetch } from 'ofetch'
 import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
 import type { UIMessage } from 'ai'
 import { useClipboard } from '@vueuse/core'
 import { getTextFromMessage } from '@nuxt/ui/utils/ai'
 import ProseStreamPre from '../../components/prose/PreStream.vue'
+import { useModels } from '../../composables/useModels'
+import { useChats } from '../../composables/useChats'
+import MDCRenderer from '@nuxtjs/mdc/runtime/components/MDCRenderer.vue'
+import { useRoute } from 'vue-router'
+import { parseMarkdown } from '@nuxtjs/mdc/runtime'
 
 const components = {
   pre: ProseStreamPre as unknown as DefineComponent
@@ -15,29 +22,30 @@ const route = useRoute()
 const toast = useToast()
 const clipboard = useClipboard()
 const { model } = useModels()
+const { fetchChats } = useChats()
 
-const { data } = await useFetch(`/api/chats/${route.params.id}`, {
-  cache: 'force-cache'
-})
+const chatData = await $fetch(`/api/chats/${route.params.id}`)
 
-if (!data.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Chat not found', fatal: true })
-}
+// if (!chatData) {
+//   throw createError({ statusCode: 404, statusMessage: 'Chat not found', fatal: true })
+// }
 
 const input = ref('')
 
 const chat = new Chat({
-  id: data.value.id,
-  messages: data.value.messages,
+  id: chatData.id,
+  messages: chatData.messages,
   transport: new DefaultChatTransport({
-    api: `/api/chats/${data.value.id}`,
+    api: `/api/chats/${chatData.id}`,
     body: {
       model: model.value
     }
   }),
   onData: (dataPart) => {
     if (dataPart.type === 'data-chat-title') {
-      refreshNuxtData('chats')
+      fetchChats()
+    } else {
+      console.log(dataPart)
     }
   },
   onError(error) {
@@ -74,14 +82,19 @@ function copy(e: MouseEvent, message: UIMessage) {
 }
 
 onMounted(() => {
-  if (data.value?.messages.length === 1) {
+  if (chatData.messages?.length === 1) {
     chat.regenerate()
   }
 })
 </script>
 
 <template>
-  <UDashboardPanel id="chat" class="relative" :ui="{ body: 'p-0 sm:p-0' }">
+  <UDashboardPanel
+    v-if="chatData.id"
+    id="chat"
+    class="relative"
+    :ui="{ body: 'p-0 sm:p-0' }"
+  >
     <template #header>
       <DashboardNavbar />
     </template>
@@ -97,7 +110,10 @@ onMounted(() => {
         >
           <template #content="{ message }">
             <div class="space-y-4">
-              <template v-for="(part, index) in message.parts" :key="`${part.type}-${index}-${message.id}`">
+              <template
+                v-for="(part, index) in message.parts"
+                :key="`${part.type}-${index}-${message.id}`"
+              >
                 <UButton
                   v-if="part.type === 'reasoning' && part.state !== 'done'"
                   label="Thinking..."
@@ -107,9 +123,8 @@ onMounted(() => {
                   loading
                 />
               </template>
-              <MDCCached
-                :value="getTextFromMessage(message)"
-                :cache-key="message.id"
+              <MDCRenderer
+                :body="getTextFromMessage(message)"
                 unwrap="p"
                 :components="components"
                 :parser-options="{ highlight: false }"
@@ -139,4 +154,19 @@ onMounted(() => {
       </UContainer>
     </template>
   </UDashboardPanel>
+  <UContainer
+    v-else
+    class="flex-1 flex flex-col gap-4 sm:gap-6"
+  >
+    <UError
+
+      :error="{ statusMessage: 'Chat not found', statusCode: 404 }"
+    >
+      <template #links>
+        <UButton to="/">
+          Back to home
+        </UButton>
+      </template>
+    </UError>
+  </UContainer>
 </template>
