@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { $fetch } from 'ofetch'
 import ModalConfirm from '../components/ModalConfirm.vue'
 import { useChats } from '../composables/useChats'
+import { useUserSession } from '../composables/useUserSession'
 
+const router = useRouter()
 const route = useRoute()
 const toast = useToast()
 const overlay = useOverlay()
-// const { loggedIn, openInPopup } = useUserSession()
+const { loggedIn, openInPopup, fetchSession } = useUserSession()
+const { groups, fetchChats } = useChats()
+
+await fetchSession()
+await fetchChats()
 
 const open = ref(false)
 
@@ -19,21 +25,11 @@ const deleteModal = overlay.create(ModalConfirm, {
   }
 })
 
-const chats = await $fetch('/api/chats').then(data => data.map((chat: any) => ({
-  id: chat.id,
-  label: chat.title || 'Untitled',
-  to: `/chat/${chat.id}`,
-  icon: 'i-lucide-message-circle',
-  createdAt: chat.createdAt
-})))
 
-// watch(loggedIn, () => {
-//   refreshChats()
-
-//   open.value = false
-// })
-
-const { groups } = useChats(chats)
+watch(loggedIn, () => {
+  fetchChats()
+  open.value = false
+})
 
 const items = computed(() => groups.value?.flatMap((group) => {
   return [{
@@ -62,7 +58,7 @@ async function deleteChat(id: string) {
     icon: 'i-lucide-trash'
   })
 
-  refreshChats()
+  fetchChats()
 
   if (route.params.id === id) {
     router.push('/')

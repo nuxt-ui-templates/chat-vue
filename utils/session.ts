@@ -1,14 +1,11 @@
 import { useSession, type HTTPEvent, type Session } from 'h3'
 
-interface UserSession extends Session {
+export interface UserSession extends Session {
   user?: {
     id: string
     name: string
-    email: string
     avatar: string
     username: string
-    provider: 'github'
-    providerId: number
   }
 }
 

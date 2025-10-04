@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-ui-template-starter-vue",
+  "name": "nuxt-ui-template-chat-vue",
   "private": true,
   "type": "module",
   "scripts": {
@@ -27,6 +27,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@octokit/types": "^15.0.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "drizzle-kit": "^0.31.5",
     "eslint": "^9.36.0",

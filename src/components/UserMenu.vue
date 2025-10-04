@@ -1,23 +1,28 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useColorMode } from '@vueuse/core'
+import { useRouter } from 'vue-router'
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { useUserSession } from '../composables/useUserSession'
 
 defineProps<{
   collapsed?: boolean
 }>()
 
+const router = useRouter()
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
-const { user, clear } = useUserSession()
+const { user, clearSession } = useUserSession()
 
 const colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
 const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone']
 
 const items = computed<DropdownMenuItem[][]>(() => ([[{
   type: 'label',
-  label: user.value?.name || user.value?.username,
+  label: user.value?.name,
   avatar: {
     src: user.value?.avatar,
-    alt: user.value?.name || user.value?.username
+    alt: user.value?.name
   }
 }], [{
   label: 'Theme',
@@ -74,7 +79,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     onSelect(e: Event) {
       e.preventDefault()
 
-      colorMode.preference = 'light'
+      colorMode.value = 'light'
     }
   }, {
     label: 'Dark',
@@ -83,7 +88,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     checked: colorMode.value === 'dark',
     onUpdateChecked(checked: boolean) {
       if (checked) {
-        colorMode.preference = 'dark'
+        colorMode.value = 'dark'
       }
     },
     onSelect(e: Event) {
@@ -94,32 +99,11 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   label: 'Templates',
   icon: 'i-lucide-layout-template',
   children: [{
-    label: 'Starter',
-    to: 'https://starter-template.nuxt.dev/'
+    label: 'Vue Starter',
+    to: 'https://starter-vue-template.nuxt.dev/'
   }, {
-    label: 'Landing',
-    to: 'https://landing-template.nuxt.dev/'
-  }, {
-    label: 'Docs',
-    to: 'https://docs-template.nuxt.dev/'
-  }, {
-    label: 'SaaS',
-    to: 'https://saas-template.nuxt.dev/'
-  }, {
-    label: 'Dashboard',
-    to: 'https://dashboard-template.nuxt.dev/'
-  }, {
-    label: 'Chat',
-    to: 'https://chat-template.nuxt.dev/',
-    color: 'primary',
-    checked: true,
-    type: 'checkbox'
-  }, {
-    label: 'Portfolio',
-    to: 'https://portfolio-template.nuxt.dev/'
-  }, {
-    label: 'Changelog',
-    to: 'https://changelog-template.nuxt.dev/'
+    label: 'Vue Dashboard',
+    to: 'https://dashboard-vue-template.nuxt.dev/'
   }]
 }], [{
   label: 'Documentation',
@@ -135,8 +119,8 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   label: 'Log out',
   icon: 'i-lucide-log-out',
   onSelect() {
-    clear()
-    navigateTo('/')
+    clearSession()
+    router.push('/')
   }
 }]]))
 </script>

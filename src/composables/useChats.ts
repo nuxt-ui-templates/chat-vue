@@ -1,6 +1,7 @@
 import { isToday, isYesterday, subMonths } from 'date-fns'
-import { computed } from 'vue'
-import type { Ref } from 'vue'
+import { computed, ref } from 'vue'
+import { createSharedComposable } from '@vueuse/core'
+import { $fetch } from 'ofetch'
 
 interface Chat {
   id: string
@@ -9,7 +10,19 @@ interface Chat {
   createdAt: string
 }
 
-export function useChats(chats: Ref<Chat[] | undefined>) {
+export const useChats = createSharedComposable(() => {
+  const chats = ref<Chat[]>([])
+
+  const fetchChats = async () => {
+    chats.value = await $fetch('/api/chats').then(data => data.map((chat: any) => ({
+      id: chat.id,
+      label: chat.title || 'Untitled',
+      to: `/chat/${chat.id}`,
+      icon: 'i-lucide-message-circle',
+      createdAt: chat.createdAt
+    })))
+  }
+
   const groups = computed(() => {
     // Group chats by date
     const today: Chat[] = []
@@ -109,6 +122,8 @@ export function useChats(chats: Ref<Chat[] | undefined>) {
   })
 
   return {
-    groups
+    groups,
+    chats,
+    fetchChats
   }
-}
+})

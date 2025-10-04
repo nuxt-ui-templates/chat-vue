@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { $fetch } from 'ofetch'
+import { useModels } from '../composables/useModels'
+import { useChats } from '../composables/useChats'
+import { useRouter } from 'vue-router'
+
+const { fetchChats } = useChats()
 const input = ref('')
 const loading = ref(false)
+const router = useRouter()
 
 const { model } = useModels()
 
@@ -12,8 +20,8 @@ async function createChat(prompt: string) {
     body: { input: prompt }
   })
 
-  refreshNuxtData('chats')
-  navigateTo(`/chat/${chat?.id}`)
+  await fetchChats()
+  router.push(`/chat/${chat?.id}`)
 }
 
 function onSubmit() {
@@ -45,7 +53,10 @@ const quickChats = [
 </script>
 
 <template>
-  <UDashboardPanel id="home" :ui="{ body: 'p-0 sm:p-0' }">
+  <UDashboardPanel
+    id="home"
+    :ui="{ body: 'p-0 sm:p-0' }"
+  >
     <template #header>
       <DashboardNavbar />
     </template>
