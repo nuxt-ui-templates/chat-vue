@@ -5,14 +5,14 @@ import { z } from 'zod'
 
 
 export default defineEventHandler(async (event) => {
-  const { data: session } = await useUserSession(event)
+  const session = await useUserSession(event)
 
   const { id } = await getValidatedRouterParams(event, z.object({
     id: z.string()
   }).parse)
 
   const chat = await useDrizzle().query.chats.findFirst({
-    where: (chat, { eq }) => and(eq(chat.id, id as string), eq(chat.userId, session.user?.id || session.id!)),
+    where: (chat, { eq }) => and(eq(chat.id, id as string), eq(chat.userId, session.data.user?.id || session.id!)),
     with: {
       messages: true
     }

@@ -7,7 +7,7 @@ import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
 import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'h3'
 
 export default defineEventHandler(async (event) => {
-  const { data: session } = await useUserSession(event)
+  const session = await useUserSession(event)
 
   const { id } = await getValidatedRouterParams(event, z.object({
     id: z.string()
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   const db = useDrizzle()
 
   const chat = await db.query.chats.findFirst({
-    where: (chat, { eq }) => and(eq(chat.id, id as string), eq(chat.userId, session.user?.id || session.id!)),
+    where: (chat, { eq }) => and(eq(chat.id, id as string), eq(chat.userId, session.data.user?.id || session.id)),
     with: {
       messages: true
     }
