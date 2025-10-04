@@ -10,9 +10,9 @@ Full-featured AI Chatbot Nuxt application with authentication, chat history, mul
 
 <a href="https://chat-vue-template.nuxt.dev/" target="_blank">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/chat-vue-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/chat-vue-light.png">
-    <img alt="Vue AI Chatbot Template" src="https://ui.nuxt.com/assets/templates/nuxt/chat-vue-light.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/chat-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/chat-light.png">
+    <img alt="Vue AI Chatbot Template" src="https://ui.nuxt.com/assets/templates/nuxt/chat-light.png">
   </picture>
 </a>
 
