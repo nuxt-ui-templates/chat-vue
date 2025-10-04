@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
   }).parse)
   const db = useDrizzle()
 
+  console.log('userId', session.user?.id || session.id!)
   const [chat] = await db.insert(tables.chats).values({
     title: '',
     userId: session.user?.id || session.id!
