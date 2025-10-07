@@ -23,7 +23,7 @@ export default defineConfig({
     }),
     nitro({
       config: {
-        // srcDir: './server/',
+        srcDir: './server/',
       }
     }),
     vueDevtools()
