@@ -15,7 +15,8 @@ export default ts.config(
     },
     rules: {
       'vue/multi-word-component-names': 'off',
-      'no-undef': 'off'
+      'no-undef': 'off',
+      '@typescript-eslint/no-explicit-any': 'off'
     }
   }
 )
