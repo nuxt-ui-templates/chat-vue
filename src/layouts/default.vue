@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter, useRoute, type RouteLocationNormalizedLoaded } from 'vue-router'
 import { $fetch } from 'ofetch'
 import ModalConfirm from '../components/ModalConfirm.vue'
 import { useChats } from '../composables/useChats'
 import { useUserSession } from '../composables/useUserSession'
 
 const router = useRouter()
-const route = useRoute()
+const route = useRoute<'/chat/[id]' | '/'>()
 const toast = useToast()
 const overlay = useOverlay()
 const { loggedIn, openInPopup, fetchSession } = useUserSession()
@@ -60,7 +60,7 @@ async function deleteChat(id: string) {
 
   fetchChats()
 
-  if (route.params.id === id) {
+  if ((route as RouteLocationNormalizedLoaded<'/chat/[id]'>).params?.id === id) {
     router.push('/')
   }
 }
