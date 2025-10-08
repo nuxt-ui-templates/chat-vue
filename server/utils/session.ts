@@ -1,4 +1,4 @@
-import { useSession, type HTTPEvent, type Session } from 'h3'
+import { useSession, type HTTPEvent, type Session } from 'nitro/deps/h3'
 
 export interface UserSession extends Session {
   user?: {

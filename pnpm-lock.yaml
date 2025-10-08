@@ -26,9 +26,6 @@ importers:
       drizzle-orm:
         specifier: ^0.44.6
         version: 0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3)
-      h3:
-        specifier: beta
-        version: 2.0.0-beta.5(crossws@0.4.1(srvx@0.8.14))
       katex:
         specifier: ^0.16.23
         version: 0.16.23
@@ -37,7 +34,7 @@ importers:
         version: 11.12.0
       nitro:
         specifier: npm:nitro-nightly
-        version: nitro-nightly@3.0.0-20251007-195302-077e6124(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
+        version: nitro-nightly@3.0.0-20251008-105758-5961ebcb(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
       ofetch:
         specifier: ^1.4.1
         version: 1.4.1
@@ -2331,15 +2328,6 @@ packages:
   h3@1.15.4:
     resolution: {integrity: sha512-z5cFQWDffyOe4vQ9xIqNfCZdV4p//vy6fBnr8Q1AWnVZ0teurKMG66rLj++TKwKPUP3u7iMUvrvKaEUiQw2QWQ==}
 
-  h3@2.0.0-beta.5:
-    resolution: {integrity: sha512-ApIkLH+nTxzCC0Nq/GN1v6jkvu2eOLfdTnTs6ghiuG1EYHWJBDLzhk5tn7SZMEUNsLUjG4qfmqzBx2LG9I7Q/w==}
-    engines: {node: '>=20.11.1'}
-    peerDependencies:
-      crossws: ^0.4.1
-    peerDependenciesMeta:
-      crossws:
-        optional: true
-
   h3@2.0.0-rc.1:
     resolution: {integrity: sha512-aEKi+P+28qvKmza5jr7tT8rqW8UxQZ7IIe6InVTyL8xZYnLR8VF6w5TynjJhBDtEN0RsB0n3MIgEX7rfz3qreQ==}
     engines: {node: '>=20.11.1'}
@@ -2797,8 +2785,8 @@ packages:
   nf3@0.1.1:
     resolution: {integrity: sha512-iJfiw84oKzsOOM+zqr0fycjgLx2wLw1RrGLHd9qxUPwMtut6GjBalDS9TRPZJXMAZjUv9ghLgtDrhzqcFJ8eTQ==}
 
-  nitro-nightly@3.0.0-20251007-195302-077e6124:
-    resolution: {integrity: sha512-xxDfUDlxnCxmcnPG2dgalAKzGLD9XL7EG+CSqk+/bEq7rFNeeQ5V3hGw6DqqMn7XuF+WILH3lWzlVl6qduCoQA==}
+  nitro-nightly@3.0.0-20251008-105758-5961ebcb:
+    resolution: {integrity: sha512-2qYEIzeGOy0JjKibZcsIzrBZgNaiRJN7NQRyoR11n/9xK4ukNklyAqaEFKFf8+orpMi7VsRPXSnnrIRjNmnmFg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -6207,15 +6195,6 @@ snapshots:
       ufo: 1.6.1
       uncrypto: 0.1.3
 
-  h3@2.0.0-beta.5(crossws@0.4.1(srvx@0.8.14)):
-    dependencies:
-      cookie-es: 2.0.0
-      fetchdts: 0.1.7
-      rou3: 0.7.7
-      srvx: 0.8.14
-    optionalDependencies:
-      crossws: 0.4.1(srvx@0.8.14)
-
   h3@2.0.0-rc.1(crossws@0.4.1(srvx@0.8.14)):
     dependencies:
       cookie-es: 2.0.0
@@ -6653,7 +6632,7 @@ snapshots:
 
   nf3@0.1.1: {}
 
-  nitro-nightly@3.0.0-20251007-195302-077e6124(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)):
+  nitro-nightly@3.0.0-20251008-105758-5961ebcb(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)):
     dependencies:
       consola: 3.4.2
       cookie-es: 2.0.0

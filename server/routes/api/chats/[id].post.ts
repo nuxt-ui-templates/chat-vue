@@ -4,7 +4,7 @@ import type { UIMessage } from 'ai'
 import { z } from 'zod'
 import { useUserSession } from '../../../utils/session'
 import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
-import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'h3'
+import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'nitro/deps/h3'
 
 export default defineEventHandler(async (event) => {
   const session = await useUserSession(event)
