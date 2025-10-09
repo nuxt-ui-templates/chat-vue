@@ -33,7 +33,7 @@ npm create nuxt@latest -- -t github:nuxt-ui-templates/chat-vue
 
 ## Deploy your own
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=chat-vue&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fchat-vue&env=SESSION_PASSWORD,GITHUB_OAUTH_CLIENT_ID,GITHUB_OAUTH_CLIENT_SECRET&products=%5B%7B%22type%22%3A%22integration%22%2C%22group%22%3A%22postgres%22%7D%5D&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fchat-dark.png&demo-url=https%3A%2F%2Fchat-vue-template.nuxt.dev%2F&demo-title=Vue%20Chat%20Template&demo-description=An%20AI%20chatbot%20template%20to%20build%20your%20own%20chatbot%20powered%20by%20Vue%20MDC%20and%20Vercel%20AI%20SDK.)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=chat-vue&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fchat-vue&env=SESSION_SECRET,GITHUB_OAUTH_CLIENT_ID,GITHUB_OAUTH_CLIENT_SECRET&products=%5B%7B%22type%22%3A%22integration%22%2C%22group%22%3A%22postgres%22%7D%5D&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fchat-dark.png&demo-url=https%3A%2F%2Fchat-vue-template.nuxt.dev%2F&demo-title=Vue%20Chat%20Template&demo-description=An%20AI%20chatbot%20template%20to%20build%20your%20own%20chatbot%20powered%20by%20Vue%20MDC%20and%20Vercel%20AI%20SDK.)
 
 ## Setup
 
@@ -56,8 +56,8 @@ GITHUB_OAUTH_CLIENT_SECRET=<your-github-oauth-app-client-secret>
 # AI Configuration via Vercel AI Gateway (unified API for all providers)
 AI_GATEWAY_API_KEY=<your-vercel-ai-gateway-api-key>
 
-# Password for nuxt-auth-utils (minimum 32 characters)
-SESSION_PASSWORD=<your-password>
+# Private key used to encrypt session cookie (minimum 32 characters)
+SESSION_SECRET=<your-secret-of-32-characters>
 ```
 
 > [!TIP]
