@@ -108,20 +108,8 @@ importers:
 
 packages:
 
-  '@ai-sdk/gateway@1.0.34':
-    resolution: {integrity: sha512-Vc/4fGlAW2uGmz6DnbRB9b7kdkbk4DQYNDYNdr/NHJxoaLsdNF3CE8i172rZ47+jEU2hGibcn5yivbgvjMi8Ig==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4.1.8
-
   '@ai-sdk/gateway@1.0.35':
     resolution: {integrity: sha512-cdsXbeRRMi6QxbZscin69Asx2fi0d2TmmPngcPFUMpZbchGEBiJYVNvIfiALKFKXEq0l/w0xGNV3E13vroaleA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4.1.8
-
-  '@ai-sdk/provider-utils@3.0.10':
-    resolution: {integrity: sha512-T1gZ76gEIwffep6MWI0QNy9jgoybUHE7TRaHB5k54K8mF91ciGFlbtCGxDYhMH3nCRergKwYFIDeFF0hJSIQHQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -136,8 +124,8 @@ packages:
     resolution: {integrity: sha512-6o7Y2SeO9vFKB8lArHXehNuusnpddKPk7xqL7T2/b+OvXMRIXUO1rR4wcv1hAFUAT9avGZshty3Wlua/XA7TvA==}
     engines: {node: '>=18'}
 
-  '@ai-sdk/vue@2.0.61':
-    resolution: {integrity: sha512-g+UfMy/x5gqShL25Cv2v5zWvfMpiLS2pgHZdv4CN1YkjqS/cuv0cU6Esg0jfOz8forvqgRz2HGFoFlyVhpWWJA==}
+  '@ai-sdk/vue@2.0.62':
+    resolution: {integrity: sha512-Wky7yKnKMWVGvKbgQucxGcMUQdeKW0L0WTcEqciS0IP5SMVCElx3aC+v/3awtLemfiKBIfxg0o8X/Gp0MnvJJA==}
     engines: {node: '>=18'}
     peerDependencies:
       vue: ^3.3.4
@@ -1442,12 +1430,6 @@ packages:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-
-  ai@5.0.61:
-    resolution: {integrity: sha512-a+NtNgxjMiGvL46/+v7iNbKHLAg8VDheNhYFe9lL3MPiL9W5DNH45wMaahteCYS4WgoFgdQa2zz4CM5lkiXuOA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4.1.8
 
   ai@5.0.62:
     resolution: {integrity: sha512-IZ5H0rIgwoMx/H9hdZnjW0AjXDMhJnPZlnl+xzfP3vsG76+4k/vYJBYJ4kbKAGCRhaErhc2sK22bSegpXqnhEQ==}
@@ -3834,25 +3816,11 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/gateway@1.0.34(zod@4.1.12)':
-    dependencies:
-      '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.10(zod@4.1.12)
-      '@vercel/oidc': 3.0.2
-      zod: 4.1.12
-
   '@ai-sdk/gateway@1.0.35(zod@4.1.12)':
     dependencies:
       '@ai-sdk/provider': 2.0.0
       '@ai-sdk/provider-utils': 3.0.11(zod@4.1.12)
       '@vercel/oidc': 3.0.2
-      zod: 4.1.12
-
-  '@ai-sdk/provider-utils@3.0.10(zod@4.1.12)':
-    dependencies:
-      '@ai-sdk/provider': 2.0.0
-      '@standard-schema/spec': 1.0.0
-      eventsource-parser: 3.0.6
       zod: 4.1.12
 
   '@ai-sdk/provider-utils@3.0.11(zod@4.1.12)':
@@ -3866,10 +3834,10 @@ snapshots:
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/vue@2.0.61(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)':
+  '@ai-sdk/vue@2.0.62(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)':
     dependencies:
-      '@ai-sdk/provider-utils': 3.0.10(zod@4.1.12)
-      ai: 5.0.61(zod@4.1.12)
+      '@ai-sdk/provider-utils': 3.0.11(zod@4.1.12)
+      ai: 5.0.62(zod@4.1.12)
       swrv: 1.1.0(vue@3.5.22(typescript@5.9.3))
     optionalDependencies:
       vue: 3.5.22(typescript@5.9.3)
@@ -4551,7 +4519,7 @@ snapshots:
 
   '@nuxt/ui@4.0.1(@babel/parser@7.28.4)(db0@0.3.4(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3)))(embla-carousel@8.6.0)(typescript@5.9.3)(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))(vue-router@4.5.1(vue@3.5.22(typescript@5.9.3)))(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)':
     dependencies:
-      '@ai-sdk/vue': 2.0.61(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
+      '@ai-sdk/vue': 2.0.62(vue@3.5.22(typescript@5.9.3))(zod@4.1.12)
       '@iconify/vue': 5.0.0(vue@3.5.22(typescript@5.9.3))
       '@internationalized/date': 3.10.0
       '@internationalized/number': 3.6.5
@@ -5333,14 +5301,6 @@ snapshots:
       acorn: 8.15.0
 
   acorn@8.15.0: {}
-
-  ai@5.0.61(zod@4.1.12):
-    dependencies:
-      '@ai-sdk/gateway': 1.0.34(zod@4.1.12)
-      '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.10(zod@4.1.12)
-      '@opentelemetry/api': 1.9.0
-      zod: 4.1.12
 
   ai@5.0.62(zod@4.1.12):
     dependencies:

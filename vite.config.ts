@@ -25,8 +25,6 @@ export default defineConfig({
     vueDevtools(),
   ],
   nitro: {
-    routesDir: './server/routes',
-    // Required for now as `nitro/deps/*` is not properly imported
-    noExternals: true
+    routesDir: './server/routes'
   }
 })
