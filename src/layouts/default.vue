@@ -85,9 +85,12 @@ defineShortcuts({
       <template #header="{ collapsed }">
         <ULink
           to="/"
-          class="flex items-end gap-0.5"
+          class="flex items-center gap-0.5"
         >
-          <Logo class="h-8 w-auto shrink-0" />
+          <UIcon
+            name="i-logos-vue"
+            class="h-5 w-auto shrink-0"
+          />
           <span
             v-if="!collapsed"
             class="text-xl font-bold text-highlighted"
