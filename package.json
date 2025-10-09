@@ -12,6 +12,7 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@ai-sdk/gateway": "^1.0.35",
     "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.0.1",
     "ai": "^5.0.62",

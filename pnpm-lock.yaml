@@ -11,6 +11,9 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk/gateway':
+        specifier: ^1.0.35
+        version: 1.0.35(zod@4.1.12)
       '@iconify/vue':
         specifier: ^5.0.0
         version: 5.0.0(vue@3.5.22(typescript@5.9.3))
