@@ -50,9 +50,6 @@ importers:
       ufo:
         specifier: ^1.6.1
         version: 1.6.1
-      uncrypto:
-        specifier: ^0.1.3
-        version: 0.1.3
       vue:
         specifier: ^3.5.22
         version: 3.5.22(typescript@5.9.3)
