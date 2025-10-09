@@ -28,7 +28,7 @@ Full-featured AI Chatbot Vue application with authentication, chat history, mult
 ## Quick Start
 
 ```bash
-npm create nuxt@latest -- --no-modules -t github:nuxt-ui-templates/chat-vue
+npx create-nitro-app -t gh:nuxt-ui-templates/chat-vue
 ```
 
 ## Deploy your own
