@@ -1,7 +1,7 @@
 # Vue AI Chatbot Template
 
 [![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
-[![Nitro](https://img.shields.io/badge/Bult%20with-Nitro-ff637e?logo=nitro&labelColor=18181B)](https://nitro.build)
+[![Nitro](https://img.shields.io/badge/Built%20with-Nitro-ff637e?logo=nitro&labelColor=18181B)](https://nitro.build)
 
 Full-featured AI Chatbot Vue application with authentication, chat history, multiple pages, collapsible sidebar, keyboard shortcuts, light & dark mode, command palette and more. Built using [Nuxt UI](https://ui.nuxt.com) components and integrated with [AI SDK v5](https://sdk.vercel.ai) for a complete chat experience.
 
