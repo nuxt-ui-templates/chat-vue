@@ -3,7 +3,7 @@
 [![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
 [![Nitro](https://img.shields.io/badge/Bult%20with-Nitro-ff637e?logo=nitro&labelColor=18181B)](https://nitro.build)
 
-Full-featured AI Chatbot Nuxt application with authentication, chat history, multiple pages, collapsible sidebar, keyboard shortcuts, light & dark mode, command palette and more. Built using [Nuxt UI](https://ui.nuxt.com) components and integrated with [AI SDK v5](https://sdk.vercel.ai) for a complete chat experience.
+Full-featured AI Chatbot Vue application with authentication, chat history, multiple pages, collapsible sidebar, keyboard shortcuts, light & dark mode, command palette and more. Built using [Nuxt UI](https://ui.nuxt.com) components and integrated with [AI SDK v5](https://sdk.vercel.ai) for a complete chat experience.
 
 - [Live demo](https://chat-vue-template.nuxt.dev/)
 - [Documentation](https://ui.nuxt.com/docs/getting-started/installation/vue)
@@ -20,7 +20,7 @@ Full-featured AI Chatbot Nuxt application with authentication, chat history, mul
 
 - ⚡️ **Streaming AI messages** powered by the [AI SDK v5](https://sdk.vercel.ai)
 - 🤖 **Multiple model support** via various AI providers with built-in AI Gateway support
-- 🔐 **Authentication** via GitHub OAuth using a Nitro server route and httpOnly cookies
+- 🔐 **Authentication** via GitHub OAuth using [Nitro server routes](https://nitro.build) and httpOnly cookies
 - 💾 **Chat history persistence** using PostgreSQL database and [Drizzle ORM](https://orm.drizzle.team)
 - 💬 **Markdown rendering** using [vue-markdown-render](https://github.com/Simon-He95/vue-markdown-render)
 - 🚀 **Easy deploy** to Vercel with zero configuration
@@ -28,7 +28,7 @@ Full-featured AI Chatbot Nuxt application with authentication, chat history, mul
 ## Quick Start
 
 ```bash
-npm create nuxt@latest -- -t github:nuxt-ui-templates/chat-vue
+npm create nuxt@latest -- --no-modules -t github:nuxt-ui-templates/chat-vue
 ```
 
 ## Deploy your own

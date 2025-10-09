@@ -99,21 +99,21 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   label: 'Templates',
   icon: 'i-lucide-layout-template',
   children: [{
-    label: 'Vue Starter',
+    label: 'Starter',
     to: 'https://starter-vue-template.nuxt.dev/'
   }, {
-    label: 'Vue Dashboard',
+    label: 'Dashboard',
     to: 'https://dashboard-vue-template.nuxt.dev/'
   }]
 }], [{
   label: 'Documentation',
   icon: 'i-lucide-book-open',
-  to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
+  to: 'https://ui.nuxt.com/docs/getting-started/installation/vue',
   target: '_blank'
 }, {
   label: 'GitHub repository',
   icon: 'i-simple-icons:github',
-  to: 'https://github.com/nuxt-ui-templates/chat',
+  to: 'https://github.com/nuxt-ui-templates/chat-vue',
   target: '_blank'
 }], [{
   label: 'Log out',
