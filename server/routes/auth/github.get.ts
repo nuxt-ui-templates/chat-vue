@@ -1,7 +1,7 @@
 import { FetchError, $fetch } from 'ofetch'
-import { getRandomValues } from 'uncrypto'
-import type { H3Event } from 'h3'
-import { eventHandler, getQuery, redirect, HTTPError, getRequestURL, setCookie, deleteCookie, getCookie } from 'h3'
+import { getRandomValues } from 'node:crypto'
+import type { H3Event } from 'nitro/deps/h3'
+import { defineEventHandler, getQuery, redirect, HTTPError, getRequestURL, setCookie, deleteCookie, getCookie } from 'nitro/deps/h3'
 import { withQuery } from 'ufo'
 import { defu } from 'defu'
 import type { Endpoints } from '@octokit/types'
@@ -22,7 +22,7 @@ interface RequestAccessTokenOptions {
   params?: Record<string, string>
 }
 
-export default eventHandler(async (event: H3Event) => {
+export default defineEventHandler(async (event: H3Event) => {
   const config = {
     clientId: process.env.GITHUB_OAUTH_CLIENT_ID,
     clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
@@ -53,7 +53,6 @@ export default eventHandler(async (event: H3Event) => {
   if (!query.code) {
 
     return redirect(
-      event,
       withQuery('https://github.com/login/oauth/authorize' as string, {
         client_id: config.clientId,
         redirect_uri: redirectURL,
@@ -113,7 +112,7 @@ export default eventHandler(async (event: H3Event) => {
     },
   }, session.data))
 
-  return redirect(event, '/')
+  return redirect('/')
 })
 
 async function requestAccessToken(url: string, options: RequestAccessTokenOptions): Promise<RequestAccessTokenResponse> {

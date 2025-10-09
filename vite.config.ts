@@ -21,11 +21,12 @@ export default defineConfig({
         }
       }
     }),
-    nitro({
-      config: {
-        // srcDir: './server/',
-      }
-    }),
-    vueDevtools()
-  ]
+    nitro(),
+    vueDevtools(),
+  ],
+  nitro: {
+    routesDir: './server/routes',
+    // Required for now as `nitro/deps/*` is not properly imported
+    noExternals: true
+  }
 })
