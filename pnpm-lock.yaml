@@ -39,8 +39,8 @@ importers:
         specifier: ^11.12.0
         version: 11.12.0
       nitro:
-        specifier: npm:nitro-nightly
-        version: nitro-nightly@3.0.0-20251009-080107-6c7fe3cc(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
+        specifier: ^3.0.1-alpha.0
+        version: 3.0.1-alpha.0(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1))
       ofetch:
         specifier: ^1.4.1
         version: 1.4.1
@@ -2794,8 +2794,8 @@ packages:
   nf3@0.1.1:
     resolution: {integrity: sha512-iJfiw84oKzsOOM+zqr0fycjgLx2wLw1RrGLHd9qxUPwMtut6GjBalDS9TRPZJXMAZjUv9ghLgtDrhzqcFJ8eTQ==}
 
-  nitro-nightly@3.0.0-20251009-080107-6c7fe3cc:
-    resolution: {integrity: sha512-xngx0PS5n2x9PIe4v+WKbTptg176ewPM+KWc8lqYxKtiaS8vb3mpjNv92SgUjwiSNnnYhPEB67nlH1t40/C2Rg==}
+  nitro@3.0.1-alpha.0:
+    resolution: {integrity: sha512-lR3RplfXBOZXNlFQf9AJkqFVFhg5/CNbpBijM0dSYhGymb+FthJSdL6crmXVg518h2NVOd40rehhGZaf9ijW9w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -6645,7 +6645,7 @@ snapshots:
 
   nf3@0.1.1: {}
 
-  nitro-nightly@3.0.0-20251009-080107-6c7fe3cc(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)):
+  nitro@3.0.1-alpha.0(chokidar@4.0.3)(drizzle-orm@0.44.6(@opentelemetry/api@1.9.0)(pg@8.16.3))(vite@7.1.9(@types/node@24.7.0)(jiti@2.6.1)(lightningcss@1.30.1)(yaml@2.8.1)):
     dependencies:
       consola: 3.4.2
       cookie-es: 2.0.0
