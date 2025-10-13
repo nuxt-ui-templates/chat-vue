@@ -12,14 +12,14 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@ai-sdk/gateway": "^1.0.35",
+    "@ai-sdk/gateway": "^1.0.39",
     "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.0.1",
-    "ai": "^5.0.62",
+    "ai": "^5.0.68",
     "date-fns": "^4.1.0",
     "defu": "^6.1.4",
     "drizzle-orm": "^0.44.6",
-    "katex": "^0.16.23",
+    "katex": "^0.16.25",
     "mermaid": "^11.12.0",
     "nitro": "^3.0.1-alpha.0",
     "ofetch": "^1.4.1",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@octokit/types": "^15.0.0",
-    "@types/node": "^24.7.0",
+    "@types/node": "^24.7.2",
     "@vitejs/plugin-vue": "^6.0.1",
     "drizzle-kit": "^0.31.5",
     "eslint": "^9.37.0",
@@ -50,5 +50,5 @@
   "resolutions": {
     "unimport": "4.1.1"
   },
-  "packageManager": "pnpm@10.18.1"
+  "packageManager": "pnpm@10.18.2"
 }
