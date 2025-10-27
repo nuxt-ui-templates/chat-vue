@@ -12,13 +12,13 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@ai-sdk/gateway": "^1.0.39",
+    "@ai-sdk/gateway": "^1.0.41",
     "@iconify/vue": "^5.0.0",
-    "@nuxt/ui": "^4.0.1",
-    "ai": "^5.0.68",
+    "@nuxt/ui": "^4.1.0",
+    "ai": "^5.0.80",
     "date-fns": "^4.1.0",
     "defu": "^6.1.4",
-    "drizzle-orm": "^0.44.6",
+    "drizzle-orm": "^0.44.7",
     "katex": "^0.16.25",
     "mermaid": "^11.12.0",
     "nitro": "^3.0.1-alpha.0",
@@ -27,28 +27,28 @@
     "shiki-stream": "^0.1.2",
     "ufo": "^1.6.1",
     "vue": "^3.5.22",
-    "vue-renderer-markdown": "0.0.55",
-    "vue-router": "^4.5.1",
+    "vue-renderer-markdown": "0.0.59",
+    "vue-router": "^4.6.3",
     "vue-use-monaco": "^0.0.33",
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@octokit/types": "^15.0.0",
-    "@types/node": "^24.7.2",
+    "@octokit/types": "^15.0.1",
+    "@types/node": "^24.9.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "drizzle-kit": "^0.31.5",
-    "eslint": "^9.37.0",
-    "eslint-plugin-vue": "^10.5.0",
+    "eslint": "^9.38.0",
+    "eslint-plugin-vue": "^10.5.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.0",
-    "unplugin-vue-router": "^0.15.0",
-    "vite": "^7.1.9",
-    "vite-plugin-vue-devtools": "^8.0.2",
+    "typescript-eslint": "^8.46.2",
+    "unplugin-vue-router": "^0.16.0",
+    "vite": "^7.1.12",
+    "vite-plugin-vue-devtools": "^8.0.3",
     "vite-plugin-vue-layouts": "^0.11.0",
-    "vue-tsc": "^3.1.1"
+    "vue-tsc": "^3.1.2"
   },
   "resolutions": {
     "unimport": "4.1.1"
   },
-  "packageManager": "pnpm@10.18.2"
+  "packageManager": "pnpm@10.19.0"
 }
