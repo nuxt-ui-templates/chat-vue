@@ -6,7 +6,7 @@ const { model, models } = useModels()
 const items = computed(() => models.map(model => ({
   label: model,
   value: model,
-  icon: `i-simple-icons${model.split('/')[0]}`
+  icon: `i-simple-icons:${model.split('/')[0]}`
 })))
 </script>
 

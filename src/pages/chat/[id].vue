@@ -10,6 +10,10 @@ import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useRoute } from 'vue-router'
 import MarkdownRender from 'vue-renderer-markdown'
+import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
+import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
+import ToolWeather from '../../components/tool/ToolWeather.vue'
+import ToolChart from '../../components/tool/ToolChart.vue'
 
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
@@ -93,31 +97,36 @@ onMounted(() => {
     <template #body>
       <UContainer class="flex-1 flex flex-col gap-4 sm:gap-6">
         <UChatMessages
+          should-auto-scroll
           :messages="chat.messages"
           :status="chat.status"
           :assistant="chat.status !== 'streaming' ? { actions: [{ label: 'Copy', icon: copied ? 'i-lucide-copy-check' : 'i-lucide-copy', onClick: copy }] } : { actions: [] }"
-          class="lg:pt-(--ui-header-height) pb-4 sm:pb-6"
           :spacing-offset="160"
+          class="lg:pt-(--ui-header-height) pb-4 sm:pb-6"
         >
           <template #content="{ message }">
-            <div class="space-y-4">
-              <template
-                v-for="(part, index) in message.parts"
-                :key="`${part.type}-${index}-${message.id}`"
-              >
-                <UButton
-                  v-if="part.type === 'reasoning' && part.state !== 'done'"
-                  label="Thinking..."
-                  variant="link"
-                  color="neutral"
-                  class="p-0"
-                  loading
-                />
-              </template>
+            <template
+              v-for="(part, index) in message.parts"
+              :key="`${message.id}-${part.type}-${index}${'state' in part ? `-${part.state}` : ''}`"
+            >
+              <Reasoning
+                v-if="part.type === 'reasoning'"
+                :text="part.text"
+                :is-streaming="part.state !== 'done'"
+              />
               <MarkdownRender
+                v-else-if="part.type === 'text'"
                 :content="getTextFromMessage(message)"
               />
-            </div>
+              <ToolWeather
+                v-else-if="part.type === 'tool-weather'"
+                :invocation="(part as WeatherUIToolInvocation)"
+              />
+              <ToolChart
+                v-else-if="part.type === 'tool-chart'"
+                :invocation="(part as ChartUIToolInvocation)"
+              />
+            </template>
           </template>
         </UChatMessages>
 
@@ -128,15 +137,15 @@ onMounted(() => {
           class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
           @submit="handleSubmit"
         >
-          <UChatPromptSubmit
-            :status="chat.status"
-            color="neutral"
-            @stop="chat.stop"
-            @reload="chat.regenerate"
-          />
-
           <template #footer>
             <ModelSelect v-model="model" />
+
+            <UChatPromptSubmit
+              :status="chat.status"
+              color="neutral"
+              @stop="chat.stop"
+              @reload="chat.regenerate"
+            />
           </template>
         </UChatPrompt>
       </UContainer>
