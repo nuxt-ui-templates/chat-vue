@@ -14,6 +14,7 @@ import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weathe
 import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
 import ToolWeather from '../../components/tool/ToolWeather.vue'
 import ToolChart from '../../components/tool/ToolChart.vue'
+import Reasoning from '../../components/Reasoning.vue'
 
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
