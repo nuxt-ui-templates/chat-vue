@@ -14,7 +14,9 @@ export default defineEventHandler(async (event) => {
   const chat = await useDrizzle().query.chats.findFirst({
     where: (chat, { eq }) => and(eq(chat.id, id as string), eq(chat.userId, session.data.user?.id || session.id!)),
     with: {
-      messages: true
+      messages: {
+        orderBy: (message, { asc }) => asc(message.createdAt)
+      }
     }
   })
 

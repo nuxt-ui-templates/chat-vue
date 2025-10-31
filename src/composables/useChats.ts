@@ -20,7 +20,10 @@ export const useChats = createSharedComposable(() => {
       to: `/chat/${chat.id}`,
       icon: 'i-lucide-message-circle',
       createdAt: chat.createdAt
-    })))
+    }))).catch(error => {
+      console.error(error)
+      return []
+    })
   }
 
   const groups = computed(() => {
