@@ -3089,8 +3089,8 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  nf3@0.1.9:
-    resolution: {integrity: sha512-zhqe/2ikL/Jh/FwhHeLUo3Y6P1T8grD72DCkcljb9tR8ZIYQP9dV9C0+zok+EFFnog+p/HPFHiktz8VZD/79Tw==}
+  nf3@0.1.10:
+    resolution: {integrity: sha512-bT6FITvXLd8Z9Qbt0NsMz90diyLNK8H4Sp2vZ9IGLrKxsF5djM+F2vQmR6GyvtlP2y47XMZjjVFpPClgMB8USQ==}
 
   nitro-nightly@3.0.1-20251110-005841-4cf1b533:
     resolution: {integrity: sha512-lQzg9TzrnJaCzB93+YkMJGxFNeyreCayKg47CYZztjsbJSyYUtYSiWAae5My9gf7r0w38jW1pp/a4hdM22RPnw==}
@@ -7242,7 +7242,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  nf3@0.1.9: {}
+  nf3@0.1.10: {}
 
   nitro-nightly@3.0.1-20251110-005841-4cf1b533(chokidar@4.0.3)(drizzle-orm@0.44.7(@opentelemetry/api@1.9.0)(pg@8.16.3))(rollup@4.52.5)(vite@7.2.2(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.1)):
     dependencies:
@@ -7251,7 +7251,7 @@ snapshots:
       db0: 0.3.4(drizzle-orm@0.44.7(@opentelemetry/api@1.9.0)(pg@8.16.3))
       h3: 2.0.1-rc.5(crossws@0.4.1(srvx@0.9.5))
       jiti: 2.6.1
-      nf3: 0.1.9
+      nf3: 0.1.10
       ofetch: 2.0.0-alpha.3
       ohash: 2.0.11
       oxc-minify: 0.96.0
