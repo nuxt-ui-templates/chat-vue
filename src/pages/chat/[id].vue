@@ -144,8 +144,8 @@ onMounted(() => {
             <UChatPromptSubmit
               :status="chat.status"
               color="neutral"
-              @stop="chat.stop"
-              @reload="chat.regenerate"
+              @stop="chat.stop()"
+              @reload="chat.regenerate()"
             />
           </template>
         </UChatPrompt>
