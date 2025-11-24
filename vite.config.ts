@@ -23,9 +23,5 @@ export default defineConfig({
     }),
     nitro(),
     vueDevtools(),
-  ],
-  nitro: {
-    routesDir: './server/routes',
-    noExternals: true
-  }
+  ]
 })
