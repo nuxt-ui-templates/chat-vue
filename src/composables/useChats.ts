@@ -14,7 +14,7 @@ export const useChats = createSharedComposable(() => {
   const chats = ref<Chat[]>([])
 
   const fetchChats = async () => {
-    chats.value = await $fetch('/api/chats').then(data => data.map((chat: any) => ({
+    chats.value = await $fetch('/api/chats').then(data => data.map((chat: Chat) => ({
       id: chat.id,
       label: chat.title || 'Untitled',
       to: `/chat/${chat.id}`,
