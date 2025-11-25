@@ -1,7 +1,19 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+  "extends": ["nitro/tsconfig"],
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["./*"]
+    },
+    "types": [
+      "unplugin-vue-router/client",
+      "vite-plugin-vue-layouts/client"
+    ]
+  },
+  "include": [
+    "./typed-router.d.ts",
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "auto-imports.d.ts",
+    "components.d.ts"
   ]
 }

@@ -21,7 +21,9 @@ export default defineConfig({
         }
       }
     }),
-    nitro(),
+    nitro({
+      serverDir: './server'
+    }),
     vueDevtools(),
   ]
 })
