@@ -1,4 +1,4 @@
-import { defineEventHandler, isMethod } from 'nitro/deps/h3'
+import { defineEventHandler, isMethod } from 'nitro/h3'
 import { useUserSession } from '../../utils/session'
 
 export default defineEventHandler(async (event) => {

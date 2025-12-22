@@ -1,4 +1,4 @@
-import { defineEventHandler } from 'nitro/deps/h3'
+import { defineEventHandler } from 'nitro/h3'
 import { useUserSession } from '../../utils/session'
 import { useDrizzle, tables, eq } from '../../utils/drizzle'
 

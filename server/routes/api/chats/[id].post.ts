@@ -4,7 +4,7 @@ import type { UIMessage } from 'ai'
 import { z } from 'zod'
 import { useUserSession } from '../../../utils/session'
 import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
-import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'nitro/deps/h3'
+import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'nitro/h3'
 import { weatherTool } from '../../../utils/tools/weather'
 import { chartTool } from '../../../utils/tools/chart'
 
