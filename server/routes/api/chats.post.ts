@@ -1,4 +1,4 @@
-import { defineEventHandler, HTTPError, readValidatedBody } from 'nitro/deps/h3'
+import { defineEventHandler, HTTPError, readValidatedBody } from 'nitro/h3'
 import { z } from 'zod'
 import { useUserSession } from '../../utils/session'
 import { useDrizzle, tables } from '../../utils/drizzle'
