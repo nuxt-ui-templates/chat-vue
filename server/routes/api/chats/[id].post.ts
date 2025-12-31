@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
   const db = useDrizzle()
 
   const chat = await db.query.chats.findFirst({
-    where: (chat, { eq }) => and(eq(chat.id, id as string), eq(chat.userId, session.data.user?.id || session.id)),
+    where: (chat, { eq }) => and(eq(chat.id, id as string), eq(chat.userId, session.data.user?.id || session.id!)),
     with: {
       messages: true
     }
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const stream = createUIMessageStream({
-    execute: ({ writer }) => {
+    execute: async ({ writer }) => {
       const result = streamText({
         model: gateway(model),
         system: `You are a knowledgeable and helpful AI assistant. ${session.data.user?.username ? `The user's name is ${session.data.user.username}.` : ''} Your goal is to provide clear, accurate, and well-structured responses.
@@ -76,7 +76,7 @@ export default defineEventHandler(async (event) => {
 - Use examples when helpful
 - Break down complex topics into digestible parts
 - Maintain a friendly, professional tone`,
-        messages: convertToModelMessages(messages),
+        messages: await convertToModelMessages(messages),
         providerOptions: {
           openai: {
             reasoningEffort: 'low',
