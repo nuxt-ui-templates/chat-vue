@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@ai-sdk/gateway": "^2.0.23",
-    "@ai-sdk/vue": "^2.0.116",
+    "@ai-sdk/vue": "^3.0.5",
     "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.3.0",
     "@unovis/vue": "^1.6.2",
