@@ -12,12 +12,12 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@ai-sdk/gateway": "^3.0.4",
-    "@ai-sdk/vue": "^3.0.5",
+    "@ai-sdk/gateway": "^3.0.5",
+    "@ai-sdk/vue": "^3.0.6",
     "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.3.0",
     "@unovis/vue": "^1.6.2",
-    "ai": "^6.0.5",
+    "ai": "^6.0.6",
     "date-fns": "^4.1.0",
     "defu": "^6.1.4",
     "drizzle-orm": "^0.45.1",
@@ -33,7 +33,7 @@
     "vue-renderer-markdown": "0.0.62",
     "vue-router": "^4.6.4",
     "vue-use-monaco": "^0.0.33",
-    "zod": "^4.2.1"
+    "zod": "^4.3.4"
   },
   "devDependencies": {
     "@octokit/types": "^16.0.0",
@@ -43,12 +43,12 @@
     "eslint": "^9.39.2",
     "eslint-plugin-vue": "^10.6.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.50.0",
-    "unplugin-vue-router": "^0.19.1",
+    "typescript-eslint": "^8.51.0",
+    "unplugin-vue-router": "^0.19.2",
     "vite": "^7.3.0",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vue-tsc": "^3.2.1"
   },
-  "packageManager": "pnpm@10.26.1"
+  "packageManager": "pnpm@10.27.0"
 }
