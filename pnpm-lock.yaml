@@ -69,8 +69,8 @@ importers:
         specifier: ^3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-chrts:
-        specifier: ^1.0.2
-        version: 1.0.2(vue@3.5.27(typescript@5.9.3))
+        specifier: ^2.1.1
+        version: 2.1.1(vue@3.5.27(typescript@5.9.3))
       vue-renderer-markdown:
         specifier: 0.0.62
         version: 0.0.62(katex@0.16.28)(mermaid@11.12.2)(shiki@3.21.0)(vue@3.5.27(typescript@5.9.3))
@@ -1796,6 +1796,15 @@ packages:
       prosemirror-view: ^1.9.10
       y-protocols: ^1.0.1
       yjs: ^13.5.38
+
+  '@turf/boolean-point-in-polygon@7.3.2':
+    resolution: {integrity: sha512-PAfPDQ0TW1+VLgZ7tReTSyZ/X41AW7/nMRQxVpY+h/aG7JomZJ779lojnODT4dWCn3IMTA3xD2dDDfVYBAQMYg==}
+
+  '@turf/helpers@7.3.2':
+    resolution: {integrity: sha512-5HFN42rgWjSobdTMxbuq+ZdXPcqp1IbMgFYULTLCplEQM3dXhsyRFe7DCss4Eiw12iW3q6Z5UeTNVfITsE5lgA==}
+
+  '@turf/invariant@7.3.2':
+    resolution: {integrity: sha512-brGmL1EFhZH/YNXhq6S+8sPWBEnmvEyxMWJO8bUNOFZyWHYiRTwxQHZM+An1blkbQ77PiEzsdNAspZqE1j7YKA==}
 
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
@@ -3602,6 +3611,9 @@ packages:
   mermaid@11.12.2:
     resolution: {integrity: sha512-n34QPDPEKmaeCG4WDMGy0OT6PSyxKCfy2pJgShP+Qow2KLrvWjclwbc3yXfSIf4BanqWEhQEpngWwNp/XhZt6w==}
 
+  mgrs@1.0.0:
+    resolution: {integrity: sha512-awNbTOqCxK1DBGjalK3xqWIstBZgN6fxsMSiXLs9/spqWkF2pAhb2rrYCFSsr1/tT7PhcDGjZndG8SWYn0byYA==}
+
   micromark-util-character@2.1.1:
     resolution: {integrity: sha512-wv8tdUTJ3thSFFFJKtpYKOYiGP2+v96Hvk4Tu8KpCAsTMs6yi+nVmGh1syvSCsaxz45J6Jbw+9DD6g97+NV67Q==}
 
@@ -3884,6 +3896,9 @@ packages:
   pkg-types@2.3.0:
     resolution: {integrity: sha512-SIqCzDRg0s9npO5XQ3tNZioRY1uK06lA41ynBC1YmFTmnY6FjUjVt6s4LoADmwoig1qqD0oK8h1p/8mlMx8Oig==}
 
+  point-in-polygon-hao@1.2.4:
+    resolution: {integrity: sha512-x2pcvXeqhRHlNRdhLs/tgFapAbSSe86wa/eqmj1G6pWftbEs5aVRJhRGM6FYSUERKu0PjekJzMq0gsI2XyiclQ==}
+
   points-on-curve@0.2.0:
     resolution: {integrity: sha512-0mYKnYYe9ZcqMCWhUjItv/oHjvgEsfKvnUTg8sAtnHr3GVy7rGkXCb6d5cSyqrWqL4k81b9CPg3urd+T7aop3A==}
 
@@ -3920,6 +3935,9 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+
+  proj4@2.20.2:
+    resolution: {integrity: sha512-ipfBRfQly0HhHTO7hnC1GfaX8bvroO7VV4KH889ehmADSE8C/qzp2j+Jj6783S9Tj6c2qX/hhYm7oH0kgXzBAA==}
 
   property-information@7.1.0:
     resolution: {integrity: sha512-TwEZ+X+yCJmYfL7TPUOcvBZ4QfoT5YenQiJuX//0th53DE6w0xxLEtfK3iyryQFddXuvkIk51EEgrJQ0WJkOmQ==}
@@ -4665,8 +4683,8 @@ packages:
   vt-pbf@3.1.3:
     resolution: {integrity: sha512-2LzDFzt0mZKZ9IpVF2r69G9bXaP2Q2sArJCmcCgvfTdCCZzSyz4aCLoQyUilu37Ll56tCblIZrXFIjNUpGIlmA==}
 
-  vue-chrts@1.0.2:
-    resolution: {integrity: sha512-JsDFPcoz38JPnRbgtARZUZmHwSd2jVfOzXPFPKlk2xgiKNP49ijZKbj5fxTnMKXIi5m5mIqJyXtgRJ8LZcrdfg==}
+  vue-chrts@2.1.1:
+    resolution: {integrity: sha512-P1X46eX1W9S2U7NnBNoxhGFr79CFlcn+NKIDuDPbq7kVk1lZotB1ABMlp/AYjZgPWAfeLqbqGsXDMLBYaCCsFA==}
     peerDependencies:
       vue: ^3.5.13
 
@@ -4759,6 +4777,9 @@ packages:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
     hasBin: true
+
+  wkt-parser@1.5.2:
+    resolution: {integrity: sha512-1ZUiV1FTwSiSrgWzV9KXJuOF2BVW91KY/mau04BhnmgOdroRQea7Q0s5TVqwGLm0D2tZwObd/tBYXW49sSxp3Q==}
 
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
@@ -6364,6 +6385,25 @@ snapshots:
       prosemirror-view: 1.41.5
       y-protocols: 1.0.7(yjs@13.6.29)
       yjs: 13.6.29
+
+  '@turf/boolean-point-in-polygon@7.3.2':
+    dependencies:
+      '@turf/helpers': 7.3.2
+      '@turf/invariant': 7.3.2
+      '@types/geojson': 7946.0.16
+      point-in-polygon-hao: 1.2.4
+      tslib: 2.8.1
+
+  '@turf/helpers@7.3.2':
+    dependencies:
+      '@types/geojson': 7946.0.16
+      tslib: 2.8.1
+
+  '@turf/invariant@7.3.2':
+    dependencies:
+      '@turf/helpers': 7.3.2
+      '@types/geojson': 7946.0.16
+      tslib: 2.8.1
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
@@ -8282,6 +8322,8 @@ snapshots:
       ts-dedent: 2.2.0
       uuid: 11.1.0
 
+  mgrs@1.0.0: {}
+
   micromark-util-character@2.1.1:
     dependencies:
       micromark-util-symbol: 2.0.1
@@ -8622,6 +8664,10 @@ snapshots:
       exsolve: 1.0.8
       pathe: 2.0.3
 
+  point-in-polygon-hao@1.2.4:
+    dependencies:
+      robust-predicates: 3.0.2
+
   points-on-curve@0.2.0: {}
 
   points-on-path@0.2.1:
@@ -8653,6 +8699,11 @@ snapshots:
   potpack@1.0.2: {}
 
   prelude-ls@1.2.1: {}
+
+  proj4@2.20.2:
+    dependencies:
+      mgrs: 1.0.0
+      wkt-parser: 1.5.2
 
   property-information@7.1.0: {}
 
@@ -9371,9 +9422,16 @@ snapshots:
       '@mapbox/vector-tile': 1.3.1
       pbf: 3.3.0
 
-  vue-chrts@1.0.2(vue@3.5.27(typescript@5.9.3)):
+  vue-chrts@2.1.1(vue@3.5.27(typescript@5.9.3)):
     dependencies:
+      '@turf/boolean-point-in-polygon': 7.3.2
+      '@unovis/ts': 1.6.2
+      '@unovis/vue': 1.6.2(@unovis/ts@1.6.2)(vue@3.5.27(typescript@5.9.3))
+      d3-geo: 3.1.1
+      proj4: 2.20.2
       vue: 3.5.27(typescript@5.9.3)
+    transitivePeerDependencies:
+      - supports-color
 
   vue-component-type-helpers@3.2.2: {}
 
@@ -9444,6 +9502,8 @@ snapshots:
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
+
+  wkt-parser@1.5.2: {}
 
   word-wrap@1.2.5: {}
 
