@@ -12,13 +12,13 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@ai-sdk/gateway": "^3.0.22",
-    "@ai-sdk/vue": "^3.0.49",
+    "@ai-sdk/gateway": "^3.0.23",
+    "@ai-sdk/vue": "^3.0.50",
     "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.4.0",
     "@unovis/vue": "^1.6.2",
     "@vueuse/core": "^14.1.0",
-    "ai": "^6.0.49",
+    "ai": "^6.0.50",
     "date-fns": "^4.1.0",
     "defu": "^6.1.4",
     "drizzle-orm": "^0.45.1",
@@ -46,12 +46,12 @@
     "eslint": "^9.39.2",
     "eslint-plugin-vue": "^10.7.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.53.1",
+    "typescript-eslint": "^8.54.0",
     "unplugin-vue-router": "^0.19.2",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.5",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vue-tsc": "^3.2.4"
   },
-  "packageManager": "pnpm@10.28.1"
+  "packageManager": "pnpm@10.28.2"
 }
