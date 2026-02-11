@@ -34,7 +34,6 @@
     "ufo": "^1.6.3",
     "vue": "^3.5.28",
     "vue-chrts": "^1.0.2",
-    "vue-renderer-markdown": "0.0.62",
     "vue-router": "^4.6.4",
     "vue-use-monaco": "^0.0.33",
     "zod": "^4.3.6"

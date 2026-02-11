@@ -74,9 +74,6 @@ importers:
       vue-chrts:
         specifier: ^1.0.2
         version: 1.0.2(vue@3.5.28(typescript@5.9.3))
-      vue-renderer-markdown:
-        specifier: 0.0.62
-        version: 0.0.62(katex@0.16.28)(mermaid@11.12.2)(shiki@3.22.0)(vue@3.5.28(typescript@5.9.3))
       vue-router:
         specifier: ^4.6.4
         version: 4.6.4(vue@3.5.28(typescript@5.9.3))
@@ -3380,39 +3377,11 @@ packages:
   maplibre-gl@2.4.0:
     resolution: {integrity: sha512-csNFylzntPmHWidczfgCZpvbTSmhaWvLRj9e1ezUDBEPizGgshgm3ea1T5TCNEEBq0roauu7BPuRZjA3wO4KqA==}
 
-  markdown-it-container@4.0.0:
-    resolution: {integrity: sha512-HaNccxUH0l7BNGYbFbjmGpf5aLHAMTinqRZQAEQbMr2cdD3z91Q6kIo1oUn1CQndkT03jat6ckrdRYuwwqLlQw==}
-
-  markdown-it-emoji@3.0.0:
-    resolution: {integrity: sha512-+rUD93bXHubA4arpEZO3q80so0qgoFJEKRkRbjKX8RTdca89v2kfyF+xR3i2sQTwql9tpPZPOQN5B+PunspXRg==}
-
-  markdown-it-footnote@4.0.0:
-    resolution: {integrity: sha512-WYJ7urf+khJYl3DqofQpYfEYkZKbmXmwxQV8c8mO/hGIhgZ1wOe7R4HLFNwqx7TjILbnC98fuyeSsin19JdFcQ==}
-
-  markdown-it-ins@4.0.0:
-    resolution: {integrity: sha512-sWbjK2DprrkINE4oYDhHdCijGT+MIDhEupjSHLXe5UXeVr5qmVxs/nTUVtgi0Oh/qtF+QKV0tNWDhQBEPxiMew==}
-
-  markdown-it-mark@4.0.0:
-    resolution: {integrity: sha512-YLhzaOsU9THO/cal0lUjfMjrqSMPjjyjChYM7oyj4DnyaXEzA8gnW6cVJeyCrCVeyesrY2PlEdUYJSPFYL4Nkg==}
-
   markdown-it-mdc@0.2.10:
     resolution: {integrity: sha512-DEZTbc2OJqA0pjxWAYEje2Hl35EwPB80moqcIcB/axgH77WbVdyWEqdJ/jbYN5fZlxZgqDxc9SdBGLulRy+A1Q==}
     peerDependencies:
       '@types/markdown-it': '*'
       markdown-it: ^14.0.0
-
-  markdown-it-sub@2.0.0:
-    resolution: {integrity: sha512-iCBKgwCkfQBRg2vApy9vx1C1Tu6D8XYo8NvevI3OlwzBRmiMtsJ2sXupBgEA7PPxiDwNni3qIUkhZ6j5wofDUA==}
-
-  markdown-it-sup@2.0.0:
-    resolution: {integrity: sha512-5VgmdKlkBd8sgXuoDoxMpiU+BiEt3I49GItBzzw7Mxq9CxvnhE/k09HFli09zgfFDRixDQDfDxi0mgBCXtaTvA==}
-
-  markdown-it-task-checkbox@1.0.6:
-    resolution: {integrity: sha512-7pxkHuvqTOu3iwVGmDPeYjQg+AIS9VQxzyLP9JCg9lBjgPAJXGEkChK6A2iFuj3tS0GV3HG2u5AMNhcQqwxpJw==}
-
-  markdown-it-ts@0.0.2-beta.4:
-    resolution: {integrity: sha512-IODjyQuedEjZkUoILLHOvPvG1CEyDECr8bja5VLTwQ2UD0wGSA9guNrD+ko8t5LLR1dglcBTEsMw9iYt7Ngrsg==}
-    engines: {node: '>=18'}
 
   markdown-it@14.1.0:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
@@ -4028,9 +3997,6 @@ packages:
   std-env@3.10.0:
     resolution: {integrity: sha512-5GS12FdOZNliM5mAOxFRg7Ir0pWz8MdpYm6AY6VPkGpbA7ZzmbzNcBJQ0GPvvyWgcY7QAhCgf9Uy89I03faLkg==}
 
-  stream-markdown-parser@0.0.28:
-    resolution: {integrity: sha512-QHOJrRZ8gD/y9ZBuNHgLYo6bh/cngfEGPpSamO7VrCVR+CrTrPjSeYhRGy44jpHv/f71W6emaUat7lNes0TWyQ==}
-
   stringify-entities@4.0.4:
     resolution: {integrity: sha512-IwfBptatlO+QCJUo19AqvrPNqlVMpW9YEL2LIVY+Rpv2qsjCGxaDLNRgeGsQWJhfItebuJhsGSLjaBbNSQ+ieg==}
 
@@ -4541,31 +4507,6 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
-
-  vue-renderer-markdown@0.0.62:
-    resolution: {integrity: sha512-zav0x2vcJXx0VYIZwS7/pd+/duYa7PdaG4JkUpGAT/GzXzovSXkIS/j3mIt2WcOgmSDGcZnVqCt8MGFNco94XQ==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-    peerDependencies:
-      katex: '>=0.16.22'
-      mermaid: '>=11'
-      shiki: ^3.13.0
-      stream-markdown: '>=0.0.9'
-      stream-monaco: '>=0.0.2'
-      vue: '>=3.0.0'
-      vue-i18n: '>=9'
-    peerDependenciesMeta:
-      katex:
-        optional: true
-      mermaid:
-        optional: true
-      shiki:
-        optional: true
-      stream-markdown:
-        optional: true
-      stream-monaco:
-        optional: true
-      vue-i18n:
-        optional: true
 
   vue-router@4.6.4:
     resolution: {integrity: sha512-Hz9q5sa33Yhduglwz6g9skT8OBPii+4bFn88w6J+J4MfEo4KRRpmiNG/hHHkdbRFlLBOqxN8y8gf2Fb0MTUgVg==}
@@ -7975,35 +7916,11 @@ snapshots:
       tinyqueue: 2.0.3
       vt-pbf: 3.1.3
 
-  markdown-it-container@4.0.0: {}
-
-  markdown-it-emoji@3.0.0: {}
-
-  markdown-it-footnote@4.0.0: {}
-
-  markdown-it-ins@4.0.0: {}
-
-  markdown-it-mark@4.0.0: {}
-
   markdown-it-mdc@0.2.10(@types/markdown-it@14.1.2)(markdown-it@14.1.0):
     dependencies:
       '@types/markdown-it': 14.1.2
       markdown-it: 14.1.0
       yaml: 2.8.2
-
-  markdown-it-sub@2.0.0: {}
-
-  markdown-it-sup@2.0.0: {}
-
-  markdown-it-task-checkbox@1.0.6: {}
-
-  markdown-it-ts@0.0.2-beta.4:
-    dependencies:
-      entities: 4.5.0
-      linkify-it: 5.0.0
-      mdurl: 2.0.0
-      punycode.js: 2.3.1
-      uc.micro: 2.1.0
 
   markdown-it@14.1.0:
     dependencies:
@@ -8711,18 +8628,6 @@ snapshots:
 
   std-env@3.10.0: {}
 
-  stream-markdown-parser@0.0.28:
-    dependencies:
-      markdown-it-container: 4.0.0
-      markdown-it-emoji: 3.0.0
-      markdown-it-footnote: 4.0.0
-      markdown-it-ins: 4.0.0
-      markdown-it-mark: 4.0.0
-      markdown-it-sub: 2.0.0
-      markdown-it-sup: 2.0.0
-      markdown-it-task-checkbox: 1.0.6
-      markdown-it-ts: 0.0.2-beta.4
-
   stringify-entities@4.0.4:
     dependencies:
       character-entities-html4: 2.1.0
@@ -9154,16 +9059,6 @@ snapshots:
       semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
-
-  vue-renderer-markdown@0.0.62(katex@0.16.28)(mermaid@11.12.2)(shiki@3.22.0)(vue@3.5.28(typescript@5.9.3)):
-    dependencies:
-      '@floating-ui/dom': 1.7.4
-      stream-markdown-parser: 0.0.28
-      vue: 3.5.28(typescript@5.9.3)
-    optionalDependencies:
-      katex: 0.16.28
-      mermaid: 11.12.2
-      shiki: 3.22.0
 
   vue-router@4.6.4(vue@3.5.28(typescript@5.9.3)):
     dependencies:
