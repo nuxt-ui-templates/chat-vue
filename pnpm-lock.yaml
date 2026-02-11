@@ -41,6 +41,9 @@ importers:
       katex:
         specifier: ^0.16.28
         version: 0.16.28
+      mdc-syntax:
+        specifier: https://pkg.pr.new/nuxt-content/mdc-syntax@3702c17
+        version: https://pkg.pr.new/nuxt-content/mdc-syntax@3702c17(@types/markdown-it@14.1.2)(vue@3.5.28(typescript@5.9.3))
       mermaid:
         specifier: ^11.12.2
         version: 11.12.2
@@ -3108,6 +3111,10 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
+    hasBin: true
+
   jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
     engines: {node: '>=6'}
@@ -3388,6 +3395,12 @@ packages:
   markdown-it-mark@4.0.0:
     resolution: {integrity: sha512-YLhzaOsU9THO/cal0lUjfMjrqSMPjjyjChYM7oyj4DnyaXEzA8gnW6cVJeyCrCVeyesrY2PlEdUYJSPFYL4Nkg==}
 
+  markdown-it-mdc@0.2.10:
+    resolution: {integrity: sha512-DEZTbc2OJqA0pjxWAYEje2Hl35EwPB80moqcIcB/axgH77WbVdyWEqdJ/jbYN5fZlxZgqDxc9SdBGLulRy+A1Q==}
+    peerDependencies:
+      '@types/markdown-it': '*'
+      markdown-it: ^14.0.0
+
   markdown-it-sub@2.0.0:
     resolution: {integrity: sha512-iCBKgwCkfQBRg2vApy9vx1C1Tu6D8XYo8NvevI3OlwzBRmiMtsJ2sXupBgEA7PPxiDwNni3qIUkhZ6j5wofDUA==}
 
@@ -3417,6 +3430,18 @@ packages:
 
   mdast-util-to-hast@13.2.1:
     resolution: {integrity: sha512-cctsq2wp5vTsLIcaymblUriiTcZd0CwWtCbLvrOzYCDZoWyMNV8sZ7krj09FSnsiJi3WVsHLM4k6Dq/yaPyCXA==}
+
+  mdc-syntax@https://pkg.pr.new/nuxt-content/mdc-syntax@3702c17:
+    resolution: {integrity: sha512-8U3iVuGbagCjWgob6cXwWW+EWnKAd/I5ssWNEPi98AnkeioiJDBEf/mNX/QHETDgbgLOf0ST+GZGoQziRw8kUw==, tarball: https://pkg.pr.new/nuxt-content/mdc-syntax@3702c17}
+    version: 0.0.1
+    peerDependencies:
+      react: ^19.2.4
+      vue: ^3.5.27
+    peerDependenciesMeta:
+      react:
+        optional: true
+      vue:
+        optional: true
 
   mdn-data@2.12.2:
     resolution: {integrity: sha512-IEn+pegP1aManZuckezWCO+XZQDplx1366JoVhTpMpBB1sPey/SbveZQUosKiKiGYjg1wH4pMlNgXbCiYgihQA==}
@@ -3456,6 +3481,9 @@ packages:
   mimic-fn@4.0.0:
     resolution: {integrity: sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw==}
     engines: {node: '>=12'}
+
+  minimark@1.0.0:
+    resolution: {integrity: sha512-4maJvB7opKTzIWeh0jIpWf6FbN/nU3UjsjDnlLuYixnLp4laKoQrCYfmKA71Qm+EV3SUsKvawO+1EBiu11+kBg==}
 
   minimatch@10.1.2:
     resolution: {integrity: sha512-fu656aJ0n2kcXwsnwnv9g24tkU5uSmOlTjd6WyyaKm2Z+h1qmY6bAjrcaIxF/BslFqbZ8UBtbJi7KgQOZD2PTw==}
@@ -7715,6 +7743,10 @@ snapshots:
 
   js-tokens@9.0.1: {}
 
+  js-yaml@4.1.1:
+    dependencies:
+      argparse: 2.0.1
+
   jsesc@3.1.0: {}
 
   json-buffer@3.0.1: {}
@@ -7953,6 +7985,12 @@ snapshots:
 
   markdown-it-mark@4.0.0: {}
 
+  markdown-it-mdc@0.2.10(@types/markdown-it@14.1.2)(markdown-it@14.1.0):
+    dependencies:
+      '@types/markdown-it': 14.1.2
+      markdown-it: 14.1.0
+      yaml: 2.8.2
+
   markdown-it-sub@2.0.0: {}
 
   markdown-it-sup@2.0.0: {}
@@ -7991,6 +8029,20 @@ snapshots:
       unist-util-position: 5.0.0
       unist-util-visit: 5.0.0
       vfile: 6.0.3
+
+  mdc-syntax@https://pkg.pr.new/nuxt-content/mdc-syntax@3702c17(@types/markdown-it@14.1.2)(vue@3.5.28(typescript@5.9.3)):
+    dependencies:
+      markdown-it: 14.1.0
+      markdown-it-mdc: 0.2.10(@types/markdown-it@14.1.2)(markdown-it@14.1.0)
+      minimark: 1.0.0
+      shiki: 3.22.0
+      shiki-stream: 0.1.4(vue@3.5.28(typescript@5.9.3))
+      yaml: 2.8.2
+    optionalDependencies:
+      vue: 3.5.28(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@types/markdown-it'
+      - solid-js
 
   mdn-data@2.12.2: {}
 
@@ -8046,6 +8098,11 @@ snapshots:
       picomatch: 2.3.1
 
   mimic-fn@4.0.0: {}
+
+  minimark@1.0.0:
+    dependencies:
+      entities: 7.0.1
+      js-yaml: 4.1.1
 
   minimatch@10.1.2:
     dependencies:

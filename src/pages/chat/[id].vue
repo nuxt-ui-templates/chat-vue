@@ -9,12 +9,12 @@ import { getTextFromMessage } from '@nuxt/ui/utils/ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useRoute } from 'vue-router'
-import MarkdownRender from 'vue-renderer-markdown'
 import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
 import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
 import ToolWeather from '../../components/tool/ToolWeather.vue'
 import ToolChart from '../../components/tool/ToolChart.vue'
 import Reasoning from '../../components/Reasoning.vue'
+import { MDC } from 'mdc-syntax/vue'
 
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
@@ -116,9 +116,16 @@ onMounted(() => {
                 :is-streaming="part.state !== 'done'"
               />
               <!-- Only render markdown for assistant messages to prevent XSS from user input -->
-              <MarkdownRender
+              <MDC
                 v-else-if="part.type === 'text' && message.role === 'assistant'"
-                :content="getTextFromMessage(message)"
+                :markdown="getTextFromMessage(message)"
+                :streaming="part.state === 'streaming'"
+                caret
+                :options="{
+                  highlight: {
+                    themes: { light: 'material-theme-palenight', dark: 'material-theme-lighter' },
+                  }
+                }"
               />
               <!-- User messages are rendered as plain text (safely escaped by Vue) -->
               <p
