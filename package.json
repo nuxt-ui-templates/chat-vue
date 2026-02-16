@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src",
-    "typecheck": "vue-tsc -p ./tsconfig.json",
+    "typecheck": "vue-tsc -p ./tsconfig.app.json",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
