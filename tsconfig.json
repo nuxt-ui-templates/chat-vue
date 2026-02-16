@@ -1,19 +1,24 @@
 {
   "extends": ["nitro/tsconfig"],
   "compilerOptions": {
+    "rootDir": ".",
     "paths": {
       "~/*": ["./*"]
     },
     "types": [
-      "unplugin-vue-router/client",
       "vite-plugin-vue-layouts/client"
     ]
   },
   "include": [
-    "./typed-router.d.ts",
     "src/**/*.ts",
     "src/**/*.vue",
     "auto-imports.d.ts",
     "components.d.ts"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "plugins": [
+      "vue-router/volar/sfc-typed-router",
+      "vue-router/volar/sfc-route-blocks"
+    ]
+  }
 }
