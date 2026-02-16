@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useRouter, useRoute, type RouteLocationNormalizedLoaded } from 'vue-router'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { $fetch } from 'ofetch'
 import ModalConfirm from '../components/ModalConfirm.vue'
 import { useChats } from '../composables/useChats'
@@ -80,7 +81,7 @@ defineShortcuts({
       :min-size="12"
       collapsible
       resizable
-      class="bg-elevated/50"
+      class="border-r-0 py-4"
     >
       <template #header="{ collapsed }">
         <ULink
@@ -102,7 +103,6 @@ defineShortcuts({
           class="flex items-center gap-1.5 ms-auto"
         >
           <UDashboardSearchButton collapsed />
-          <UDashboardSidebarCollapse />
         </div>
       </template>
 
@@ -118,7 +118,6 @@ defineShortcuts({
 
           <template v-if="collapsed">
             <UDashboardSearchButton collapsed />
-            <UDashboardSidebarCollapse />
           </template>
         </div>
 
@@ -174,6 +173,8 @@ defineShortcuts({
       }, ...groups]"
     />
 
-    <RouterView :key="route.path" />
+    <div class="flex-1 flex m-4 lg:ml-0 rounded-lg ring ring-default bg-default/75 shadow min-w-0">
+      <RouterView />
+    </div>
   </UDashboardGroup>
 </template>

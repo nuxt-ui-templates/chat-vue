@@ -88,7 +88,7 @@ onMounted(() => {
   <UDashboardPanel
     v-if="chatData.id"
     id="chat"
-    class="relative"
+    class="relative min-h-0"
     :ui="{ body: 'p-0 sm:p-0' }"
   >
     <template #header>
