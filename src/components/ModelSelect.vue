@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useModels } from '../composables/useModels'
-const { model, models } = useModels()
+const { model, models, formatModelName } = useModels()
 
 const items = computed(() => models.map(model => ({
-  label: model,
+  label: formatModelName(model),
   value: model,
   icon: `i-simple-icons:${model.split('/')[0]}`
 })))
