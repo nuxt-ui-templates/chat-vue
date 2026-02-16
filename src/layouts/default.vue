@@ -174,7 +174,7 @@ defineShortcuts({
     />
 
     <div class="flex-1 flex m-4 lg:ml-0 rounded-lg ring ring-default bg-default/75 shadow min-w-0">
-      <RouterView />
+      <RouterView :key="route.path" />
     </div>
   </UDashboardGroup>
 </template>
