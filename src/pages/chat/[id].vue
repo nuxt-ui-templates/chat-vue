@@ -144,6 +144,7 @@ onMounted(() => {
           :error="chat.error"
           variant="subtle"
           class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
+          :ui="{ base: 'px-1.5' }"
           @submit="handleSubmit"
         >
           <template #footer>
@@ -152,6 +153,7 @@ onMounted(() => {
             <UChatPromptSubmit
               :status="chat.status"
               color="neutral"
+              size="sm"
               @stop="chat.stop()"
               @reload="chat.regenerate()"
             />

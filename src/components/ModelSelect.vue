@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useModels } from '../composables/useModels'
-const { model, models, formatModelName } = useModels()
 
-const items = computed(() => models.map(model => ({
-  label: formatModelName(model),
-  value: model,
-  icon: `i-simple-icons:${model.split('/')[0]}`
-})))
+const { model, models } = useModels()
 </script>
 
 <template>
   <USelectMenu
     v-model="model"
-    :items="items"
-    :icon="`i-simple-icons:${model.split('/')[0]}`"
+    :items="models"
+    size="sm"
+    :icon="models.find(m => m.value === model)?.icon"
     variant="ghost"
     value-key="value"
-    class="hover:bg-default focus:bg-default data-[state=open]:bg-default"
+    class="data-[state=open]:bg-elevated"
     :ui="{
       trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
     }"

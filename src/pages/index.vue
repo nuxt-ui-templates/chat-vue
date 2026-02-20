@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { $fetch } from 'ofetch'
-import { useModels } from '../composables/useModels'
 import { useChats } from '../composables/useChats'
 import { useRouter } from 'vue-router'
 
@@ -9,8 +8,6 @@ const { fetchChats } = useChats()
 const input = ref('')
 const loading = ref(false)
 const router = useRouter()
-
-const { model } = useModels()
 
 async function createChat(prompt: string) {
   input.value = prompt
@@ -81,12 +78,16 @@ const quickChats = [
           :status="loading ? 'streaming' : 'ready'"
           class="[view-transition-name:chat-prompt]"
           variant="subtle"
+          :ui="{ base: 'px-1.5' }"
           @submit="onSubmit"
         >
-          <UChatPromptSubmit color="neutral" />
+          <UChatPromptSubmit
+            color="neutral"
+            size="sm"
+          />
 
           <template #footer>
-            <ModelSelect v-model="model" />
+            <ModelSelect />
           </template>
         </UChatPrompt>
 
