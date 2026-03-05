@@ -6,12 +6,14 @@ import { $fetch } from 'ofetch'
 import ModalConfirm from '../components/ModalConfirm.vue'
 import { useChats } from '../composables/useChats'
 import { useUserSession } from '../composables/useUserSession'
+import { useCsrf } from '../composables/useCsrf'
 
 const router = useRouter()
 const route = useRoute<'/chat/[id]' | '/'>()
 const toast = useToast()
 const overlay = useOverlay()
 const { loggedIn, openInPopup, fetchSession } = useUserSession()
+const { csrf, headerName } = useCsrf()
 const { groups, fetchChats } = useChats()
 
 await fetchSession()
@@ -51,7 +53,10 @@ async function deleteChat(id: string) {
     return
   }
 
-  await $fetch(`/api/chats/${id}`, { method: 'DELETE' })
+  await $fetch(`/api/chats/${id}`, {
+    method: 'DELETE',
+    headers: { [headerName]: csrf() }
+  })
 
   toast.add({
     title: 'Chat deleted',

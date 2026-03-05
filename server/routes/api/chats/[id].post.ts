@@ -7,6 +7,7 @@ import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
 import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'nitro/h3'
 import { weatherTool } from '../../../utils/tools/weather'
 import { chartTool } from '../../../utils/tools/chart'
+import { MODELS } from '../../../../shared/utils/models'
 
 export default defineEventHandler(async (event) => {
   const session = await useUserSession(event)
@@ -16,7 +17,9 @@ export default defineEventHandler(async (event) => {
   }).parse)
 
   const { model, messages } = await readValidatedBody(event, z.object({
-    model: z.string(),
+    model: z.string().refine(value => MODELS.some(m => m.value === value), {
+      message: 'Invalid model'
+    }),
     messages: z.array(z.custom<UIMessage>())
   }).parse)
 
