@@ -8,6 +8,7 @@ import { useClipboard } from '@vueuse/core'
 import { getTextFromMessage } from '@nuxt/ui/utils/ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
+import { useCsrf } from '../../composables/useCsrf'
 import { useRoute } from 'vue-router'
 import MarkdownRender from 'vue-renderer-markdown'
 import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
@@ -21,6 +22,7 @@ const toast = useToast()
 const clipboard = useClipboard()
 const { model } = useModels()
 const { fetchChats } = useChats()
+const { csrf, headerName } = useCsrf()
 
 const chatData = await $fetch(`/api/chats/${route.params.id}`)
 
@@ -35,6 +37,7 @@ const chat = new Chat({
   messages: chatData.messages,
   transport: new DefaultChatTransport({
     api: `/api/chats/${chatData.id}`,
+    headers: { [headerName]: csrf() },
     body: {
       model: model.value
     }

@@ -2,13 +2,16 @@ import { createSharedComposable } from '@vueuse/core'
 import { ref, computed } from 'vue'
 import type { UserSession } from '../../server/utils/session'
 import { $fetch } from 'ofetch'
+import { useCsrf } from './useCsrf'
 
 export const useUserSession = createSharedComposable(() => {
   const session = ref<UserSession | null>(null)
+  const { csrf, headerName } = useCsrf()
 
   const clearSession = async () => {
     await $fetch('/api/session', {
       method: 'DELETE',
+      headers: { [headerName]: csrf() }
     })
     session.value = null
   }

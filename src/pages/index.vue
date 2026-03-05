@@ -2,9 +2,11 @@
 import { ref } from 'vue'
 import { $fetch } from 'ofetch'
 import { useChats } from '../composables/useChats'
+import { useCsrf } from '../composables/useCsrf'
 import { useRouter } from 'vue-router'
 
 const { fetchChats } = useChats()
+const { csrf, headerName } = useCsrf()
 const input = ref('')
 const loading = ref(false)
 const router = useRouter()
@@ -14,6 +16,7 @@ async function createChat(prompt: string) {
   loading.value = true
   const chat = await $fetch('/api/chats', {
     method: 'POST',
+    headers: { [headerName]: csrf() },
     body: { input: prompt }
   })
 
