@@ -1,7 +1,10 @@
+import type { UIMessage } from 'ai'
 import { convertToModelMessages, createUIMessageStream, createUIMessageStreamResponse, generateText, smoothStream, stepCountIs, streamText } from 'ai'
 import { gateway } from '@ai-sdk/gateway'
-import type { UIMessage } from 'ai'
 import { z } from 'zod'
+import type { AnthropicLanguageModelOptions } from '@ai-sdk/anthropic'
+import type { GoogleLanguageModelOptions } from '@ai-sdk/google'
+import type { OpenAILanguageModelResponsesOptions } from '@ai-sdk/openai'
 import { useUserSession } from '../../../utils/session'
 import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
 import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'nitro/h3'
@@ -81,16 +84,22 @@ export default defineEventHandler(async (event) => {
 - Maintain a friendly, professional tone`,
         messages: await convertToModelMessages(messages),
         providerOptions: {
-          openai: {
-            reasoningEffort: 'low',
-            reasoningSummary: 'detailed'
-          },
+          anthropic: {
+            thinking: {
+              type: 'enabled',
+              budgetTokens: 2048
+            }
+          } satisfies AnthropicLanguageModelOptions,
           google: {
             thinkingConfig: {
               includeThoughts: true,
-              thinkingBudget: 2048
+              thinkingLevel: 'low'
             }
-          }
+          } satisfies GoogleLanguageModelOptions,
+          openai: {
+            reasoningEffort: 'low',
+            reasoningSummary: 'detailed'
+          } satisfies OpenAILanguageModelResponsesOptions
         },
         stopWhen: stepCountIs(5),
         experimental_transform: smoothStream({ chunking: 'word' }),
