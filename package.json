@@ -13,23 +13,23 @@
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.58",
-    "@ai-sdk/gateway": "^3.0.61",
+    "@ai-sdk/gateway": "^3.0.66",
     "@ai-sdk/google": "^3.0.43",
     "@ai-sdk/openai": "^3.0.41",
-    "@ai-sdk/vue": "^3.0.108",
+    "@ai-sdk/vue": "^3.0.116",
     "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.5.1",
     "@unovis/vue": "^1.6.4",
     "@vueuse/core": "^14.2.1",
-    "ai": "^6.0.108",
+    "ai": "^6.0.116",
     "date-fns": "^4.1.0",
     "defu": "^6.1.4",
     "drizzle-orm": "^0.45.1",
-    "katex": "^0.16.33",
+    "katex": "^0.16.38",
     "mermaid": "^11.12.3",
     "nitro": "npm:nitro-nightly@latest",
     "ofetch": "^1.5.1",
-    "pg": "^8.19.0",
+    "pg": "^8.20.0",
     "shiki": "^3.23.0",
     "shiki-stream": "^0.1.4",
     "tailwindcss": "^4.2.1",
@@ -43,10 +43,10 @@
   },
   "devDependencies": {
     "@octokit/types": "^16.0.0",
-    "@types/node": "^24.11.0",
+    "@types/node": "^24.12.0",
     "@vitejs/plugin-vue": "^6.0.4",
     "drizzle-kit": "^0.31.9",
-    "eslint": "^10.0.2",
+    "eslint": "^10.0.3",
     "eslint-plugin-vue": "^10.8.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.1",
@@ -55,5 +55,5 @@
     "vite-plugin-vue-layouts": "^0.11.0",
     "vue-tsc": "^3.2.5"
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "pnpm@10.31.0"
 }
