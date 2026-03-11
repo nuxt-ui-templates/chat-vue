@@ -1,7 +1,8 @@
-import { defineEventHandler, isMethod } from 'nitro/h3'
+import { defineHandler } from 'nitro'
+import { isMethod } from 'nitro/h3'
 import { useUserSession } from '../../utils/session'
 
-export default defineEventHandler(async (event) => {
+export default defineHandler(async (event) => {
   if (isMethod(event, 'DELETE')) {
     const session = await useUserSession(event)
     await session.clear()
