@@ -1,7 +1,8 @@
 import { FetchError, $fetch } from 'ofetch'
 import { getRandomValues } from 'node:crypto'
 import type { H3Event } from 'nitro'
-import { defineEventHandler, getQuery, redirect, HTTPError, getRequestURL, setCookie, deleteCookie, getCookie } from 'nitro'
+import { defineHandler, HTTPError } from 'nitro'
+import { getQuery, redirect, getRequestURL, setCookie, deleteCookie, getCookie } from 'nitro/h3'
 import { withQuery } from 'ufo'
 import { defu } from 'defu'
 import type { Endpoints } from '@octokit/types'
@@ -22,7 +23,7 @@ interface RequestAccessTokenOptions {
   params?: Record<string, string>
 }
 
-export default defineEventHandler(async (event: H3Event) => {
+export default defineHandler(async (event: H3Event) => {
   const config = {
     clientId: process.env.GITHUB_OAUTH_CLIENT_ID,
     clientSecret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
