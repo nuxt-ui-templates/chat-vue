@@ -7,12 +7,13 @@ import type { GoogleLanguageModelOptions } from '@ai-sdk/google'
 import type { OpenAILanguageModelResponsesOptions } from '@ai-sdk/openai'
 import { useUserSession } from '../../../utils/session'
 import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
-import { defineEventHandler, getValidatedRouterParams, readValidatedBody, HTTPError } from 'nitro/h3'
+import { defineHandler, HTTPError } from 'nitro'
+import { getValidatedRouterParams, readValidatedBody } from 'nitro/h3'
 import { weatherTool } from '../../../utils/tools/weather'
 import { chartTool } from '../../../utils/tools/chart'
 import { MODELS } from '../../../../shared/utils/models'
 
-export default defineEventHandler(async (event) => {
+export default defineHandler(async (event) => {
   const session = await useUserSession(event)
 
   const { id } = await getValidatedRouterParams(event, z.object({

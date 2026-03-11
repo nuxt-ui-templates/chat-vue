@@ -1,9 +1,10 @@
-import { defineEventHandler, HTTPError, readValidatedBody } from 'nitro/h3'
+import { defineHandler, HTTPError } from 'nitro'
+import { readValidatedBody } from 'nitro/h3'
 import { z } from 'zod'
 import { useUserSession } from '../../utils/session'
 import { useDrizzle, tables } from '../../utils/drizzle'
 
-export default defineEventHandler(async (event) => {
+export default defineHandler(async (event) => {
   const session = await useUserSession(event)
 
   const { input } = await readValidatedBody(event, z.object({
