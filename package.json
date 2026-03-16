@@ -26,7 +26,7 @@
     "defu": "^6.1.4",
     "drizzle-orm": "^0.45.1",
     "katex": "^0.16.38",
-    "mermaid": "^11.12.3",
+    "mermaid": "^11.13.0",
     "nitro": "^3.0.260311-beta",
     "ofetch": "^1.5.1",
     "pg": "^8.20.0",
@@ -34,7 +34,7 @@
     "shiki-stream": "^0.1.4",
     "tailwindcss": "^4.2.1",
     "ufo": "^1.6.3",
-    "vue": "^3.5.29",
+    "vue": "^3.5.30",
     "vue-chrts": "^2.1.3",
     "vue-renderer-markdown": "0.0.62",
     "vue-router": "^5.0.3",
@@ -44,16 +44,16 @@
   "devDependencies": {
     "@octokit/types": "^16.0.0",
     "@types/node": "^24.12.0",
-    "@vitejs/plugin-vue": "^6.0.4",
+    "@vitejs/plugin-vue": "^6.0.5",
     "drizzle-kit": "^0.31.9",
     "eslint": "^10.0.3",
     "eslint-plugin-vue": "^10.8.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1",
+    "typescript-eslint": "^8.57.0",
     "vite": "^7.3.1",
-    "vite-plugin-vue-devtools": "^8.0.7",
+    "vite-plugin-vue-devtools": "^8.1.0",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vue-tsc": "^3.2.5"
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "pnpm@10.32.1"
 }
