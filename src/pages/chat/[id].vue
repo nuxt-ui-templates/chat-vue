@@ -28,15 +28,15 @@ const { model } = useModels()
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
 
-const chatData = await $fetch(`/api/chats/${route.params.id}`)
+const data = await $fetch(`/api/chats/${route.params.id}`)
 
 const input = ref('')
 
 const chat = new Chat({
-  id: chatData.id,
-  messages: chatData.messages,
+  id: data?.id,
+  messages: data?.messages,
   transport: new DefaultChatTransport({
-    api: `/api/chats/${chatData.id}`,
+    api: `/api/chats/${data?.id}`,
     headers: { [headerName]: csrf() },
     body: {
       model: model.value
@@ -81,7 +81,7 @@ function copy(_e: MouseEvent, message: UIMessage) {
 }
 
 onMounted(() => {
-  if (chatData.messages?.length === 1) {
+  if (data.messages?.length === 1) {
     chat.regenerate()
   }
 })
@@ -89,7 +89,7 @@ onMounted(() => {
 
 <template>
   <UDashboardPanel
-    v-if="chatData.id"
+    v-if="data?.id"
     id="chat"
     class="relative min-h-0"
     :ui="{ body: 'p-0 sm:p-0 overscroll-none' }"
@@ -194,18 +194,21 @@ onMounted(() => {
       </UContainer>
     </template>
   </UDashboardPanel>
+
   <UContainer
     v-else
     class="flex-1 flex flex-col gap-4 sm:gap-6"
   >
     <UError
-
       :error="{ statusMessage: 'Chat not found', statusCode: 404 }"
+      class="min-h-full"
     >
       <template #links>
-        <UButton to="/">
-          Back to home
-        </UButton>
+        <UButton
+          to="/"
+          size="lg"
+          label="Back to home"
+        />
       </template>
     </UError>
   </UContainer>
