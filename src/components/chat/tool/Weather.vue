@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
+import type { WeatherUIToolInvocation } from '../../../../server/utils/tools/weather'
 
 const props = defineProps<{
   invocation: WeatherUIToolInvocation

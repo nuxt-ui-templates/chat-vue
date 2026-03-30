@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import type { BulletLegendItemInterface } from 'vue-chrts'
 import { CurveType, LegendPosition } from 'vue-chrts'
-import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
+import type { ChartUIToolInvocation } from '../../../../server/utils/tools/chart'
 import { LineChart } from 'vue-chrts'
 
 const props = defineProps<{
