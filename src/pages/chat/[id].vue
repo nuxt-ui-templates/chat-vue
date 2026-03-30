@@ -2,10 +2,10 @@
 import { ref, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { Chat } from '@ai-sdk/vue'
-import { DefaultChatTransport } from 'ai'
+import { DefaultChatTransport, isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName } from 'ai'
 import type { UIMessage } from 'ai'
 import { useClipboard } from '@vueuse/core'
-import { getTextFromMessage } from '@nuxt/ui/utils/ai'
+import { isReasoningStreaming, isToolStreaming, getTextFromMessage } from '@nuxt/ui/utils/ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useCsrf } from '../../composables/useCsrf'
@@ -13,9 +13,13 @@ import { useRoute } from 'vue-router'
 import MarkdownRender from 'vue-renderer-markdown'
 import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
 import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
-import ToolWeather from '../../components/tool/ToolWeather.vue'
-import ToolChart from '../../components/tool/ToolChart.vue'
-import Reasoning from '../../components/Reasoning.vue'
+import DashboardNavbar from '../../components/dashboard/Navbar.vue'
+import ChatIndicator from '../../components/chat/Indicator.vue'
+import ChatToolChart from '../../components/chat/tool/Chart.vue'
+import ChatToolWeather from '../../components/chat/tool/Weather.vue'
+import ChatToolSources from '../../components/chat/tool/Sources.vue'
+import { getMergedParts } from '../../utils/ai'
+import { getSearchQuery, getSources } from '../../utils/tool'
 
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
@@ -24,19 +28,15 @@ const { model } = useModels()
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
 
-const chatData = await $fetch(`/api/chats/${route.params.id}`)
-
-// if (!chatData) {
-//   throw createError({ statusCode: 404, statusMessage: 'Chat not found', fatal: true })
-// }
+const data = await $fetch(`/api/chats/${route.params.id}`)
 
 const input = ref('')
 
 const chat = new Chat({
-  id: chatData.id,
-  messages: chatData.messages,
+  id: data?.id,
+  messages: data?.messages,
   transport: new DefaultChatTransport({
-    api: `/api/chats/${chatData.id}`,
+    api: `/api/chats/${data?.id}`,
     headers: { [headerName]: csrf() },
     body: {
       model: model.value
@@ -81,7 +81,7 @@ function copy(_e: MouseEvent, message: UIMessage) {
 }
 
 onMounted(() => {
-  if (chatData.messages?.length === 1) {
+  if (data.messages?.length === 1) {
     chat.regenerate()
   }
 })
@@ -89,7 +89,7 @@ onMounted(() => {
 
 <template>
   <UDashboardPanel
-    v-if="chatData.id"
+    v-if="data?.id"
     id="chat"
     class="relative min-h-0"
     :ui="{ body: 'p-0 sm:p-0 overscroll-none' }"
@@ -108,36 +108,65 @@ onMounted(() => {
           :spacing-offset="160"
           class="lg:pt-(--ui-header-height) pb-4 sm:pb-6"
         >
+          <template #indicator>
+            <div class="flex items-center gap-1.5">
+              <ChatIndicator />
+
+              <UChatShimmer
+                text="Thinking..."
+                class="text-sm"
+              />
+            </div>
+          </template>
+
           <template #content="{ message }">
             <template
-              v-for="(part, index) in message.parts"
-              :key="`${message.id}-${part.type}-${index}${'state' in part ? `-${part.state}` : ''}`"
+              v-for="(part, index) in getMergedParts(message.parts)"
+              :key="`${message.id}-${part.type}-${index}`"
             >
-              <Reasoning
-                v-if="part.type === 'reasoning'"
+              <UChatReasoning
+                v-if="isReasoningUIPart(part)"
                 :text="part.text"
-                :is-streaming="part.state !== 'done'"
-              />
-              <!-- Only render markdown for assistant messages to prevent XSS from user input -->
-              <MarkdownRender
-                v-else-if="part.type === 'text' && message.role === 'assistant'"
-                :content="getTextFromMessage(message)"
-              />
-              <!-- User messages are rendered as plain text (safely escaped by Vue) -->
-              <p
-                v-else-if="part.type === 'text' && message.role === 'user'"
-                class="whitespace-pre-wrap"
+                :streaming="isReasoningStreaming(message, index, chat)"
+                chevron="leading"
               >
-                {{ part.text }}
-              </p>
-              <ToolWeather
-                v-else-if="part.type === 'tool-weather'"
-                :invocation="(part as WeatherUIToolInvocation)"
-              />
-              <ToolChart
-                v-else-if="part.type === 'tool-chart'"
-                :invocation="(part as ChartUIToolInvocation)"
-              />
+                <MarkdownRender :content="part.text" />
+              </UChatReasoning>
+
+              <template v-else-if="isToolUIPart(part)">
+                <ChatToolChart
+                  v-if="getToolName(part) === 'chart'"
+                  :invocation="{ ...(part as ChartUIToolInvocation) }"
+                />
+                <ChatToolWeather
+                  v-else-if="getToolName(part) === 'weather'"
+                  :invocation="{ ...(part as WeatherUIToolInvocation) }"
+                />
+                <UChatTool
+                  v-else-if="getToolName(part) === 'web_search' || getToolName(part) === 'google_search'"
+                  :text="isToolStreaming(part) ? 'Searching the web...' : 'Searched the web'"
+                  :suffix="getSearchQuery(part)"
+                  :streaming="isToolStreaming(part)"
+                  chevron="leading"
+                >
+                  <ChatToolSources :sources="getSources(part)" />
+                </UChatTool>
+              </template>
+
+              <template v-else-if="isTextUIPart(part)">
+                <!-- Only render markdown for assistant messages to prevent XSS from user input -->
+                <MarkdownRender
+                  v-if="message.role === 'assistant'"
+                  :content="part.text"
+                />
+                <!-- User messages are rendered as plain text (safely escaped by Vue) -->
+                <p
+                  v-else-if="message.role === 'user'"
+                  class="whitespace-pre-wrap"
+                >
+                  {{ part.text }}
+                </p>
+              </template>
             </template>
           </template>
         </UChatMessages>
@@ -165,18 +194,21 @@ onMounted(() => {
       </UContainer>
     </template>
   </UDashboardPanel>
+
   <UContainer
     v-else
     class="flex-1 flex flex-col gap-4 sm:gap-6"
   >
     <UError
-
       :error="{ statusMessage: 'Chat not found', statusCode: 404 }"
+      class="min-h-full"
     >
       <template #links>
-        <UButton to="/">
-          Back to home
-        </UButton>
+        <UButton
+          to="/"
+          size="lg"
+          label="Back to home"
+        />
       </template>
     </UError>
   </UContainer>

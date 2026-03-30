@@ -4,6 +4,7 @@ import { $fetch } from 'ofetch'
 import { useChats } from '../composables/useChats'
 import { useCsrf } from '../composables/useCsrf'
 import { useRouter } from 'vue-router'
+import DashboardNavbar from '../components/dashboard/Navbar.vue'
 
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
