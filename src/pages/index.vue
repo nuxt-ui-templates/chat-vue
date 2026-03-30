@@ -1,16 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { $fetch } from 'ofetch'
 import { useChats } from '../composables/useChats'
 import { useCsrf } from '../composables/useCsrf'
+import { useUserSession } from '../composables/useUserSession'
 import { useRouter } from 'vue-router'
 import DashboardNavbar from '../components/dashboard/Navbar.vue'
 
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
+const { user } = useUserSession()
 const input = ref('')
 const loading = ref(false)
 const router = useRouter()
+
+const greeting = computed(() => {
+  const hour = new Date().getHours()
+  let timeGreeting = 'Good evening'
+  if (hour < 12) timeGreeting = 'Good morning'
+  else if (hour < 18) timeGreeting = 'Good afternoon'
+
+  const name = user.value?.name?.split(' ')[0] || user.value?.username
+
+  return name ? `${timeGreeting}, ${name}` : `${timeGreeting}`
+})
 
 async function createChat(prompt: string) {
   input.value = prompt
@@ -74,7 +87,7 @@ const quickChats = [
     <template #body>
       <UContainer class="flex-1 flex flex-col justify-center gap-4 sm:gap-6 py-8">
         <h1 class="text-3xl sm:text-4xl text-highlighted font-bold">
-          How can I help you today?
+          {{ greeting }}
         </h1>
 
         <UChatPrompt
