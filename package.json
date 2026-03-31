@@ -4,12 +4,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "pnpm run db:migrate && vite build",
     "preview": "vite preview",
     "lint": "eslint src",
     "typecheck": "vue-tsc -p ./tsconfig.app.json",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "mkdir -p .data && drizzle-kit migrate"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.64",

@@ -7,13 +7,16 @@ export { sql, eq, and, or, desc } from 'drizzle-orm'
 
 export const tables = schema
 
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL || 'file:.data/sqlite.db',
-  authToken: process.env.TURSO_AUTH_TOKEN
-})
+let _db: ReturnType<typeof drizzle<typeof schema>>
 
 export function useDrizzle() {
-  return drizzle(client, { schema })
+  if (!_db) {
+    _db = drizzle(createClient({
+      url: process.env.TURSO_DATABASE_URL || 'file:.data/sqlite.db',
+      authToken: process.env.TURSO_AUTH_TOKEN
+    }), { schema })
+  }
+  return _db
 }
 
 export type Chat = typeof schema.chats.$inferSelect
