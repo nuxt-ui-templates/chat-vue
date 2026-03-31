@@ -98,13 +98,13 @@ const quickChats = [
           :ui="{ base: 'px-1.5' }"
           @submit="onSubmit"
         >
-          <UChatPromptSubmit
-            color="neutral"
-            size="sm"
-          />
-
           <template #footer>
             <ModelSelect />
+
+            <UChatPromptSubmit
+              color="neutral"
+              size="sm"
+            />
           </template>
         </UChatPrompt>
 
