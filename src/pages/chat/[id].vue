@@ -5,12 +5,12 @@ import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName } from 'ai'
 import type { UIMessage } from 'ai'
 import { useClipboard } from '@vueuse/core'
-import { isReasoningStreaming, isToolStreaming, getTextFromMessage } from '@nuxt/ui/utils/ai'
+import { isToolStreaming, getTextFromMessage } from '@nuxt/ui/utils/ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useCsrf } from '../../composables/useCsrf'
 import { useRoute } from 'vue-router'
-import MarkdownRender from 'vue-renderer-markdown'
+import ChatComark from '../../components/chat/Comark'
 import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
 import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
 import DashboardNavbar from '../../components/dashboard/Navbar.vue'
@@ -127,10 +127,14 @@ onMounted(() => {
               <UChatReasoning
                 v-if="isReasoningUIPart(part)"
                 :text="part.text"
-                :streaming="isReasoningStreaming(message, index, chat)"
+                :streaming="part.state === 'streaming'"
                 chevron="leading"
               >
-                <MarkdownRender :content="part.text" />
+                <ChatComark
+                  :streaming="part.state === 'streaming'"
+                  :markdown="part.text"
+                  class="*:first:mt-0 *:last:mb-0"
+                />
               </UChatReasoning>
 
               <template v-else-if="isToolUIPart(part)">
@@ -154,12 +158,12 @@ onMounted(() => {
               </template>
 
               <template v-else-if="isTextUIPart(part)">
-                <!-- Only render markdown for assistant messages to prevent XSS from user input -->
-                <MarkdownRender
+                <ChatComark
                   v-if="message.role === 'assistant'"
-                  :content="part.text"
+                  :markdown="part.text"
+                  :streaming="part.state === 'streaming'"
+                  class="*:first:mt-0 *:last:mb-0"
                 />
-                <!-- User messages are rendered as plain text (safely escaped by Vue) -->
                 <p
                   v-else-if="message.role === 'user'"
                   class="whitespace-pre-wrap"
