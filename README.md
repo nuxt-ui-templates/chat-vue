@@ -10,11 +10,13 @@ Full-featured AI Chatbot Vue application with authentication, chat history, coll
 
 <a href="https://chat-vue-template.nuxt.dev/" target="_blank">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/chat-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/chat-light.png">
-    <img alt="Vue AI Chatbot Template" src="https://ui.nuxt.com/assets/templates/nuxt/chat-light.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/vue/chat-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/vue/chat-light.png">
+    <img alt="Vue AI Chatbot Template" src="https://ui.nuxt.com/assets/templates/vue/chat-light.png">
   </picture>
 </a>
+
+> The chat template for Nuxt is on https://github.com/nuxt-ui-templates/chat.
 
 ## Features
 
@@ -24,7 +26,7 @@ Full-featured AI Chatbot Vue application with authentication, chat history, coll
 - 📊 **Charts and weather** tool calling with rich UI rendering
 - 🔐 **Authentication** via GitHub OAuth using [Nitro](https://nitro.build) server routes and httpOnly cookies
 - 💾 **Chat history persistence** using SQLite database ([Turso](https://turso.tech) in production) and [Drizzle ORM](https://orm.drizzle.team)
-- ✨ **Markdown rendering** with streaming code highlighting via [Comark](https://github.com/humeai/comark)
+- ✨ **Markdown rendering** with streaming code highlighting via [Comark](https://comark.dev)
 
 ## Quick Start
 
