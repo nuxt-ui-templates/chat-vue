@@ -1,7 +1,11 @@
 import { defineComarkComponent } from '@comark/vue'
 import highlight from '@comark/vue/plugins/highlight'
+import SourceLink from './SourceLink.vue'
 
 export default defineComarkComponent({
   name: 'ChatComark',
-  plugins: [highlight()]
+  plugins: [highlight()],
+  components: {
+    'source-link': SourceLink
+  }
 })
