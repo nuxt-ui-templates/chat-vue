@@ -9,7 +9,7 @@
     "lint": "eslint src",
     "typecheck": "vue-tsc -p ./tsconfig.app.json",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "mkdir -p .data && drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.64",
