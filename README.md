@@ -21,7 +21,7 @@ Full-featured AI Chatbot Vue application with authentication, chat history, mult
 - ⚡️ **Streaming AI messages** powered by the [AI SDK v5](https://sdk.vercel.ai)
 - 🤖 **Multiple model support** via various AI providers with built-in AI Gateway support
 - 🔐 **Authentication** via GitHub OAuth using [Nitro server routes](https://nitro.build) and httpOnly cookies
-- 💾 **Chat history persistence** using PostgreSQL database and [Drizzle ORM](https://orm.drizzle.team)
+- 💾 **Chat history persistence** using SQLite database ([Turso](https://turso.tech) in production) and [Drizzle ORM](https://orm.drizzle.team)
 - 💬 **Markdown rendering** using [vue-markdown-render](https://github.com/Simon-He95/vue-markdown-render)
 - 🚀 **Easy deploy** to Vercel with zero configuration
 
@@ -46,8 +46,9 @@ pnpm install
 Set up your environment variables by creating a `.env` file:
 
 ```env
-# Database
-DATABASE_URL=<your-postgresql-database-url>
+# Database (Turso - use file:./server/database/sqlite.db for local development)
+TURSO_DATABASE_URL=<your-turso-database-url>
+TURSO_AUTH_TOKEN=<your-turso-auth-token>
 
 # GitHub OAuth (optional, for authentication)
 GITHUB_OAUTH_CLIENT_ID=<your-github-oauth-app-client-id>
@@ -107,7 +108,7 @@ Or connect your repository to Vercel for automatic deployments:
 4. Deploy automatically on every push
 
 > [!NOTE]
-> Make sure to configure your PostgreSQL database connection and run migrations in your production environment.
+> Make sure to configure your Turso database connection (`TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN`) and run migrations in your production environment.
 
 The application is configured to use [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) which provides:
 
