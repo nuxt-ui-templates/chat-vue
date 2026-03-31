@@ -19,6 +19,7 @@
     "@ai-sdk/vue": "^3.0.141",
     "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.6.0",
+    "@unhead/vue": "^2.1.12",
     "@unovis/vue": "^1.6.4",
     "@vueuse/core": "^14.2.1",
     "ai": "^6.0.141",

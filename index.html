@@ -5,40 +5,26 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fafafa" />
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=public-sans:400,500,600,700" rel="stylesheet" />
   <title>Vue AI Chatbot Template</title>
   <meta name="description" content="An open-source AI chatbot app template built with Vue, Nuxt UI, Vite and Nitro, using the Vercel AI SDK and Drizzle ORM for database management.">
+  <style>html { background-color: #fafafa } html.dark { background-color: #09090b }</style>
+  <script>
+    (function () {
+      var mode = localStorage.getItem('vueuse-color-scheme') || 'auto'
+      var dark = mode === 'dark' || (mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      if (dark) {
+        document.documentElement.classList.add('dark')
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#09090b')
+      }
+    })()
+  </script>
 </head>
 
 <body>
-  <div id="app" class="isolate">
-    <span class="loader"></span>
-    <style>
-      .loader {
-        width: 40px;
-        height: 40px;
-        border: 5px solid #2b7fff;
-        border-bottom-color: transparent;
-        border-radius: 50%;
-        display: inline-block;
-        box-sizing: border-box;
-        animation: rotation 1s linear infinite;
-        position: fixed;
-        top: calc(50% - 20px);
-        left: calc(50% - 20px);
-      }
-
-      @keyframes rotation {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-      }
-    </style>
-  </div>
+  <div id="app" class="isolate"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 
