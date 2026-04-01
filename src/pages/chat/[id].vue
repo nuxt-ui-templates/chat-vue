@@ -34,7 +34,7 @@ const data = await $fetch(`/api/chats/${route.params.id}`)
 const votes = ref<Vote[]>([])
 $fetch(`/api/chats/votes/${route.params.id}`).then((v) => {
   votes.value = v
-})
+}).catch(() => {})
 
 const input = ref('')
 
@@ -112,6 +112,11 @@ async function vote(_e: MouseEvent, message: UIMessage, isUpvoted: boolean) {
     })
   } catch {
     votes.value = snapshot
+    toast.add({
+      description: 'Failed to save vote',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
   }
 }
 

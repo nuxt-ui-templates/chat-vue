@@ -34,12 +34,9 @@ export default defineHandler(async (event) => {
     throw new HTTPError({ statusCode: 404, statusMessage: 'Message not found' })
   }
 
-  const existing = await db.select().from(tables.votes).where(
-    and(
-      eq(tables.votes.chatId, id as string),
-      eq(tables.votes.messageId, messageId)
-    )
-  )
+  if (message.role !== 'assistant') {
+    throw new HTTPError({ statusCode: 400, statusMessage: 'Can only vote on assistant messages' })
+  }
 
   if (isUpvoted === undefined) {
     await db.delete(tables.votes).where(
@@ -48,18 +45,14 @@ export default defineHandler(async (event) => {
         eq(tables.votes.messageId, messageId)
       )
     )
-  } else if (existing.length > 0) {
-    await db.update(tables.votes)
-      .set({ isUpvoted })
-      .where(and(
-        eq(tables.votes.chatId, id as string),
-        eq(tables.votes.messageId, messageId)
-      ))
   } else {
     await db.insert(tables.votes).values({
       chatId: id as string,
       messageId,
       isUpvoted
+    }).onConflictDoUpdate({
+      target: [tables.votes.chatId, tables.votes.messageId],
+      set: { isUpvoted }
     })
   }
 
