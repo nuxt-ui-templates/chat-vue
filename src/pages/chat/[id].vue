@@ -32,7 +32,7 @@ const { csrf, headerName } = useCsrf()
 const data = await $fetch(`/api/chats/${route.params.id}`)
 
 const votes = ref<Vote[]>([])
-$fetch(`/api/chats/${route.params.id}/votes`).then((v) => {
+$fetch(`/api/chats/votes/${route.params.id}`).then((v) => {
   votes.value = v
 })
 
@@ -105,7 +105,7 @@ async function vote(_e: MouseEvent, message: UIMessage, isUpvoted: boolean) {
       ]
 
   try {
-    await $fetch(`/api/chats/${data!.id}/votes`, {
+    await $fetch(`/api/chats/votes/${data!.id}`, {
       method: 'POST',
       headers: { [headerName]: csrf() },
       body: next === null ? { messageId: message.id } : { messageId: message.id, isUpvoted: next }
