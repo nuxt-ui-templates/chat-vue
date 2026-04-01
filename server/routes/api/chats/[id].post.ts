@@ -64,7 +64,7 @@ export default defineHandler(async (event) => {
       chatId: id as string,
       role: 'user',
       parts: lastMessage.parts
-    }).onConflictDoNothing()
+    }).onConflictDoUpdate({ target: tables.messages.id, set: { parts: lastMessage.parts } })
   }
 
   const stream = createUIMessageStream({
