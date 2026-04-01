@@ -79,7 +79,7 @@ function cancelEdit() {
 
 async function saveEdit(message: UIMessage, text: string) {
   try {
-    await $fetch(`/api/chats/${data!.id}/messages`, {
+    await $fetch(`/api/chats/messages/${data!.id}`, {
       method: 'DELETE',
       headers: { [headerName]: csrf() },
       body: { messageId: message.id, type: 'edit' }
@@ -99,7 +99,7 @@ async function saveEdit(message: UIMessage, text: string) {
 
 async function regenerateMessage(message: UIMessage) {
   try {
-    await $fetch(`/api/chats/${data!.id}/messages`, {
+    await $fetch(`/api/chats/messages/${data!.id}`, {
       method: 'DELETE',
       headers: { [headerName]: csrf() },
       body: { messageId: message.id, type: 'regenerate' }
