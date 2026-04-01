@@ -21,3 +21,4 @@ export function useDrizzle() {
 
 export type Chat = typeof schema.chats.$inferSelect
 export type Message = typeof schema.messages.$inferSelect
+export type Vote = typeof schema.votes.$inferSelect
