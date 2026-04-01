@@ -13,6 +13,7 @@ import { useRoute } from 'vue-router'
 import ChatComark from '../../components/chat/Comark'
 import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
 import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
+import type { Vote } from '../../../server/utils/drizzle'
 import DashboardNavbar from '../../components/dashboard/Navbar.vue'
 import ChatIndicator from '../../components/chat/Indicator.vue'
 import ChatToolChart from '../../components/chat/tool/Chart.vue'
@@ -29,6 +30,11 @@ const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
 
 const data = await $fetch(`/api/chats/${route.params.id}`)
+
+const votes = ref<Vote[]>([])
+$fetch(`/api/chats/${route.params.id}/votes`).then((v) => {
+  votes.value = v
+})
 
 const input = ref('')
 
@@ -80,6 +86,35 @@ function copy(_e: MouseEvent, message: UIMessage) {
   }, 2000)
 }
 
+function getVote(messageId: string) {
+  const vote = votes.value.find(v => v.messageId === messageId)
+  if (!vote) return null
+  return !!vote.isUpvoted
+}
+
+async function vote(_e: MouseEvent, message: UIMessage, isUpvoted: boolean) {
+  const snapshot = votes.value.map(v => ({ ...v }))
+  const toggling = getVote(message.id) === isUpvoted
+  const next = toggling ? null : isUpvoted
+
+  votes.value = next === null
+    ? votes.value.filter(v => v.messageId !== message.id)
+    : [
+        ...votes.value.filter(v => v.messageId !== message.id),
+        { chatId: data!.id, messageId: message.id, isUpvoted: next }
+      ]
+
+  try {
+    await $fetch(`/api/chats/${data!.id}/votes`, {
+      method: 'POST',
+      headers: { [headerName]: csrf() },
+      body: next === null ? { messageId: message.id } : { messageId: message.id, isUpvoted: next }
+    })
+  } catch {
+    votes.value = snapshot
+  }
+}
+
 onMounted(() => {
   if (data.messages?.length === 1) {
     chat.regenerate()
@@ -104,7 +139,6 @@ onMounted(() => {
           should-auto-scroll
           :messages="chat.messages"
           :status="chat.status"
-          :assistant="chat.status !== 'streaming' ? { actions: [{ label: 'Copy', icon: copied ? 'i-lucide-copy-check' : 'i-lucide-copy', onClick: copy }] } : { actions: [] }"
           :spacing-offset="160"
           class="lg:pt-(--ui-header-height) pb-4 sm:pb-6"
         >
@@ -171,6 +205,40 @@ onMounted(() => {
                   {{ part.text }}
                 </p>
               </template>
+            </template>
+          </template>
+
+          <template #actions="{ message }">
+            <template v-if="message.role === 'assistant' && chat.status !== 'streaming'">
+              <UTooltip text="Good response">
+                <UButton
+                  size="sm"
+                  :color="getVote(message.id) === true ? 'success' : 'neutral'"
+                  variant="ghost"
+                  icon="i-lucide-thumbs-up"
+                  @click="vote($event, message, true)"
+                />
+              </UTooltip>
+
+              <UTooltip text="Bad response">
+                <UButton
+                  size="sm"
+                  :color="getVote(message.id) === false ? 'error' : 'neutral'"
+                  variant="ghost"
+                  icon="i-lucide-thumbs-down"
+                  @click="vote($event, message, false)"
+                />
+              </UTooltip>
+
+              <UTooltip text="Copy response">
+                <UButton
+                  size="sm"
+                  :color="copied ? 'primary' : 'neutral'"
+                  variant="ghost"
+                  :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
+                  @click="copy($event, message)"
+                />
+              </UTooltip>
             </template>
           </template>
         </UChatMessages>
