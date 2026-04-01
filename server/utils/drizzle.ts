@@ -3,7 +3,7 @@ import { createClient } from '@libsql/client'
 
 import * as schema from '../database/schema'
 
-export { sql, eq, and, or, desc } from 'drizzle-orm'
+export { sql, eq, and, or, asc, desc, inArray } from 'drizzle-orm'
 
 export const tables = schema
 

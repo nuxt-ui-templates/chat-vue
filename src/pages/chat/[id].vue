@@ -2,29 +2,20 @@
 import { ref, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { Chat } from '@ai-sdk/vue'
-import { DefaultChatTransport, isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName } from 'ai'
+import { DefaultChatTransport } from 'ai'
 import type { UIMessage } from 'ai'
-import { useClipboard } from '@vueuse/core'
-import { isToolStreaming, getTextFromMessage } from '@nuxt/ui/utils/ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useCsrf } from '../../composables/useCsrf'
 import { useRoute } from 'vue-router'
-import ChatComark from '../../components/chat/Comark'
-import type { WeatherUIToolInvocation } from '../../../server/utils/tools/weather'
-import type { ChartUIToolInvocation } from '../../../server/utils/tools/chart'
+import ChatMessageContent from '../../components/chat/message/MessageContent.vue'
+import ChatMessageActions from '../../components/chat/message/MessageActions.vue'
 import type { Vote } from '../../../server/utils/drizzle'
 import DashboardNavbar from '../../components/dashboard/Navbar.vue'
 import ChatIndicator from '../../components/chat/Indicator.vue'
-import ChatToolChart from '../../components/chat/tool/Chart.vue'
-import ChatToolWeather from '../../components/chat/tool/Weather.vue'
-import ChatToolSources from '../../components/chat/tool/Sources.vue'
-import { getMergedParts } from '../../utils/ai'
-import { getSearchQuery, getSources } from '../../utils/tool'
 
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
-const clipboard = useClipboard()
 const { model } = useModels()
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
@@ -74,16 +65,55 @@ function handleSubmit(e: Event) {
   }
 }
 
-const copied = ref(false)
+const editingMessageId = ref<string | null>(null)
 
-function copy(_e: MouseEvent, message: UIMessage) {
-  clipboard.copy(getTextFromMessage(message))
+function startEdit(message: UIMessage) {
+  if (editingMessageId.value) return
 
-  copied.value = true
+  editingMessageId.value = message.id
+}
 
-  setTimeout(() => {
-    copied.value = false
-  }, 2000)
+function cancelEdit() {
+  editingMessageId.value = null
+}
+
+async function saveEdit(message: UIMessage, text: string) {
+  try {
+    await $fetch(`/api/chats/messages/${data!.id}`, {
+      method: 'DELETE',
+      headers: { [headerName]: csrf() },
+      body: { messageId: message.id, type: 'edit' }
+    })
+  } catch {
+    toast.add({
+      description: 'Failed to update message',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
+    return
+  }
+
+  editingMessageId.value = null
+  chat.sendMessage({ text, messageId: message.id })
+}
+
+async function regenerateMessage(message: UIMessage) {
+  try {
+    await $fetch(`/api/chats/messages/${data!.id}`, {
+      method: 'DELETE',
+      headers: { [headerName]: csrf() },
+      body: { messageId: message.id, type: 'regenerate' }
+    })
+  } catch {
+    toast.add({
+      description: 'Failed to regenerate message',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
+    return
+  }
+
+  chat.regenerate({ messageId: message.id })
 }
 
 function getVote(messageId: string) {
@@ -92,7 +122,7 @@ function getVote(messageId: string) {
   return !!vote.isUpvoted
 }
 
-async function vote(_e: MouseEvent, message: UIMessage, isUpvoted: boolean) {
+async function vote(message: UIMessage, isUpvoted: boolean) {
   const snapshot = votes.value.map(v => ({ ...v }))
   const toggling = getVote(message.id) === isUpvoted
   const next = toggling ? null : isUpvoted
@@ -159,92 +189,24 @@ onMounted(() => {
           </template>
 
           <template #content="{ message }">
-            <template
-              v-for="(part, index) in getMergedParts(message.parts)"
-              :key="`${message.id}-${part.type}-${index}`"
-            >
-              <UChatReasoning
-                v-if="isReasoningUIPart(part)"
-                :text="part.text"
-                :streaming="part.state === 'streaming'"
-                chevron="leading"
-              >
-                <ChatComark
-                  :streaming="part.state === 'streaming'"
-                  :markdown="part.text"
-                  class="*:first:mt-0 *:last:mb-0"
-                />
-              </UChatReasoning>
-
-              <template v-else-if="isToolUIPart(part)">
-                <ChatToolChart
-                  v-if="getToolName(part) === 'chart'"
-                  :invocation="{ ...(part as ChartUIToolInvocation) }"
-                />
-                <ChatToolWeather
-                  v-else-if="getToolName(part) === 'weather'"
-                  :invocation="{ ...(part as WeatherUIToolInvocation) }"
-                />
-                <UChatTool
-                  v-else-if="getToolName(part) === 'web_search' || getToolName(part) === 'google_search'"
-                  :text="isToolStreaming(part) ? 'Searching the web...' : 'Searched the web'"
-                  :suffix="getSearchQuery(part)"
-                  :streaming="isToolStreaming(part)"
-                  chevron="leading"
-                >
-                  <ChatToolSources :sources="getSources(part)" />
-                </UChatTool>
-              </template>
-
-              <template v-else-if="isTextUIPart(part)">
-                <ChatComark
-                  v-if="message.role === 'assistant'"
-                  :markdown="part.text"
-                  :streaming="part.state === 'streaming'"
-                  class="*:first:mt-0 *:last:mb-0"
-                />
-                <p
-                  v-else-if="message.role === 'user'"
-                  class="whitespace-pre-wrap"
-                >
-                  {{ part.text }}
-                </p>
-              </template>
-            </template>
+            <ChatMessageContent
+              :message="message"
+              :editing="editingMessageId === message.id"
+              @save="saveEdit"
+              @cancel-edit="cancelEdit"
+            />
           </template>
 
           <template #actions="{ message }">
-            <template v-if="message.role === 'assistant' && chat.status !== 'streaming'">
-              <UTooltip text="Good response">
-                <UButton
-                  size="sm"
-                  :color="getVote(message.id) === true ? 'success' : 'neutral'"
-                  variant="ghost"
-                  icon="i-lucide-thumbs-up"
-                  @click="vote($event, message, true)"
-                />
-              </UTooltip>
-
-              <UTooltip text="Bad response">
-                <UButton
-                  size="sm"
-                  :color="getVote(message.id) === false ? 'error' : 'neutral'"
-                  variant="ghost"
-                  icon="i-lucide-thumbs-down"
-                  @click="vote($event, message, false)"
-                />
-              </UTooltip>
-
-              <UTooltip text="Copy response">
-                <UButton
-                  size="sm"
-                  :color="copied ? 'primary' : 'neutral'"
-                  variant="ghost"
-                  :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
-                  @click="copy($event, message)"
-                />
-              </UTooltip>
-            </template>
+            <ChatMessageActions
+              :message="message"
+              :streaming="chat.status === 'streaming' && message.id === chat.messages[chat.messages.length - 1]?.id"
+              :editing="editingMessageId === message.id"
+              :vote="getVote(message.id)"
+              @edit="startEdit"
+              @regenerate="regenerateMessage"
+              @vote="vote"
+            />
           </template>
         </UChatMessages>
 
