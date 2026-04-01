@@ -19,7 +19,8 @@ const formattedDate = computed(() => {
 
   return {
     time: date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }),
-    full: date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
+    full: date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }),
+    iso: date.toISOString()
   }
 })
 
@@ -95,7 +96,7 @@ function copy() {
       :text="formattedDate.full"
     >
       <time
-        :datetime="formattedDate.full"
+        :datetime="formattedDate.iso"
         class="text-xs text-muted mr-1.5"
       >
         {{ formattedDate.time }}
