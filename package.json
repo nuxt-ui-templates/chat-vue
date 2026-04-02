@@ -17,7 +17,7 @@
     "@ai-sdk/google": "^3.0.54",
     "@ai-sdk/openai": "^3.0.48",
     "@ai-sdk/vue": "^3.0.141",
-    "@comark/vue": "^0.1.1",
+    "@comark/vue": "^0.2.0",
     "@iconify/vue": "^5.0.0",
     "@libsql/client": "^0.17.2",
     "@nuxt/ui": "^4.6.0",
