@@ -21,7 +21,6 @@
     "@iconify/vue": "^5.0.0",
     "@libsql/client": "^0.17.2",
     "@nuxt/ui": "^4.6.0",
-    "@shikijs/primitive": "^4.0.2",
     "@unhead/vue": "^2.1.12",
     "@unovis/vue": "^1.6.4",
     "@vueuse/core": "^14.2.1",
