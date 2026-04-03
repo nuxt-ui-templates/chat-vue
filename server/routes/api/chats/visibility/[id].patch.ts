@@ -1,4 +1,4 @@
-import { defineHandler } from 'nitro'
+import { defineHandler, HTTPError } from 'nitro'
 import { getValidatedRouterParams, readValidatedBody } from 'nitro/h3'
 import { useUserSession } from '../../../../utils/session'
 import { useDrizzle, tables, eq, and } from '../../../../utils/drizzle'
@@ -26,7 +26,7 @@ export default defineHandler(async (event) => {
   })
 
   if (!chat) {
-    throw createError({ statusCode: 404, statusMessage: 'Chat not found' })
+    throw new HTTPError({ statusCode: 404, statusMessage: 'Chat not found' })
   }
 
   const [updated] = await db.update(tables.chats)
@@ -38,7 +38,7 @@ export default defineHandler(async (event) => {
     .returning()
 
   if (!updated) {
-    throw createError({ statusCode: 404, statusMessage: 'Chat not found' })
+    throw new HTTPError({ statusCode: 404, statusMessage: 'Chat not found' })
   }
 
   return updated

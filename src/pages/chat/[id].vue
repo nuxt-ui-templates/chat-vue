@@ -21,7 +21,7 @@ const { model } = useModels()
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
 
-const data = await $fetch(`/api/chats/${route.params.id}`)
+const data = await $fetch(`/api/chats/${route.params.id}`).catch(() => null)
 
 const isOwner = computed(() => data?.isOwner ?? false)
 const visibility = ref<'public' | 'private'>(data?.visibility ?? 'private')
