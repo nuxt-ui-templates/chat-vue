@@ -32,6 +32,7 @@ export default defineHandler(async (event) => {
     throw new HTTPError({ statusCode: 404, statusMessage: 'Chat not found' })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { userId: _, ...rest } = chat
   return { ...rest, isOwner }
 })
