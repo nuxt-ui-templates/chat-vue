@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
@@ -10,9 +10,10 @@ import { useCsrf } from '../../composables/useCsrf'
 import { useRoute } from 'vue-router'
 import ChatMessageContent from '../../components/chat/message/MessageContent.vue'
 import ChatMessageActions from '../../components/chat/message/MessageActions.vue'
-import type { Vote } from '../../../server/utils/drizzle'
-import DashboardNavbar from '../../components/dashboard/Navbar.vue'
+import ChatVisibility from '../../components/chat/ChatVisibility.vue'
 import ChatIndicator from '../../components/chat/Indicator.vue'
+import Navbar from '../../components/Navbar.vue'
+import type { Vote } from '../../../server/utils/drizzle'
 
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
@@ -22,10 +23,15 @@ const { csrf, headerName } = useCsrf()
 
 const data = await $fetch(`/api/chats/${route.params.id}`)
 
+const isOwner = computed(() => data?.isOwner ?? false)
+const visibility = ref<'public' | 'private'>(data?.visibility ?? 'private')
+
 const votes = ref<Vote[]>([])
-$fetch(`/api/chats/votes/${route.params.id}`).then((v) => {
-  votes.value = v
-}).catch(() => {})
+if (isOwner.value) {
+  $fetch(`/api/chats/votes/${route.params.id}`).then((v) => {
+    votes.value = v
+  }).catch(() => {})
+}
 
 const input = ref('')
 
@@ -151,7 +157,7 @@ async function vote(message: UIMessage, isUpvoted: boolean) {
 }
 
 onMounted(() => {
-  if (data.messages?.length === 1) {
+  if (isOwner.value && data?.messages?.length === 1) {
     chat.regenerate()
   }
 })
@@ -165,7 +171,14 @@ onMounted(() => {
     :ui="{ body: 'p-0 sm:p-0 overscroll-none' }"
   >
     <template #header>
-      <DashboardNavbar />
+      <Navbar>
+        <ChatVisibility
+          v-if="isOwner"
+          :chat-id="data!.id"
+          :visibility="visibility"
+          @update:visibility="visibility = $event"
+        />
+      </Navbar>
     </template>
 
     <template #body>
@@ -174,8 +187,8 @@ onMounted(() => {
           should-auto-scroll
           :messages="chat.messages"
           :status="chat.status"
-          :spacing-offset="160"
-          class="lg:pt-(--ui-header-height) pb-4 sm:pb-6"
+          :spacing-offset="isOwner ? 160 : 0"
+          class="pt-(--ui-header-height) pb-4 sm:pb-6"
         >
           <template #indicator>
             <div class="flex items-center gap-1.5">
@@ -191,13 +204,16 @@ onMounted(() => {
           <template #content="{ message }">
             <ChatMessageContent
               :message="message"
-              :editing="editingMessageId === message.id"
+              :editing="isOwner && editingMessageId === message.id"
               @save="saveEdit"
               @cancel-edit="cancelEdit"
             />
           </template>
 
-          <template #actions="{ message }">
+          <template
+            v-if="isOwner"
+            #actions="{ message }"
+          >
             <ChatMessageActions
               :message="message"
               :streaming="chat.status === 'streaming' && message.id === chat.messages[chat.messages.length - 1]?.id"
@@ -211,6 +227,7 @@ onMounted(() => {
         </UChatMessages>
 
         <UChatPrompt
+          v-if="isOwner"
           v-model="input"
           :error="chat.error"
           variant="subtle"

@@ -55,6 +55,7 @@ function copy() {
         :color="copied ? 'primary' : 'neutral'"
         variant="ghost"
         :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
+        aria-label="Copy response"
         @click="copy"
       />
     </UTooltip>
@@ -65,6 +66,7 @@ function copy() {
         :color="vote === true ? 'success' : 'neutral'"
         variant="ghost"
         icon="i-lucide-thumbs-up"
+        aria-label="Good response"
         @click="emit('vote', message, true)"
       />
     </UTooltip>
@@ -75,6 +77,7 @@ function copy() {
         :color="vote === false ? 'error' : 'neutral'"
         variant="ghost"
         icon="i-lucide-thumbs-down"
+        aria-label="Bad response"
         @click="emit('vote', message, false)"
       />
     </UTooltip>
@@ -85,6 +88,7 @@ function copy() {
         color="neutral"
         variant="ghost"
         icon="i-lucide-rotate-cw"
+        aria-label="Regenerate response"
         @click="emit('regenerate', message)"
       />
     </UTooltip>
@@ -112,6 +116,7 @@ function copy() {
         color="neutral"
         variant="ghost"
         icon="i-lucide-pencil"
+        aria-label="Edit message"
         @click="emit('edit', message)"
       />
     </UTooltip>
