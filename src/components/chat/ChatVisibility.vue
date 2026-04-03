@@ -99,7 +99,10 @@ function copyLink() {
           class="flex items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors hover:bg-elevated/50 disabled:opacity-50 data-[selected=true]:bg-elevated/50"
           @click="updateVisibility(option.value)"
         >
-          <UIcon :name="option.icon" class="size-5 text-muted shrink-0" />
+          <UIcon
+            :name="option.icon"
+            class="size-5 text-muted shrink-0"
+          />
 
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-highlighted">
@@ -118,8 +121,15 @@ function copyLink() {
         </button>
       </div>
 
-      <div v-if="isShared" class="flex items-center gap-2 rounded-lg ring ring-default px-2 py-1.5 mt-4">
-        <a :href="shareUrl" target="_blank" class="flex-1 truncate text-sm text-muted pl-1">
+      <div
+        v-if="isShared"
+        class="flex items-center gap-2 rounded-lg ring ring-default px-2 py-1.5 mt-4"
+      >
+        <a
+          :href="shareUrl"
+          target="_blank"
+          class="flex-1 truncate text-sm text-muted pl-1"
+        >
           {{ shareUrl }}
         </a>
 
