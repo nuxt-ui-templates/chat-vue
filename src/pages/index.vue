@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { $fetch } from 'ofetch'
 import { useChats } from '../composables/useChats'
 import { useCsrf } from '../composables/useCsrf'
 import { useUserSession } from '../composables/useUserSession'
-import { useRouter } from 'vue-router'
-import DashboardNavbar from '../components/dashboard/Navbar.vue'
+import Navbar from '../components/Navbar.vue'
 
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
@@ -81,7 +81,7 @@ const quickChats = [
     :ui="{ body: 'p-0 sm:p-0' }"
   >
     <template #header>
-      <DashboardNavbar />
+      <Navbar />
     </template>
 
     <template #body>
