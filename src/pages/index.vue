@@ -15,14 +15,9 @@ const loading = ref(false)
 const router = useRouter()
 
 const greeting = computed(() => {
-  const hour = new Date().getHours()
-  let timeGreeting = 'Good evening'
-  if (hour < 12) timeGreeting = 'Good morning'
-  else if (hour < 18) timeGreeting = 'Good afternoon'
-
   const name = user.value?.name?.split(' ')[0] || user.value?.username
 
-  return name ? `${timeGreeting}, ${name}` : `${timeGreeting}`
+  return name ? `Good Morning, ${name}` : 'Good Morning'
 })
 
 async function createChat(prompt: string) {
