@@ -155,26 +155,15 @@ defineShortcuts({
           v-if="loggedIn"
           :collapsed="collapsed"
         />
-        <div
+        <UButton
           v-else
-          class="flex flex-col items-center gap-2"
-        >
-          <UAvatar
-            v-if="!collapsed"
-            icon="i-simple-icons:github"
-            size="lg"
-            color="neutral"
-            variant="soft"
-          />
-          <UButton
-            :label="collapsed ? '' : 'Login with GitHub'"
-            icon="i-simple-icons:github"
-            color="neutral"
-            variant="ghost"
-            class="w-full"
-            @click="openInPopup('/auth/github')"
-          />
-        </div>
+          :label="collapsed ? '' : 'Login with GitHub'"
+          icon="i-simple-icons:github"
+          color="neutral"
+          variant="ghost"
+          class="w-full"
+          @click="openInPopup('/auth/github')"
+        />
       </template>
     </UDashboardSidebar>
 
