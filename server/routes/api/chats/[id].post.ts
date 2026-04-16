@@ -68,7 +68,7 @@ export default defineHandler(async (event) => {
   }
 
   const abortController = new AbortController()
-  event.node.req.on('close', () => abortController.abort())
+  event.runtime?.node?.req?.on('close', () => abortController.abort())
 
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
