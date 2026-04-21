@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { $fetch } from 'ofetch'
 import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
@@ -7,11 +7,16 @@ import type { UIMessage } from 'ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useCsrf } from '../../composables/useCsrf'
+import { useVoicePlayback } from '../../composables/useVoicePlayback'
 import { useRoute } from 'vue-router'
 import ChatMessageContent from '../../components/chat/message/MessageContent.vue'
 import ChatMessageActions from '../../components/chat/message/MessageActions.vue'
 import ChatVisibility from '../../components/chat/ChatVisibility.vue'
 import ChatIndicator from '../../components/chat/Indicator.vue'
+import MicButton from '../../components/chat/MicButton.vue'
+import ResearchToggle from '../../components/chat/ResearchToggle.vue'
+import AutoSpeakToggle from '../../components/chat/AutoSpeakToggle.vue'
+import SpeakButton from '../../components/chat/SpeakButton.vue'
 import Navbar from '../../components/Navbar.vue'
 import type { Vote } from '../../../server/utils/drizzle'
 
@@ -20,6 +25,10 @@ const toast = useToast()
 const { model } = useModels()
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
+const { autoSpeak, speak, stop: stopSpeaking } = useVoicePlayback()
+
+const researchMode = ref(route.query.research === '1')
+if (route.query.speak === '1') autoSpeak.value = true
 
 const data = await $fetch(`/api/chats/${route.params.id}`).catch(() => null)
 
@@ -41,9 +50,10 @@ const chat = new Chat({
   transport: new DefaultChatTransport({
     api: `/api/chats/${data?.id}`,
     headers: { [headerName]: csrf() },
-    body: {
-      model: model.value
-    }
+    body: () => ({
+      model: model.value,
+      researchMode: researchMode.value
+    })
   }),
   onData: (dataPart) => {
     if (dataPart.type === 'data-chat-title') {
@@ -61,21 +71,54 @@ const chat = new Chat({
   }
 })
 
+function extractText(m: UIMessage): string {
+  return m.parts
+    .filter(p => p.type === 'text')
+    .map(p => (p as { text: string }).text)
+    .join('\n')
+    .trim()
+}
+
+// Auto-speak the final assistant message when finished streaming.
+const lastSpokenId = ref<string | null>(null)
+watch(
+  () => ({ status: chat.status, messages: chat.messages.slice() }),
+  ({ status, messages }) => {
+    if (status !== 'ready' || !autoSpeak.value) return
+    const last = messages[messages.length - 1]
+    if (!last || last.role !== 'assistant' || lastSpokenId.value === last.id) return
+    const text = extractText(last)
+    if (!text) return
+    lastSpokenId.value = last.id
+    speak(text).catch(() => {})
+  },
+  { deep: true }
+)
+
 function handleSubmit(e: Event) {
   e.preventDefault()
   if (input.value.trim()) {
-    chat.sendMessage({
-      text: input.value
-    })
+    chat.sendMessage({ text: input.value })
     input.value = ''
   }
+}
+
+function onTranscript(text: string) {
+  input.value = input.value ? `${input.value} ${text}` : text
+}
+
+function onVoiceSend(text: string) {
+  const combined = input.value ? `${input.value} ${text}`.trim() : text
+  if (!combined) return
+  stopSpeaking()
+  chat.sendMessage({ text: combined })
+  input.value = ''
 }
 
 const editingMessageId = ref<string | null>(null)
 
 function startEdit(message: UIMessage) {
   if (editingMessageId.value) return
-
   editingMessageId.value = message.id
 }
 
@@ -195,7 +238,7 @@ onMounted(() => {
               <ChatIndicator />
 
               <UChatShimmer
-                text="Thinking..."
+                :text="researchMode ? 'Researching...' : 'Thinking...'"
                 class="text-sm"
               />
             </div>
@@ -208,6 +251,12 @@ onMounted(() => {
               @save="saveEdit"
               @cancel-edit="cancelEdit"
             />
+            <div
+              v-if="message.role === 'assistant' && chat.status !== 'streaming'"
+              class="mt-1 -ml-1"
+            >
+              <SpeakButton :text="extractText(message)" />
+            </div>
           </template>
 
           <template
@@ -231,20 +280,32 @@ onMounted(() => {
           v-model="input"
           :error="chat.error"
           variant="subtle"
-          class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
+          class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10 pb-safe"
           :ui="{ base: 'px-1.5' }"
           @submit="handleSubmit"
         >
           <template #footer>
-            <ModelSelect v-model="model" />
+            <div class="flex items-center gap-1">
+              <ModelSelect v-model="model" />
+              <ResearchToggle v-model="researchMode" />
+              <AutoSpeakToggle v-model="autoSpeak" />
+            </div>
 
-            <UChatPromptSubmit
-              :status="chat.status"
-              color="neutral"
-              size="sm"
-              @stop="chat.stop()"
-              @reload="chat.regenerate()"
-            />
+            <div class="flex items-center gap-2">
+              <MicButton
+                :auto-send="!input.trim()"
+                @transcript="onTranscript"
+                @send="onVoiceSend"
+              />
+
+              <UChatPromptSubmit
+                :status="chat.status"
+                color="neutral"
+                size="sm"
+                @stop="chat.stop()"
+                @reload="chat.regenerate()"
+              />
+            </div>
           </template>
         </UChatPrompt>
       </UContainer>

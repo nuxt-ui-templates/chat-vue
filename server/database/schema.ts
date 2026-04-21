@@ -75,3 +75,12 @@ export const votesRelations = relations(votes, ({ one }) => ({
     references: [messages.id]
   })
 }))
+
+export const memories = sqliteTable('memories', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id').notNull(),
+  content: text('content').notNull(),
+  ...timestamps
+}, table => [
+  index('memories_user_id_idx').on(table.userId)
+])

@@ -21,7 +21,12 @@ Full-featured AI Chatbot Vue application with authentication, chat history, coll
 ## Features
 
 - ⚡️ **Streaming AI messages** powered by the [AI SDK](https://ai-sdk.dev) with thinking/reasoning support
-- 🤖 **Multiple model support** — Claude Haiku 4.5, Gemini 3 Flash and GPT-5 Nano via [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)
+- 🤖 **Top-tier models** — Claude Opus/Sonnet/Haiku 4.x, GPT-5 family, Gemini 3 Pro/Flash via [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)
+- 🎙 **Hold-to-talk voice** — on-screen mic button (or hold `Space`) → STT → send. Assistant replies can auto-speak (TTS).
+- 🔁 **Swap voice backends** — OpenAI (`gpt-4o-mini-transcribe` + `gpt-4o-mini-tts`) by default, or Azure Speech.
+- 🧠 **Persistent memory** — user-managed memories auto-injected into the system prompt.
+- 🔭 **Deep research toggle** — bumps thinking budget and lets the model run multi-step web searches with citations.
+- 📱 **Installable PWA** — offline app shell, mobile-first layout with safe-area handling, home-screen install prompt.
 - 🔍 **Web search** with built-in provider tools (Anthropic, OpenAI)
 - 📊 **Charts and weather** tool calling with rich UI rendering
 - 🔐 **Authentication** via GitHub OAuth using [Nitro](https://nitro.build) server routes and httpOnly cookies
@@ -67,6 +72,27 @@ AI_GATEWAY_API_KEY=<your-vercel-ai-gateway-api-key>
 
 > [!TIP]
 > With [Vercel AI Gateway](https://vercel.com/docs/ai-gateway), you don't need individual API keys for OpenAI, Anthropic, etc. It provides a unified API to access hundreds of models through a single endpoint with automatic load balancing, fallbacks, and spend monitoring.
+
+### Voice & PWA
+
+Voice uses top-tier models (no browser built-ins). Pick a backend via `VOICE_PROVIDER`:
+
+```bash
+# Default: OpenAI (gpt-4o-mini-transcribe for STT, gpt-4o-mini-tts for TTS)
+VOICE_PROVIDER=openai
+OPENAI_API_KEY=<your-openai-key>
+# OPENAI_TTS_VOICE=alloy   # alloy|ash|ballad|coral|echo|fable|nova|onyx|sage|shimmer|verse
+
+# Or Azure Speech
+VOICE_PROVIDER=azure
+AZURE_SPEECH_KEY=<your-azure-speech-key>
+AZURE_SPEECH_REGION=eastus
+# AZURE_TTS_VOICE=en-US-AvaNeural
+```
+
+**Using the mic:** On the composer, hold the mic button (or hold `Space` on desktop) to record, release to send. The settings page (`/settings`) lets you pick a TTS voice, auto-speak replies, and manage persistent memories.
+
+**Install as PWA:** Chrome/Edge will offer an install banner once the service worker is active; iOS users can "Add to Home Screen" from Safari. Note that PWAs cannot bind to a phone's physical side button — the mic button (and `Space` on desktop) is the push-to-talk target.
 
 ### Authentication (Optional)
 

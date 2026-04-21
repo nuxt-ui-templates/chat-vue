@@ -96,6 +96,10 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     }
   }]
 }], [{
+  label: 'Settings',
+  icon: 'i-lucide-settings',
+  to: '/settings'
+}, {
   label: 'Templates',
   icon: 'i-lucide-layout-template',
   children: [{

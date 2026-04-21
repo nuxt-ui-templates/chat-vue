@@ -23,11 +23,12 @@ export default defineHandler(async (event) => {
     id: z.string()
   }).parse)
 
-  const { model, messages } = await readValidatedBody(event, z.object({
+  const { model, messages, researchMode } = await readValidatedBody(event, z.object({
     model: z.string().refine(value => MODELS.some(m => m.value === value), {
       message: 'Invalid model'
     }),
-    messages: z.array(z.custom<UIMessage>())
+    messages: z.array(z.custom<UIMessage>()),
+    researchMode: z.boolean().optional().default(false)
   }).parse)
 
   const db = useDrizzle()
@@ -41,6 +42,12 @@ export default defineHandler(async (event) => {
   if (!chat) {
     throw new HTTPError({ statusCode: 404, statusMessage: 'Chat not found' })
   }
+
+  const memories = session.data.user?.id
+    ? await db.select({ content: tables.memories.content })
+        .from(tables.memories)
+        .where(eq(tables.memories.userId, session.data.user.id))
+    : []
 
   if (!chat.title) {
     const { text: title } = await generateText({
@@ -72,6 +79,20 @@ export default defineHandler(async (event) => {
 
   const stream = createUIMessageStream({
     execute: async ({ writer }) => {
+      const memoryBlock = memories.length
+        ? `\n\n**USER MEMORIES (apply silently, never repeat back verbatim):**\n${memories.map(m => `- ${m.content}`).join('\n')}`
+        : ''
+
+      const researchBlock = researchMode
+        ? `\n\n**RESEARCH MODE (ACTIVE):**
+- Plan your approach before searching. State a brief plan, then execute.
+- Run multiple targeted web searches across distinct angles; do not rely on a single query.
+- Reconcile conflicting sources; prefer primary sources and recent authoritative material.
+- Cite each non-obvious claim with a source link.
+- If evidence is weak or mixed, say so explicitly.
+- Synthesize, do not just list links.`
+        : ''
+
       const result = streamText({
         abortSignal: abortController.signal,
         model: gateway(model),
@@ -96,7 +117,7 @@ export default defineHandler(async (event) => {
 - Be concise yet comprehensive
 - Use examples when helpful
 - Break down complex topics into digestible parts
-- Maintain a friendly, professional tone`,
+- Maintain a friendly, professional tone${memoryBlock}${researchBlock}`,
         messages: await convertToModelMessages(messages),
         tools: {
           chart: chartTool,
@@ -110,21 +131,21 @@ export default defineHandler(async (event) => {
           anthropic: {
             thinking: {
               type: 'enabled',
-              budgetTokens: 2048
+              budgetTokens: researchMode ? 8192 : 2048
             }
           } satisfies AnthropicLanguageModelOptions,
           google: {
             thinkingConfig: {
               includeThoughts: true,
-              thinkingLevel: 'low'
+              thinkingLevel: researchMode ? 'high' : 'low'
             }
           } satisfies GoogleLanguageModelOptions,
           openai: {
-            reasoningEffort: 'low',
+            reasoningEffort: researchMode ? 'high' : 'low',
             reasoningSummary: 'detailed'
           } satisfies OpenAILanguageModelResponsesOptions
         },
-        stopWhen: stepCountIs(5),
+        stopWhen: stepCountIs(researchMode ? 10 : 5),
         experimental_transform: smoothStream()
       })
 

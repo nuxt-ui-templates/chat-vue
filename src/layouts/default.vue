@@ -7,6 +7,7 @@ import ModalConfirm from '../components/ModalConfirm.vue'
 import { useChats } from '../composables/useChats'
 import { useUserSession } from '../composables/useUserSession'
 import { useCsrf } from '../composables/useCsrf'
+import { usePwaInstall } from '../composables/usePwaInstall'
 
 const router = useRouter()
 const route = useRoute<'/chat/[id]' | '/'>()
@@ -15,6 +16,7 @@ const overlay = useOverlay()
 const { loggedIn, openInPopup, fetchSession } = useUserSession()
 const { csrf, headerName } = useCsrf()
 const { groups, fetchChats } = useChats()
+const { installable, install, dismiss } = usePwaInstall()
 
 await fetchSession()
 await fetchChats()
@@ -121,6 +123,15 @@ defineShortcuts({
             @click="open = false"
           />
 
+          <UButton
+            v-bind="collapsed ? { icon: 'i-lucide-settings' } : { label: 'Settings', icon: 'i-lucide-settings' }"
+            variant="ghost"
+            color="neutral"
+            block
+            to="/settings"
+            @click="open = false"
+          />
+
           <template v-if="collapsed">
             <UDashboardSearchButton collapsed />
           </template>
@@ -179,8 +190,37 @@ defineShortcuts({
       }, ...groups]"
     />
 
-    <div class="flex-1 flex m-4 lg:ml-0 rounded-lg ring ring-default bg-default/75 shadow min-w-0 overflow-hidden">
-      <RouterView :key="route.path" />
+    <div class="flex-1 flex flex-col m-4 lg:ml-0 rounded-lg ring ring-default bg-default/75 shadow min-w-0 overflow-hidden">
+      <div
+        v-if="installable"
+        class="flex items-center gap-2 px-3 py-2 bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300 text-xs border-b border-primary-200/50 dark:border-primary-900/50"
+      >
+        <UIcon
+          name="i-lucide-download"
+          class="size-4"
+        />
+        <span>Install Chat Vue Voice for a faster, full-screen experience.</span>
+        <div class="ms-auto flex items-center gap-1">
+          <UButton
+            label="Install"
+            size="xs"
+            color="primary"
+            variant="soft"
+            @click="install"
+          />
+          <UButton
+            icon="i-lucide-x"
+            size="xs"
+            color="neutral"
+            variant="ghost"
+            aria-label="Dismiss"
+            @click="dismiss"
+          />
+        </div>
+      </div>
+      <div class="flex-1 flex min-w-0 overflow-hidden">
+        <RouterView :key="route.path" />
+      </div>
     </div>
   </UDashboardGroup>
 </template>

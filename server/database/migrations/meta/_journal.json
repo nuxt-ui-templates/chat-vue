@@ -22,6 +22,13 @@
       "when": 1775233609088,
       "tag": "0002_clever_domino",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1776789024519,
+      "tag": "0003_boring_dark_beast",
+      "breakpoints": true
     }
   ]
 }
