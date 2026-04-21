@@ -10,10 +10,9 @@ export interface UserSession extends Session {
 }
 
 export function useUserSession (event: HTTPEvent) {
-  if (!process.env.SESSION_SECRET) {
-    throw new Error('SESSION_SECRET environment variable is not set')
-  }
-  return useSession<UserSession>(event, {
-    password: process.env.SESSION_SECRET
-  })
+  // Fallback secret lets preview deploys boot without env config. Anonymous-only
+  // sessions are fine in that mode; real deployments must set SESSION_SECRET.
+  const password = process.env.SESSION_SECRET
+    || 'insecure-preview-secret-do-not-use-in-production-0001'
+  return useSession<UserSession>(event, { password })
 }

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm run db:migrate && vite build",
+    "build": "node scripts/prebuild.mjs && vite build",
     "preview": "vite preview",
     "lint": "eslint src",
     "typecheck": "vue-tsc -p ./tsconfig.app.json",
