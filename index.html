@@ -6,22 +6,92 @@
   <link rel="icon" type="image/svg+xml" href="/logo.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="mask-icon" href="/logo.svg" color="#42B883" />
+  <link rel="canonical" href="https://hermes-agent.app/" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0" />
   <meta name="theme-color" content="#fafafa" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Chat Vue" />
+  <meta name="apple-mobile-web-app-title" content="Hermes Agent" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="application-name" content="Chat Vue Voice" />
+  <meta name="application-name" content="Hermes Agent" />
   <meta name="format-detection" content="telephone=no" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=public-sans:400,500,600,700" rel="stylesheet" />
-  <title>Chat Vue Voice</title>
-  <meta name="description" content="Hold-to-talk AI chat PWA with top-tier models, persistent memory, and deep research.">
-  <meta property="og:title" content="Chat Vue Voice">
-  <meta property="og:description" content="Hold-to-talk AI chat PWA with top-tier models, persistent memory, and deep research.">
-  <meta property="og:image" content="https://ui.nuxt.com/assets/templates/vue/chat-light.png">
-  <meta name="twitter:card" content="summary_large_image">
+
+  <title>Hermes Agent — Voice AI Chat with Memory, Deep Research &amp; Web Search</title>
+  <meta name="description" content="Hermes Agent is a mobile-first voice AI assistant: hold to talk, get spoken replies, and run deep research across the web. Powered by Claude, GPT-5, and Gemini with persistent memory and Azure-ready speech." />
+  <meta name="keywords" content="voice AI assistant, hold to talk chatbot, deep research AI, Claude voice chat, GPT-5 voice, Gemini voice agent, persistent memory chatbot, Azure speech assistant, AI PWA, transcribe and speak, mobile AI chatbot" />
+  <meta name="author" content="Hermes Agent" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hermes Agent" />
+  <meta property="og:title" content="Hermes Agent — Voice AI Chat with Memory &amp; Deep Research" />
+  <meta property="og:description" content="Hold to talk to a top-tier AI. Spoken replies, persistent memory, deep web research. Claude, GPT-5, Gemini. Installable PWA." />
+  <meta property="og:image" content="/og-cover.png" />
+  <meta property="og:image:alt" content="Hermes Agent — voice-first AI assistant" />
+  <meta property="og:url" content="https://hermes-agent.app/" />
+  <meta property="og:locale" content="en_US" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hermes Agent — Voice AI Chat" />
+  <meta name="twitter:description" content="Hold to talk. Top-tier models. Memory, deep research, web search. Installable PWA." />
+  <meta name="twitter:image" content="/og-cover.png" />
+  <meta name="twitter:image:alt" content="Hermes Agent voice AI assistant" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://hermes-agent.app/#org",
+        "name": "Hermes Agent",
+        "url": "https://hermes-agent.app/",
+        "logo": "https://hermes-agent.app/icon-512.png",
+        "description": "Voice-first AI assistant platform powered by top-tier language models."
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://hermes-agent.app/#site",
+        "url": "https://hermes-agent.app/",
+        "name": "Hermes Agent",
+        "publisher": { "@id": "https://hermes-agent.app/#org" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://hermes-agent.app/#app",
+        "name": "Hermes Agent",
+        "url": "https://hermes-agent.app/",
+        "description": "Mobile-first installable voice AI chat with hold-to-talk input, spoken replies, persistent memory, deep web research, and multi-model routing across Anthropic Claude, OpenAI GPT-5, and Google Gemini. Optional Azure Speech backend.",
+        "applicationCategory": "Productivity",
+        "operatingSystem": "Web, iOS, Android",
+        "browserRequirements": "Modern browser with microphone access",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "featureList": [
+          "Hold-to-talk push-to-talk voice input",
+          "Spoken replies via OpenAI gpt-4o-mini-tts or Azure Neural TTS",
+          "Persistent user memory across conversations",
+          "Deep research mode with multi-step web search",
+          "Top-tier model routing: Claude Opus / Sonnet / Haiku, GPT-5, Gemini 3",
+          "Installable Progressive Web App with offline shell",
+          "End-to-end transcript history"
+        ],
+        "creator": { "@id": "https://hermes-agent.app/#org" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://hermes-agent.app/" }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <style>html { background-color: #fafafa } html.dark { background-color: #09090b }</style>
   <script>
     (function () {
@@ -37,6 +107,24 @@
 
 <body>
   <div id="app" class="isolate"></div>
+  <noscript>
+    <main style="max-width:640px;margin:48px auto;padding:0 16px;font-family:system-ui,sans-serif;color:#111">
+      <h1>Hermes Agent — Voice AI Chat with Memory &amp; Deep Research</h1>
+      <p>Hermes Agent is a mobile-first installable voice assistant. Hold the on-screen mic button (or hold the spacebar on desktop) to talk; the assistant transcribes your speech, runs the request against Claude, GPT-5, or Gemini, and can speak its reply back using OpenAI or Azure neural voices.</p>
+      <h2>Features</h2>
+      <ul>
+        <li>Hold-to-talk push-to-talk voice input with live amplitude feedback.</li>
+        <li>Spoken replies (text-to-speech) powered by OpenAI <code>gpt-4o-mini-tts</code> or Azure Neural Voices.</li>
+        <li>Persistent user memory injected into every conversation.</li>
+        <li>Deep research mode: extended thinking plus multi-step web search with citations.</li>
+        <li>Multi-provider model routing: Anthropic Claude Opus / Sonnet / Haiku 4.x, OpenAI GPT-5 family, Google Gemini 3 Pro / Flash.</li>
+        <li>Installable Progressive Web App (PWA) with offline app shell.</li>
+      </ul>
+      <h2>How it works</h2>
+      <p>Tap the microphone button to start a recording, release to send. Your audio is transcribed by a top-tier speech-to-text model, the chat model produces a streaming reply, and the assistant can speak the response automatically. Conversations are saved as transcripts.</p>
+      <p>JavaScript is required to use the live application.</p>
+    </main>
+  </noscript>
   <script type="module" src="/src/main.ts"></script>
 </body>
 

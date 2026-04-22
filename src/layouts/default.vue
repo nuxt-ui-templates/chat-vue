@@ -199,7 +199,7 @@ defineShortcuts({
           name="i-lucide-download"
           class="size-4"
         />
-        <span>Install Chat Vue Voice for a faster, full-screen experience.</span>
+        <span>Install Hermes Agent for a faster, full-screen voice experience.</span>
         <div class="ms-auto flex items-center gap-1">
           <UButton
             label="Install"
@@ -218,9 +218,12 @@ defineShortcuts({
           />
         </div>
       </div>
-      <div class="flex-1 flex min-w-0 overflow-hidden">
+      <main
+        class="flex-1 flex min-w-0 overflow-hidden"
+        role="main"
+      >
         <RouterView :key="route.path" />
-      </div>
+      </main>
     </div>
   </UDashboardGroup>
 </template>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+
+Sitemap: https://hermes-agent.app/sitemap.xml
