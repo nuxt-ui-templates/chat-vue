@@ -100,23 +100,23 @@ const quickChats = [
           <div class="flex items-center gap-3">
             <img
               :src="'/hermes-logo.png'"
-              alt="Hermes Agent"
+              alt="Hermes Agent logo on Agent Platform"
               width="56"
               height="56"
               class="size-12 sm:size-14 rounded-2xl bg-white/80 dark:bg-white/90 ring-1 ring-black/5 shadow-[0_18px_40px_-18px_rgba(0,0,0,0.55)] shrink-0"
               @error="onLogoError"
             >
             <div class="flex flex-col leading-tight">
-              <span class="text-[11px] uppercase tracking-[0.18em] text-muted font-semibold">Hermes Agent</span>
+              <span class="text-[11px] uppercase tracking-[0.18em] text-muted font-semibold">Agent Platform · Hermes Agent</span>
               <h1 class="text-2xl sm:text-3xl text-highlighted font-bold">
-                Welcome to the platform for Hermes Agent
+                Welcome to the Agent Platform for Hermes Agent
               </h1>
               <span class="text-sm text-muted mt-1">{{ greeting }}</span>
             </div>
           </div>
 
           <p class="text-muted text-sm">
-            Hold the mic (or <kbd class="text-xs">Space</kbd>) to talk. Tap the telescope for deep research.
+            Hold the mic (or <kbd class="text-xs">Space</kbd>) to talk to <strong>Hermes Agent</strong>. Tap the telescope for deep research on <strong>Agent Platform</strong>.
           </p>
 
           <UChatPrompt
@@ -166,22 +166,22 @@ const quickChats = [
           </nav>
 
           <section
-            aria-labelledby="hermes-about"
+            aria-labelledby="agent-platform-about"
             class="mt-2 sm:mt-4 grid gap-4 sm:grid-cols-2 text-sm"
           >
             <h2
-              id="hermes-about"
-              class="sr-only"
+              id="agent-platform-about"
+              class="text-base sm:text-lg font-semibold text-highlighted sm:col-span-2"
             >
-              About Hermes Agent
+              Agent Platform — built for Hermes Agent
             </h2>
 
             <article class="rounded-xl bg-default/60 backdrop-blur-md ring-1 ring-default/40 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.35)] p-4">
               <h3 class="text-highlighted font-semibold mb-1">
-                Hold-to-talk voice chat
+                Hold-to-talk voice chat with Hermes Agent
               </h3>
               <p class="text-muted">
-                Push the on-screen microphone (or hold <kbd>Space</kbd>) to record. Top-tier speech-to-text — OpenAI <code>gpt-4o-mini-transcribe</code> or Azure Neural Speech — turns your voice into text instantly, then the assistant streams a reply you can listen to.
+                Push the on-screen microphone on Agent Platform (or hold <kbd>Space</kbd>) to record. Top-tier speech-to-text — OpenAI <code>gpt-4o-mini-transcribe</code> or Azure Neural Speech — turns your voice into text, then Hermes Agent streams a reply you can listen to.
               </p>
             </article>
 
@@ -190,7 +190,7 @@ const quickChats = [
                 Deep research with citations
               </h3>
               <p class="text-muted">
-                Toggle the telescope to enable Deep Research mode. Hermes Agent plans its approach, runs multi-step web searches across distinct angles, reconciles conflicting sources, and cites every non-obvious claim.
+                Toggle the telescope on Agent Platform to enable Deep Research mode. Hermes Agent plans its approach, runs multi-step web searches across distinct angles, reconciles conflicting sources, and cites every non-obvious claim.
               </p>
             </article>
 
@@ -199,22 +199,58 @@ const quickChats = [
                 Persistent memory across chats
               </h3>
               <p class="text-muted">
-                Save facts, preferences, or guidelines once on the Settings page; Hermes Agent applies them to every new conversation so you never repeat yourself.
+                Save facts, preferences, or guidelines once on the Agent Platform Settings page; Hermes Agent applies them to every new conversation so you never repeat yourself.
               </p>
             </article>
 
             <article class="rounded-xl bg-default/60 backdrop-blur-md ring-1 ring-default/40 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.35)] p-4">
               <h3 class="text-highlighted font-semibold mb-1">
-                Choose your model
+                Choose your model for Hermes Agent
               </h3>
               <p class="text-muted">
-                Switch between Anthropic Claude Opus 4.7, Claude Sonnet 4.6, GPT-5, GPT-5 Mini, Gemini 3 Pro, and Gemini 3 Flash from the composer. Voice can run on OpenAI or Azure Cognitive Services.
+                Switch Hermes Agent between Anthropic Claude Opus 4.7, Claude Sonnet 4.6, Claude Haiku 4.5, OpenAI GPT-5, GPT-5 Mini, Google Gemini 3 Pro, and Gemini 3 Flash from the Agent Platform composer. Voice runs on OpenAI or Microsoft Azure Cognitive Services.
               </p>
             </article>
           </section>
 
+          <section
+            aria-labelledby="agent-platform-faq"
+            class="mt-2 grid gap-3 text-sm"
+          >
+            <h2
+              id="agent-platform-faq"
+              class="text-base sm:text-lg font-semibold text-highlighted"
+            >
+              Hermes Agent on Agent Platform — FAQ
+            </h2>
+            <details class="rounded-xl bg-default/60 backdrop-blur-md ring-1 ring-default/40 p-3">
+              <summary class="cursor-pointer font-medium text-highlighted">
+                What is Agent Platform?
+              </summary>
+              <p class="text-muted mt-2">
+                Agent Platform is a voice-first installable web app for talking to Hermes Agent — a top-tier conversational AI — with hold-to-talk input, persistent memory, and deep research across the web.
+              </p>
+            </details>
+            <details class="rounded-xl bg-default/60 backdrop-blur-md ring-1 ring-default/40 p-3">
+              <summary class="cursor-pointer font-medium text-highlighted">
+                What is Hermes Agent?
+              </summary>
+              <p class="text-muted mt-2">
+                Hermes Agent is the conversational assistant served by Agent Platform. It supports voice input, spoken replies, deep research, persistent memory, and multi-model routing across Anthropic Claude, OpenAI GPT-5, and Google Gemini.
+              </p>
+            </details>
+            <details class="rounded-xl bg-default/60 backdrop-blur-md ring-1 ring-default/40 p-3">
+              <summary class="cursor-pointer font-medium text-highlighted">
+                How do I install Agent Platform?
+              </summary>
+              <p class="text-muted mt-2">
+                Open agentplatform.forum on your phone, then choose "Add to Home Screen" (iOS Safari) or tap the install banner (Chrome / Edge on Android and desktop). Agent Platform installs as a Progressive Web App with an offline shell.
+              </p>
+            </details>
+          </section>
+
           <p class="sr-only">
-            Hermes Agent — voice AI chatbot, mobile-first PWA, hold-to-talk push-to-talk, Whisper-grade transcription, neural text-to-speech, persistent memory, deep web research, citations, multi-model: Claude Opus 4.7, Claude Sonnet 4.6, Claude Haiku 4.5, GPT-5, GPT-5 Mini, Gemini 3 Pro, Gemini 3 Flash. Optional Microsoft Azure Speech backend.
+            Agent Platform for Hermes Agent — voice AI chatbot, mobile-first PWA, hold-to-talk push-to-talk on Hermes Agent, Whisper-grade transcription, neural text-to-speech, persistent memory, deep web research, citations, multi-model Hermes Agent: Claude Opus 4.7, Claude Sonnet 4.6, Claude Haiku 4.5, GPT-5, GPT-5 Mini, Gemini 3 Pro, Gemini 3 Flash. Optional Microsoft Azure Speech backend on Agent Platform.
           </p>
         </UContainer>
       </div>

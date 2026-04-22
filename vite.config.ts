@@ -37,9 +37,9 @@ export default defineConfig({
         'icon-maskable-512.png'
       ],
       manifest: {
-        name: 'Chat Vue Voice',
-        short_name: 'Chat Vue',
-        description: 'Hold-to-talk AI chat with top-tier models, persistent memory, and deep research.',
+        name: 'Agent Platform — Hermes Agent',
+        short_name: 'Agent Platform',
+        description: 'Agent Platform: voice-first home for Hermes Agent. Hold-to-talk AI chat with top-tier models, persistent memory, and deep research.',
         theme_color: '#09090b',
         background_color: '#09090b',
         display: 'standalone',

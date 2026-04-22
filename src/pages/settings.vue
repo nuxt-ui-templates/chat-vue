@@ -85,10 +85,10 @@ async function previewVoice() {
       <UContainer class="flex-1 flex flex-col gap-6 py-8 max-w-2xl">
         <div>
           <h1 class="text-2xl font-bold text-highlighted">
-            Settings
+            Settings — Agent Platform
           </h1>
           <p class="text-muted text-sm">
-            Persistent memory, voice provider, and playback preferences.
+            Configure Hermes Agent: persistent memory, voice provider, and playback preferences.
           </p>
         </div>
 
