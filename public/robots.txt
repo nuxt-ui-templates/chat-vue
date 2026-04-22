@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /auth/
 
-Sitemap: https://hermes-agent.app/sitemap.xml
+Sitemap: https://agentplatform.forum/sitemap.xml
