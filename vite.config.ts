@@ -57,7 +57,15 @@ export default defineConfig({
       },
       workbox: {
         globDirectory: '.output/public',
-        globIgnores: ['**/assets/yaml-*.js', '**/assets/elk.bundled-*.js'],
+        globIgnores: [
+          '**/assets/yaml-*.js',
+          '**/assets/elk.bundled-*.js',
+          'hermes-bg.png',
+          'hermes-agent-green.png',
+          'hermes3.png',
+          'Nous_Research_launches_Hermes_Agent-800w.jpg',
+          'Screenshot*.png'
+        ],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         navigateFallbackDenylist: [/^\/api\//, /^\/auth\//],
         runtimeCaching: [
@@ -67,6 +75,14 @@ export default defineConfig({
             options: {
               cacheName: 'bunny-fonts',
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30 }
+            }
+          },
+          {
+            urlPattern: ({ url, sameOrigin }) => sameOrigin && /\.(png|jpg|jpeg|webp|svg)$/.test(url.pathname),
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'images',
+              expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 30 }
             }
           }
         ]

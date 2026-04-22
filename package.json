@@ -41,7 +41,6 @@
   },
   "devDependencies": {
     "@octokit/types": "^16.0.0",
-    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^24.12.2",
     "@vitejs/plugin-vue": "^6.0.6",
     "drizzle-kit": "^0.31.10",
