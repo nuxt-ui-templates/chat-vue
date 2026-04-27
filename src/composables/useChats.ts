@@ -7,6 +7,7 @@ import type { Chat as ChatData } from '~/server/utils/drizzle'
 interface Chat {
   id: string
   label: string
+  to: string
   icon: string
   createdAt: string
 }
@@ -25,6 +26,14 @@ export const useChats = createSharedComposable(() => {
       console.error(error)
       return []
     })
+  }
+
+  const updateChat = (id: string, partial: Partial<Chat>) => {
+    chats.value = chats.value.map(c => c.id === id ? { ...c, ...partial } : c)
+  }
+
+  const removeChat = (id: string) => {
+    chats.value = chats.value.filter(c => c.id !== id)
   }
 
   const groups = computed(() => {
@@ -128,6 +137,8 @@ export const useChats = createSharedComposable(() => {
   return {
     groups,
     chats,
-    fetchChats
+    fetchChats,
+    updateChat,
+    removeChat
   }
 })

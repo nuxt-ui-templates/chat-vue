@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { Chat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
@@ -11,6 +11,7 @@ import { useRoute } from 'vue-router'
 import ChatMessageContent from '../../components/chat/message/MessageContent.vue'
 import ChatMessageActions from '../../components/chat/message/MessageActions.vue'
 import ChatVisibility from '../../components/chat/ChatVisibility.vue'
+import ChatTitle from '../../components/chat/ChatTitle.vue'
 import ChatIndicator from '../../components/chat/Indicator.vue'
 import Navbar from '../../components/Navbar.vue'
 import type { Vote } from '../../../server/utils/drizzle'
@@ -18,13 +19,20 @@ import type { Vote } from '../../../server/utils/drizzle'
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
 const { model } = useModels()
-const { fetchChats } = useChats()
+const { fetchChats, chats } = useChats()
 const { csrf, headerName } = useCsrf()
 
 const data = await $fetch(`/api/chats/${route.params.id}`).catch(() => null)
 
 const isOwner = computed(() => data?.isOwner ?? false)
 const visibility = ref<'public' | 'private'>(data?.visibility ?? 'private')
+const title = ref<string | null>(data?.title ?? null)
+
+watch(() => chats.value.find(c => c.id === data?.id)?.label, (label) => {
+  if (label && label !== 'Untitled') {
+    title.value = label
+  }
+})
 
 const votes = ref<Vote[]>([])
 if (isOwner.value) {
@@ -180,6 +188,15 @@ onMounted(() => {
   >
     <template #header>
       <Navbar>
+        <template #title>
+          <ChatTitle
+            :chat-id="data!.id"
+            :title="title"
+            :is-owner="isOwner"
+            @update:title="title = $event"
+          />
+        </template>
+
         <ChatVisibility
           v-if="isOwner"
           :chat-id="data!.id"
