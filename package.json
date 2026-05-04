@@ -37,7 +37,7 @@
     "vue": "^3.5.33",
     "vue-chrts": "^2.1.4",
     "vue-router": "^5.0.6",
-    "zod": "^4.4.2"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@octokit/types": "^16.0.0",
@@ -51,7 +51,7 @@
     "vite": "^7.3.2",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vite-plugin-vue-layouts": "^0.11.0",
-    "vue-tsc": "^3.2.7"
+    "vue-tsc": "^3.2.8"
   },
   "packageManager": "pnpm@10.33.2"
 }
