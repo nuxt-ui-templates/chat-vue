@@ -1,6 +1,5 @@
 import type { UIMessage } from 'ai'
 import { convertToModelMessages, createUIMessageStreamResponse, generateText, isStepCount, smoothStream, streamText, toUIMessageStream } from 'ai'
-import { gateway } from '@ai-sdk/gateway'
 import { z } from 'zod'
 import type { AnthropicLanguageModelOptions } from '@ai-sdk/anthropic'
 import { anthropic } from '@ai-sdk/anthropic'
@@ -44,7 +43,7 @@ export default defineHandler(async (event) => {
 
   if (!chat.title) {
     const { text: title } = await generateText({
-      model: gateway('openai/gpt-4.1-nano'),
+      model: 'openai/gpt-4.1-nano',
       instructions: `You are a title generator for a chat:
           - Generate a short title based on the first user's message
           - The title should be less than 30 characters long
@@ -72,7 +71,7 @@ export default defineHandler(async (event) => {
 
   const result = streamText({
     abortSignal: abortController.signal,
-    model: gateway(model),
+    model,
     instructions: `You are a knowledgeable and helpful AI assistant. ${session.data.user?.username ? `The user's name is ${session.data.user.username}.` : ''} Your goal is to provide clear, accurate, and well-structured responses.
 
 **FORMATTING RULES (CRITICAL):**
