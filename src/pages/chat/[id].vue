@@ -53,11 +53,6 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
       model: model.value
     }
   }),
-  onData: (dataPart) => {
-    if (dataPart.type === 'data-chat-title') {
-      fetchChats()
-    }
-  },
   onError(error) {
     let message = error.message
     if (typeof message === 'string' && message[0] === '{') {
@@ -74,6 +69,15 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
       color: 'error',
       duration: 0
     })
+  }
+})
+
+// The title is generated server-side (and persisted) before streaming starts on
+// the first message; there's no in-stream signal, so refresh the chats list as
+// soon as the response begins streaming — the watch above then syncs `title`.
+watch(status, (value) => {
+  if (value === 'streaming' && !title.value && isOwner.value) {
+    fetchChats()
   }
 })
 
