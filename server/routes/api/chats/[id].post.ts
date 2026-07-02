@@ -1,5 +1,5 @@
 import type { UIMessage } from 'ai'
-import { convertToModelMessages, createUIMessageStream, createUIMessageStreamResponse, generateText, isStepCount, smoothStream, streamText, toUIMessageStream } from 'ai'
+import { convertToModelMessages, createUIMessageStreamResponse, generateText, isStepCount, smoothStream, streamText, toUIMessageStream } from 'ai'
 import { gateway } from '@ai-sdk/gateway'
 import { z } from 'zod'
 import type { AnthropicLanguageModelOptions } from '@ai-sdk/anthropic'
@@ -70,12 +70,10 @@ export default defineHandler(async (event) => {
   const abortController = new AbortController()
   event.runtime?.node?.req?.on('close', () => abortController.abort())
 
-  const stream = createUIMessageStream({
-    execute: async ({ writer }) => {
-      const result = streamText({
-        abortSignal: abortController.signal,
-        model: gateway(model),
-        instructions: `You are a knowledgeable and helpful AI assistant. ${session.data.user?.username ? `The user's name is ${session.data.user.username}.` : ''} Your goal is to provide clear, accurate, and well-structured responses.
+  const result = streamText({
+    abortSignal: abortController.signal,
+    model: gateway(model),
+    instructions: `You are a knowledgeable and helpful AI assistant. ${session.data.user?.username ? `The user's name is ${session.data.user.username}.` : ''} Your goal is to provide clear, accurate, and well-structured responses.
 
 **FORMATTING RULES (CRITICAL):**
 - ABSOLUTELY NO MARKDOWN HEADINGS: Never use #, ##, ###, ####, #####, or ######
@@ -97,58 +95,48 @@ export default defineHandler(async (event) => {
 - Use examples when helpful
 - Break down complex topics into digestible parts
 - Maintain a friendly, professional tone`,
-        messages: await convertToModelMessages(messages),
-        tools: {
-          chart: chartTool,
-          weather: weatherTool,
-          ...(model.startsWith('anthropic/') && { web_search: anthropic.tools.webSearch_20250305() }),
-          ...(model.startsWith('openai/') && { web_search: openai.tools.webSearch() })
-          // TODO: enable once AI SDK supports combining provider-defined tools with custom tools
-          // ...(model.startsWith('google/') && { google_search: google.tools.googleSearch({}) })
-        },
-        providerOptions: {
-          anthropic: {
-            thinking: {
-              type: 'enabled',
-              budgetTokens: 2048
-            }
-          } satisfies AnthropicLanguageModelOptions,
-          google: {
-            thinkingConfig: {
-              includeThoughts: true,
-              thinkingLevel: 'low'
-            }
-          } satisfies GoogleLanguageModelOptions,
-          openai: {
-            reasoningEffort: 'low',
-            reasoningSummary: 'detailed'
-          } satisfies OpenAILanguageModelResponsesOptions
-        },
-        stopWhen: isStepCount(5),
-        experimental_transform: smoothStream()
-      })
-
-      if (!chat.title) {
-        writer.write({
-          type: 'data-chat-title',
-          data: { message: 'Generating title...' },
-          transient: true
-        })
-      }
-
-      writer.merge(toUIMessageStream({
-        stream: result.stream,
-        sendSources: true,
-        sendReasoning: true
-      }))
+    messages: await convertToModelMessages(messages),
+    tools: {
+      chart: chartTool,
+      weather: weatherTool,
+      ...(model.startsWith('anthropic/') && { web_search: anthropic.tools.webSearch_20250305() }),
+      ...(model.startsWith('openai/') && { web_search: openai.tools.webSearch() })
+      // TODO: enable once AI SDK supports combining provider-defined tools with custom tools
+      // ...(model.startsWith('google/') && { google_search: google.tools.googleSearch({}) })
     },
-    onEnd: async ({ messages }) => {
-      await db.insert(tables.messages).values(messages.map(message => ({
-        id: message.id,
+    providerOptions: {
+      anthropic: {
+        thinking: {
+          type: 'enabled',
+          budgetTokens: 2048
+        }
+      } satisfies AnthropicLanguageModelOptions,
+      google: {
+        thinkingConfig: {
+          includeThoughts: true,
+          thinkingLevel: 'low'
+        }
+      } satisfies GoogleLanguageModelOptions,
+      openai: {
+        reasoningEffort: 'low',
+        reasoningSummary: 'detailed'
+      } satisfies OpenAILanguageModelResponsesOptions
+    },
+    stopWhen: isStepCount(5),
+    experimental_transform: smoothStream()
+  })
+
+  const stream = toUIMessageStream({
+    stream: result.stream,
+    sendSources: true,
+    sendReasoning: true,
+    onEnd: async ({ responseMessage }) => {
+      await db.insert(tables.messages).values([{
+        id: responseMessage.id,
         chatId: chat.id,
-        role: message.role as 'user' | 'assistant',
-        parts: message.parts
-      }))).onConflictDoNothing()
+        role: responseMessage.role as 'user' | 'assistant',
+        parts: responseMessage.parts
+      }]).onConflictDoNothing()
     }
   })
 
