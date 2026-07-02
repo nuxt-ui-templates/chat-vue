@@ -109,9 +109,10 @@ export default defineHandler(async (event) => {
         providerOptions: {
           anthropic: {
             thinking: {
-              type: 'enabled',
-              budgetTokens: 2048
-            }
+              type: 'adaptive',
+              display: 'summarized'
+            },
+            effort: 'low'
           } satisfies AnthropicLanguageModelOptions,
           google: {
             thinkingConfig: {
