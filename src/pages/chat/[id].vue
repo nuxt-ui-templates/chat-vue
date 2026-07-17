@@ -255,6 +255,7 @@ onMounted(() => {
           v-if="isOwner"
           v-model="input"
           :error="error"
+          color="neutral"
           variant="subtle"
           class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
           :ui="{ base: 'px-1.5' }"

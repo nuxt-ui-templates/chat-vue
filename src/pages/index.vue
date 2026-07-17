@@ -94,6 +94,7 @@ const quickChats = [
           v-model="input"
           :status="loading ? 'streaming' : 'ready'"
           class="[view-transition-name:chat-prompt]"
+          color="neutral"
           variant="subtle"
           :ui="{ base: 'px-1.5' }"
           @submit="onSubmit"
