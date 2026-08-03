@@ -12,25 +12,25 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^4.0.21",
-    "@ai-sdk/google": "^4.0.24",
-    "@ai-sdk/openai": "^4.0.20",
-    "@ai-sdk/vue": "^4.0.37",
+    "@ai-sdk/anthropic": "^4.0.27",
+    "@ai-sdk/google": "^4.0.31",
+    "@ai-sdk/openai": "^4.0.27",
+    "@ai-sdk/vue": "^4.0.48",
     "@comark/vue": "^0.5.1",
     "@iconify/vue": "^5.0.1",
     "@libsql/client": "^0.17.4",
     "@nuxt/ui": "^4.10.0",
-    "@shikijs/langs": "^4.3.1",
+    "@shikijs/langs": "^4.4.1",
     "@unhead/vue": "^2.1.16",
     "@unovis/vue": "^1.6.7",
-    "@vueuse/core": "^14.3.0",
-    "ai": "^7.0.37",
+    "@vueuse/core": "^14.4.0",
+    "ai": "^7.0.48",
     "date-fns": "^4.4.0",
     "defu": "^6.1.7",
     "drizzle-orm": "^0.45.2",
     "nitro": "^3.0.260311-beta",
     "ofetch": "^1.5.1",
-    "shiki": "^4.3.1",
+    "shiki": "^4.4.1",
     "tailwindcss": "^4.3.3",
     "ufo": "^1.6.4",
     "vue": "^3.5.40",
@@ -50,7 +50,7 @@
     "vite": "^7.3.6",
     "vite-plugin-vue-devtools": "^8.2.1",
     "vite-plugin-vue-layouts": "^0.11.0",
-    "vue-tsc": "^3.3.8"
+    "vue-tsc": "^3.3.9"
   },
-  "packageManager": "pnpm@11.17.0"
+  "packageManager": "pnpm@11.18.0"
 }
