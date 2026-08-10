@@ -1,4 +1,4 @@
-import { defineComarkComponent } from '@comark/vue'
+import { defineMarkdownComponent } from '@comark/vue'
 import highlight from '@comark/vue/plugins/highlight'
 import html from '@shikijs/langs/html'
 import css from '@shikijs/langs/css'
@@ -20,7 +20,7 @@ import toml from '@shikijs/langs/toml'
 import graphql from '@shikijs/langs/graphql'
 import SourceLink from './SourceLink.vue'
 
-export default defineComarkComponent({
+export default defineMarkdownComponent({
   name: 'ChatComark',
   plugins: [
     highlight({
