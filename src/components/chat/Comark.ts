@@ -1,5 +1,5 @@
 import { defineMarkdownComponent } from '@comark/vue'
-import highlight from '@comark/vue/plugins/highlight'
+import shiki from '@comark/vue/plugins/shiki'
 import html from '@shikijs/langs/html'
 import css from '@shikijs/langs/css'
 import python from '@shikijs/langs/python'
@@ -23,7 +23,7 @@ import SourceLink from './SourceLink.vue'
 export default defineMarkdownComponent({
   name: 'ChatComark',
   plugins: [
-    highlight({
+    shiki({
       languages: [html, css, python, sql, go, rust, java, c, cpp, ruby, php, swift, kotlin, diff, dockerfile, xml, toml, graphql]
     })
   ],
