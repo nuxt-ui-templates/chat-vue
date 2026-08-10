@@ -35,7 +35,7 @@ const emit = defineEmits<{
       chevron="leading"
     >
       <ChatComark
-        :markdown="part.text"
+        :value="part.text"
         :streaming="isPartStreaming(part)"
       />
     </UChatReasoning>
