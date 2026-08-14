@@ -121,6 +121,11 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   icon: 'i-simple-icons:github',
   to: 'https://github.com/nuxt-ui-templates/chat-vue',
   target: '_blank'
+}, {
+  label: 'Deploy to Vercel',
+  icon: 'i-simple-icons:vercel',
+  to: 'https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fchat-vue&repository-name=chat-vue&env=GITHUB_OAUTH_CLIENT_ID%2CGITHUB_OAUTH_CLIENT_SECRET%2CSESSION_SECRET&stores=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22tursocloud%22%2C%22productSlug%22%3A%22database%22%2C%22protocol%22%3A%22storage%22%7D%5D&demo-title=Vue+Chat+Template&demo-description=An+AI+chatbot+template+with+GitHub+authentication+and+persistent+chat+history+powered+by+Vercel+AI+SDK.&demo-url=https%3A%2F%2Fchat-vue-template.nuxt.dev&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fvue%2Fchat-dark.png',
+  target: '_blank'
 }], [{
   label: 'Log out',
   icon: 'i-lucide-log-out',
