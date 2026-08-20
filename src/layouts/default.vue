@@ -74,7 +74,7 @@ defineShortcuts({
         <ULink
           v-if="!collapsed"
           to="/"
-          class="flex items-center gap-0.5"
+          class="flex items-center gap-0.5 outline-primary/25 focus-visible:outline-3 rounded-md"
         >
           <UIcon
             name="i-logos-vue"
