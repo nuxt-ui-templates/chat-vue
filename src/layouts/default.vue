@@ -182,7 +182,7 @@ defineShortcuts({
       }, ...groups]"
     />
 
-    <div class="flex-1 flex m-4 lg:ml-0 rounded-lg ring ring-default bg-default/75 shadow min-w-0 overflow-hidden">
+    <div class="flex-1 flex m-4 lg:ml-0 rounded-lg ring ring-default bg-default/75 shadow-sm min-w-0 overflow-hidden">
       <RouterView :key="route.path" />
     </div>
   </UDashboardGroup>
