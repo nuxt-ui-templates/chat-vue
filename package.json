@@ -21,7 +21,7 @@
     "@libsql/client": "^0.17.4",
     "@nuxt/ui": "^4.11.0",
     "@shikijs/langs": "^4.4.3",
-    "@unhead/vue": "^2.1.17",
+    "@unhead/vue": "^3.4.0",
     "@unovis/vue": "^1.6.7",
     "@vueuse/core": "^14.4.0",
     "ai": "^7.0.77",
