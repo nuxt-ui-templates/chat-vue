@@ -12,19 +12,19 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^4.0.49",
-    "@ai-sdk/google": "^4.0.64",
-    "@ai-sdk/openai": "^4.0.60",
-    "@ai-sdk/vue": "^4.0.93",
-    "@comark/vue": "^0.6.2",
+    "@ai-sdk/anthropic": "^4.0.53",
+    "@ai-sdk/google": "^4.0.68",
+    "@ai-sdk/openai": "^4.0.66",
+    "@ai-sdk/vue": "^4.0.98",
+    "@comark/vue": "^0.7.0",
     "@iconify/vue": "^5.0.1",
     "@libsql/client": "^0.18.0",
-    "@nuxt/ui": "^4.11.0",
+    "@nuxt/ui": "^4.11.1",
     "@shikijs/langs": "^4.4.3",
     "@unhead/vue": "^3.4.0",
-    "@unovis/vue": "^1.6.7",
+    "@unovis/vue": "^1.7.0",
     "@vueuse/core": "^14.4.0",
-    "ai": "^7.0.93",
+    "ai": "^7.0.98",
     "date-fns": "^4.4.0",
     "defu": "^6.1.7",
     "drizzle-orm": "^0.45.2",
@@ -34,23 +34,23 @@
     "tailwindcss": "^4.3.3",
     "ufo": "^1.6.4",
     "vue": "^3.5.42",
-    "vue-chrts": "^2.2.1",
+    "vue-chrts": "^2.2.3",
     "vue-router": "^5.3.1",
-    "zod": "^4.5.4"
+    "zod": "^4.6.2"
   },
   "devDependencies": {
     "@octokit/types": "^18.0.0",
-    "@types/node": "^24.13.3",
+    "@types/node": "^24.13.4",
     "@vitejs/plugin-vue": "^6.0.8",
     "drizzle-kit": "^0.31.10",
     "eslint": "^10.10.0",
-    "eslint-plugin-vue": "^10.10.0",
+    "eslint-plugin-vue": "^10.11.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.69.0",
-    "vite": "^8.2.2",
+    "typescript-eslint": "^8.70.0",
+    "vite": "^8.3.0",
     "vite-plugin-vue-devtools": "^8.2.1",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vue-tsc": "^3.3.11"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "pnpm@12.4.1"
 }
