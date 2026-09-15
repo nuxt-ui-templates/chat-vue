@@ -44,6 +44,7 @@
     "@vitejs/plugin-vue": "^6.0.8",
     "drizzle-kit": "^0.31.10",
     "eslint": "^10.10.0",
+    "eslint-plugin-better-tailwindcss": "^4.7.0",
     "eslint-plugin-vue": "^10.11.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.0",
