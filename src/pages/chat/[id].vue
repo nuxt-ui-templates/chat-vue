@@ -14,11 +14,14 @@ import ChatVisibility from '../../components/chat/ChatVisibility.vue'
 import ChatTitle from '../../components/chat/ChatTitle.vue'
 import ChatIndicator from '../../components/chat/Indicator.vue'
 import Navbar from '../../components/Navbar.vue'
+import ChatPrompt from '../../components/chat/Prompt.vue'
+import { useChatSettings } from '../../composables/useChatSettings'
 import type { Vote } from '../../../server/utils/drizzle'
 
 const route = useRoute<'/chat/[id]'>()
 const toast = useToast()
 const { model } = useModels()
+const { webSearch, reasoning } = useChatSettings()
 const { fetchChats, chats } = useChats()
 const { csrf, headerName } = useCsrf()
 
@@ -49,9 +52,11 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
   transport: new DefaultChatTransport({
     api: `/api/chats/${data?.id}`,
     headers: { [headerName]: csrf() },
-    body: {
-      model: model.value
-    }
+    body: () => ({
+      model: model.value,
+      webSearch: webSearch.value,
+      reasoning: reasoning.value
+    })
   }),
   onData: (dataPart) => {
     if (dataPart.type === 'data-chat-title') {
@@ -251,28 +256,16 @@ onMounted(() => {
           </template>
         </UChatMessages>
 
-        <UChatPrompt
+        <ChatPrompt
           v-if="isOwner"
           v-model="input"
+          :status="status"
           :error="error"
-          color="neutral"
-          variant="subtle"
           class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
-          :ui="{ base: 'px-1.5' }"
           @submit="handleSubmit"
-        >
-          <template #footer>
-            <ModelSelect v-model="model" />
-
-            <UChatPromptSubmit
-              :status="status"
-              color="neutral"
-              size="sm"
-              @stop="stop()"
-              @reload="regenerate()"
-            />
-          </template>
-        </UChatPrompt>
+          @stop="stop()"
+          @reload="regenerate()"
+        />
       </UContainer>
     </template>
   </UDashboardPanel>

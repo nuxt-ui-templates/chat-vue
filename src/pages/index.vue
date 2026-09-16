@@ -6,6 +6,7 @@ import { useChats } from '../composables/useChats'
 import { useCsrf } from '../composables/useCsrf'
 import { useUserSession } from '../composables/useUserSession'
 import Navbar from '../components/Navbar.vue'
+import ChatPrompt from '../components/chat/Prompt.vue'
 
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
@@ -90,24 +91,12 @@ const quickChats = [
           {{ greeting }}
         </h1>
 
-        <UChatPrompt
+        <ChatPrompt
           v-model="input"
-          :status="loading ? 'streaming' : 'ready'"
+          :disabled="loading"
           class="[view-transition-name:chat-prompt]"
-          color="neutral"
-          variant="subtle"
-          :ui="{ base: 'px-1.5' }"
           @submit="onSubmit"
-        >
-          <template #footer>
-            <ModelSelect />
-
-            <UChatPromptSubmit
-              color="neutral"
-              size="sm"
-            />
-          </template>
-        </UChatPrompt>
+        />
 
         <div class="flex flex-wrap gap-2">
           <UButton
