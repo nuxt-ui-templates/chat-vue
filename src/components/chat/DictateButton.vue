@@ -63,6 +63,11 @@ function fail(cause: Error) {
 }
 
 async function record() {
+  if (!supported.value || !loggedIn.value) {
+    toast.add({ description: tooltip.value, icon: 'i-lucide-info', color: 'neutral' })
+    return
+  }
+
   try {
     await start({ onMaxDuration: finish })
   } catch (cause) {
@@ -90,10 +95,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div
-    v-if="supported"
-    class="flex items-center gap-1"
-  >
+  <div class="flex items-center gap-1">
     <template v-if="recording || finalizing">
       <div
         v-if="recording"
@@ -137,7 +139,7 @@ onBeforeUnmount(() => {
         color="neutral"
         variant="ghost"
         size="sm"
-        :disabled="disabled || !loggedIn || !supported"
+        :disabled="disabled"
         aria-label="Dictate"
         @click="record"
       />

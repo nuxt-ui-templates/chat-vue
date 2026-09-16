@@ -93,7 +93,7 @@ const quickChats = [
 
         <ChatPrompt
           v-model="input"
-          :status="loading ? 'streaming' : 'ready'"
+          :disabled="loading"
           class="[view-transition-name:chat-prompt]"
           @submit="onSubmit"
         />
