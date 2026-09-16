@@ -14,9 +14,7 @@ import ChatVisibility from '../../components/chat/ChatVisibility.vue'
 import ChatTitle from '../../components/chat/ChatTitle.vue'
 import ChatIndicator from '../../components/chat/Indicator.vue'
 import Navbar from '../../components/Navbar.vue'
-import ModelSelect from '../../components/ModelSelect.vue'
-import ChatPromptMenu from '../../components/chat/PromptMenu.vue'
-import ChatDictateButton from '../../components/chat/DictateButton.vue'
+import ChatPrompt from '../../components/chat/Prompt.vue'
 import { useChatSettings } from '../../composables/useChatSettings'
 import type { Vote } from '../../../server/utils/drizzle'
 
@@ -92,17 +90,6 @@ function handleSubmit(e: Event) {
     })
     input.value = ''
   }
-}
-
-const dictation = ref<'idle' | 'recording' | 'transcribing'>('idle')
-const dictationPreview = ref('')
-const dictationPlaceholder = computed(() => {
-  if (dictation.value === 'idle') return undefined
-  return dictationPreview.value || (dictation.value === 'recording' ? 'Listening...' : 'Transcribing...')
-})
-
-function appendTranscript(text: string) {
-  input.value = input.value.trim() ? `${input.value.trimEnd()} ${text}` : text
 }
 
 const editingMessageId = ref<string | null>(null)
@@ -269,40 +256,16 @@ onMounted(() => {
           </template>
         </UChatMessages>
 
-        <UChatPrompt
+        <ChatPrompt
           v-if="isOwner"
           v-model="input"
+          :status="status"
           :error="error"
-          color="neutral"
-          variant="subtle"
           class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
-          :placeholder="dictationPlaceholder"
-          :ui="{ base: ['px-1.5', dictation !== 'idle' && 'placeholder:italic'] }"
           @submit="handleSubmit"
-        >
-          <template #footer>
-            <ChatPromptMenu />
-
-            <div class="flex items-center gap-1">
-              <ModelSelect />
-
-              <ChatDictateButton
-                v-if="status === 'ready' && !input.trim()"
-                v-model:state="dictation"
-                v-model:preview="dictationPreview"
-                @transcript="appendTranscript"
-              />
-              <UChatPromptSubmit
-                v-else
-                :status="status"
-                color="neutral"
-                size="sm"
-                @stop="stop()"
-                @reload="regenerate()"
-              />
-            </div>
-          </template>
-        </UChatPrompt>
+          @stop="stop()"
+          @reload="regenerate()"
+        />
       </UContainer>
     </template>
   </UDashboardPanel>

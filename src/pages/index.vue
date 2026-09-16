@@ -6,9 +6,7 @@ import { useChats } from '../composables/useChats'
 import { useCsrf } from '../composables/useCsrf'
 import { useUserSession } from '../composables/useUserSession'
 import Navbar from '../components/Navbar.vue'
-import ModelSelect from '../components/ModelSelect.vue'
-import ChatPromptMenu from '../components/chat/PromptMenu.vue'
-import ChatDictateButton from '../components/chat/DictateButton.vue'
+import ChatPrompt from '../components/chat/Prompt.vue'
 
 const { fetchChats } = useChats()
 const { csrf, headerName } = useCsrf()
@@ -43,17 +41,6 @@ async function createChat(prompt: string) {
 
 function onSubmit() {
   createChat(input.value)
-}
-
-const dictation = ref<'idle' | 'recording' | 'transcribing'>('idle')
-const dictationPreview = ref('')
-const dictationPlaceholder = computed(() => {
-  if (dictation.value === 'idle') return undefined
-  return dictationPreview.value || (dictation.value === 'recording' ? 'Listening...' : 'Transcribing...')
-})
-
-function appendTranscript(text: string) {
-  input.value = input.value.trim() ? `${input.value.trimEnd()} ${text}` : text
 }
 
 const quickChats = [
@@ -104,36 +91,12 @@ const quickChats = [
           {{ greeting }}
         </h1>
 
-        <UChatPrompt
+        <ChatPrompt
           v-model="input"
           :status="loading ? 'streaming' : 'ready'"
           class="[view-transition-name:chat-prompt]"
-          color="neutral"
-          variant="subtle"
-          :placeholder="dictationPlaceholder"
-          :ui="{ base: ['px-1.5', dictation !== 'idle' && 'placeholder:italic'] }"
           @submit="onSubmit"
-        >
-          <template #footer>
-            <ChatPromptMenu />
-
-            <div class="flex items-center gap-1">
-              <ModelSelect />
-
-              <ChatDictateButton
-                v-if="!input.trim() && !loading"
-                v-model:state="dictation"
-                v-model:preview="dictationPreview"
-                @transcript="appendTranscript"
-              />
-              <UChatPromptSubmit
-                v-else
-                color="neutral"
-                size="sm"
-              />
-            </div>
-          </template>
-        </UChatPrompt>
+        />
 
         <div class="flex flex-wrap gap-2">
           <UButton
