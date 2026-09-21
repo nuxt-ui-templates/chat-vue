@@ -23,7 +23,7 @@
     "@shikijs/langs": "^4.4.3",
     "@unhead/vue": "^3.4.1",
     "@unovis/vue": "^1.7.0",
-    "@vueuse/core": "^14.4.0",
+    "@vueuse/core": "^15.0.0",
     "ai": "^7.0.107",
     "date-fns": "^4.4.0",
     "defu": "^6.1.7",
