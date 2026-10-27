@@ -188,8 +188,8 @@ importers:
         specifier: ^0.18.0
         version: 0.18.0
       '@nuxt/ui':
-        specifier: https://pkg.pr.new/@nuxt/ui@e6d6135
-        version: https://pkg.pr.new/@nuxt/ui@e6d6135(2ce189c2ad9c46bfc5f7802299a9717c)
+        specifier: https://pkg.pr.new/@nuxt/ui@3ad5f5f
+        version: https://pkg.pr.new/@nuxt/ui@3ad5f5f(2ce189c2ad9c46bfc5f7802299a9717c)
       '@shikijs/langs':
         specifier: ^4.5.0
         version: 4.5.0
@@ -1206,8 +1206,8 @@ packages:
     resolution: {integrity: sha512-L+0YiNDh/5C079JiHweAbOJqWD/931N+aqwtRk/wrCpRmTmYgiyIelVbnOv0sevWvGcPouBJRgTC2fxlp3mxoQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  '@nuxt/ui@https://pkg.pr.new/@nuxt/ui@e6d6135':
-    resolution: {integrity: sha512-r9i4Qn0xdRfaCPcA3qYYQeCH6UDMm7j59iXpWyGBdoO5Le076ZUtiUcNmzE6oKqQ3dvYVAEsjSN0yFiOLTnl1A==, tarball: https://pkg.pr.new/@nuxt/ui@e6d6135}
+  '@nuxt/ui@https://pkg.pr.new/@nuxt/ui@3ad5f5f':
+    resolution: {integrity: sha512-TNlmo/pPeTpbgpa/zBWmZs04TXH3MXG/9dK9OTo7KkPwhzswcqgAPa1WgkuTiMGGFNZ7QvP8xMr7cqqabSRKYg==, tarball: https://pkg.pr.new/@nuxt/ui@3ad5f5f}
     version: 4.12.0
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
@@ -5405,7 +5405,7 @@ snapshots:
       pkg-types: 2.3.3
       std-env: 4.3.0
 
-  '@nuxt/ui@https://pkg.pr.new/@nuxt/ui@e6d6135(2ce189c2ad9c46bfc5f7802299a9717c)':
+  '@nuxt/ui@https://pkg.pr.new/@nuxt/ui@3ad5f5f(2ce189c2ad9c46bfc5f7802299a9717c)':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@iconify/vue': 5.0.4(vue@3.5.44(typescript@6.0.3))
