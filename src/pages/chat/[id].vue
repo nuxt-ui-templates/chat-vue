@@ -5,6 +5,7 @@ import { useChat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
 import { toFileUIParts } from '@nuxt/ui/utils/ai'
 import type { UIMessage } from 'ai'
+import type { ChatPromptQueueItem } from '@nuxt/ui'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useCsrf } from '../../composables/useCsrf'
@@ -85,6 +86,12 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
 
 const files = ref<File[]>([])
 
+async function send(text: string, attached: File[] = []) {
+  // Inlined as data URLs, an app with large files would upload them first and send their URLs
+  const parts = await toFileUIParts(attached)
+  sendMessage(text.trim() ? { text, files: parts } : { files: parts })
+}
+
 async function handleSubmit(e: Event) {
   e.preventDefault()
 
@@ -96,9 +103,32 @@ async function handleSubmit(e: Event) {
   input.value = ''
   files.value = []
 
-  // Inlined as data URLs, an app with large files would upload them first and send their URLs
-  const parts = await toFileUIParts(submitted)
-  sendMessage(text.trim() ? { text, files: parts } : { files: parts })
+  await send(text, submitted)
+}
+
+// Messages sent while a response streams wait here, `UChatPrompt` queues a submit while the chat is busy
+const queue = ref<ChatPromptQueueItem[]>([])
+
+function sendNext() {
+  const next = queue.value.shift()
+  if (next) {
+    send(next.text, next.files)
+  }
+}
+
+watch(status, (value) => {
+  if (value === 'ready') {
+    sendNext()
+  }
+})
+
+// A queued message picked to be sent now is at the front of the queue, it goes out once the current response stops
+function onSend() {
+  if (status.value === 'submitted' || status.value === 'streaming') {
+    stop()
+  } else {
+    sendNext()
+  }
 }
 
 const editingMessageId = ref<string | null>(null)
@@ -282,10 +312,12 @@ onMounted(() => {
             <ChatPrompt
               v-model="input"
               v-model:files="files"
+              v-model:queue="queue"
               :status="status"
               :error="error"
               class="[view-transition-name:chat-prompt] rounded-b-none"
               @submit="handleSubmit"
+              @send="onSend"
               @stop="stop()"
               @reload="regenerate()"
             />
