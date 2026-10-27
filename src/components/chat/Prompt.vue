@@ -21,6 +21,8 @@ const emit = defineEmits<{
 }>()
 
 const input = defineModel<string>({ default: '' })
+// Attachments are only enabled where the parent binds `v-model:files`
+const files = defineModel<File[]>('files')
 
 const dictation = ref<'idle' | 'recording' | 'transcribing'>('idle')
 const dictationPreview = ref('')
@@ -29,7 +31,7 @@ const placeholder = computed(() => {
   return dictationPreview.value || (dictation.value === 'recording' ? 'Listening...' : 'Transcribing...')
 })
 
-const canDictate = computed(() => dictation.value !== 'idle' || (props.status === 'ready' && !input.value.trim()))
+const canDictate = computed(() => dictation.value !== 'idle' || (props.status === 'ready' && !input.value.trim() && !files.value?.length))
 
 function appendTranscript(text: string) {
   input.value = input.value.trim() ? `${input.value.trimEnd()} ${text}` : text
@@ -39,6 +41,8 @@ function appendTranscript(text: string) {
 <template>
   <UChatPrompt
     v-model="input"
+    v-model:files="files"
+    accept="image/*,application/pdf"
     :status="status"
     :error="error"
     :disabled="disabled"
@@ -48,8 +52,8 @@ function appendTranscript(text: string) {
     :ui="{ base: ['px-1.5', dictation !== 'idle' && 'placeholder:italic'] }"
     @submit="emit('submit', $event)"
   >
-    <template #footer>
-      <ChatPromptMenu />
+    <template #footer="{ open }">
+      <ChatPromptMenu :open="files ? open : undefined" />
 
       <div class="flex items-center gap-1">
         <ModelSelect />
