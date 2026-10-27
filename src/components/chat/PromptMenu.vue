@@ -4,13 +4,24 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 import { useModels } from '../../composables/useModels'
 import { useChatSettings } from '../../composables/useChatSettings'
 
+const props = defineProps<{
+  /** Opens the file picker, the menu offers to add files when it is set. */
+  open?: () => void
+}>()
+
 const { model } = useModels()
 const { webSearch, reasoning } = useChatSettings()
 
 // Web search is a provider-defined tool, only available on Anthropic and OpenAI models.
 const supportsWebSearch = computed(() => !model.value.startsWith('google/'))
 
-const items = computed<DropdownMenuItem[]>(() => [{
+const items = computed<DropdownMenuItem[][]>(() => [props.open
+  ? [{
+      label: 'Add files or photos',
+      icon: 'i-lucide-paperclip',
+      onSelect: () => props.open?.()
+    }]
+  : [], [{
   label: 'Web search',
   icon: 'i-lucide-globe',
   type: 'checkbox',
@@ -30,7 +41,7 @@ const items = computed<DropdownMenuItem[]>(() => [{
     reasoning.value = checked
   },
   onSelect: (e: Event) => e.preventDefault()
-}])
+}]])
 </script>
 
 <template>
