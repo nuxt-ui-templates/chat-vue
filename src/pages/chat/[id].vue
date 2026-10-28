@@ -189,7 +189,7 @@ onMounted(() => {
     v-if="data?.id"
     id="chat"
     class="relative min-h-0"
-    :ui="{ body: 'p-0 sm:p-0 overscroll-none' }"
+    :ui="{ body: 'p-0 sm:p-0 overscroll-none scroll-pt-(--ui-header-height)' }"
   >
     <template #header>
       <Navbar>
@@ -217,8 +217,8 @@ onMounted(() => {
           should-auto-scroll
           :messages="messages"
           :status="status"
-          :spacing-offset="isOwner ? 200 : 0"
-          class="pt-(--ui-header-height) pb-4 sm:pb-6"
+          :class="['pt-(--ui-header-height)', !isOwner && 'pb-4 sm:pb-6']"
+          :ui="{ footer: 'pt-4 sm:pt-6' }"
         >
           <template #indicator>
             <div class="flex items-center gap-1.5">
@@ -231,9 +231,10 @@ onMounted(() => {
             </div>
           </template>
 
-          <template #content="{ message }">
+          <template #content="{ message, streaming }">
             <ChatMessageContent
               :message="message"
+              :streaming="streaming"
               :editing="isOwner && editingMessageId === message.id"
               @save="saveEdit"
               @cancel-edit="cancelEdit"
@@ -254,18 +255,22 @@ onMounted(() => {
               @vote="vote"
             />
           </template>
-        </UChatMessages>
 
-        <ChatPrompt
-          v-if="isOwner"
-          v-model="input"
-          :status="status"
-          :error="error"
-          class="sticky bottom-0 [view-transition-name:chat-prompt] rounded-b-none z-10"
-          @submit="handleSubmit"
-          @stop="stop()"
-          @reload="regenerate()"
-        />
+          <template
+            v-if="isOwner"
+            #footer
+          >
+            <ChatPrompt
+              v-model="input"
+              :status="status"
+              :error="error"
+              class="[view-transition-name:chat-prompt] rounded-b-none"
+              @submit="handleSubmit"
+              @stop="stop()"
+              @reload="regenerate()"
+            />
+          </template>
+        </UChatMessages>
       </UContainer>
     </template>
   </UDashboardPanel>
