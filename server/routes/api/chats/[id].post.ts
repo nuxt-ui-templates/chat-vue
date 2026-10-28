@@ -3,9 +3,8 @@ import { convertToModelMessages, createUIMessageStream, createUIMessageStreamRes
 import { z } from 'zod'
 import type { AnthropicLanguageModelOptions } from '@ai-sdk/anthropic'
 import { anthropic } from '@ai-sdk/anthropic'
-import type { DeepSeekLanguageModelOptions } from '@ai-sdk/deepseek'
 import type { GoogleLanguageModelOptions } from '@ai-sdk/google'
-// import { google } from '@ai-sdk/google'
+import { google } from '@ai-sdk/google'
 import type { OpenAILanguageModelResponsesOptions } from '@ai-sdk/openai'
 import { openai } from '@ai-sdk/openai'
 import { useUserSession } from '../../../utils/session'
@@ -69,15 +68,15 @@ export default defineHandler(async (event) => {
     }).onConflictDoUpdate({ target: tables.messages.id, set: { parts: lastMessage.parts } })
   }
 
-  // Web search is a provider-defined tool, only available on Anthropic and OpenAI models.
-  // TODO: enable Google once AI SDK supports combining provider-defined tools with custom tools
-  // ...(model.startsWith('google/') && { google_search: google.tools.googleSearch({}) })
+  // Web search is a provider-defined tool, each provider has its own
   const webSearchTool = webSearch
     ? model.startsWith('anthropic/')
       ? anthropic.tools.webSearch_20250305()
       : model.startsWith('openai/')
         ? openai.tools.webSearch()
-        : undefined
+        : model.startsWith('google/')
+          ? google.tools.googleSearch({})
+          : undefined
     : undefined
 
   const webSearchInstructions = webSearchTool
@@ -89,29 +88,6 @@ export default defineHandler(async (event) => {
 
 `
     : ''
-
-  const providerOptions = {
-    anthropic: {
-      thinking: reasoning
-        ? { type: 'adaptive', display: 'summarized' }
-        : { type: 'disabled' }
-    } satisfies AnthropicLanguageModelOptions,
-    google: {
-      // Gemini 3 always thinks, the toggle only controls whether the thoughts are shown
-      thinkingConfig: {
-        includeThoughts: reasoning,
-        thinkingLevel: 'low'
-      }
-    } satisfies GoogleLanguageModelOptions,
-    openai: {
-      reasoningEffort: reasoning ? 'low' : 'none',
-      ...(reasoning && { reasoningSummary: 'detailed' })
-    } satisfies OpenAILanguageModelResponsesOptions,
-    deepseek: {
-      thinking: { type: reasoning ? 'enabled' : 'disabled' }
-    } satisfies DeepSeekLanguageModelOptions
-  }
-  const provider = model.split('/')[0] as keyof typeof providerOptions
 
   const abortController = new AbortController()
   event.runtime?.node?.req?.on('close', () => abortController.abort())
@@ -143,8 +119,24 @@ ${webSearchInstructions}**RESPONSE QUALITY:**
           weather: weatherTool,
           ...(webSearchTool && { web_search: webSearchTool })
         },
-        // Only send the options of the model's provider, the gateway ignores DeepSeek's when other providers' are present
-        providerOptions: { [provider]: providerOptions[provider] },
+        providerOptions: {
+          anthropic: {
+            thinking: reasoning
+              ? { type: 'adaptive', display: 'summarized' }
+              : { type: 'disabled' }
+          } satisfies AnthropicLanguageModelOptions,
+          google: {
+            // Gemini 3 always thinks, the toggle only controls whether the thoughts are shown
+            thinkingConfig: {
+              includeThoughts: reasoning,
+              thinkingLevel: 'low'
+            }
+          } satisfies GoogleLanguageModelOptions,
+          openai: {
+            reasoningEffort: reasoning ? 'low' : 'none',
+            ...(reasoning && { reasoningSummary: 'detailed' })
+          } satisfies OpenAILanguageModelResponsesOptions
+        },
         stopWhen: isStepCount(5),
         experimental_transform: smoothStream()
       })

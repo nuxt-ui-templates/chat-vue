@@ -21,8 +21,8 @@ Full-featured AI Chatbot Vue application with authentication, chat history, coll
 ## Features
 
 - ⚡️ **Streaming AI messages** powered by the [AI SDK](https://ai-sdk.dev) with thinking/reasoning support
-- 🤖 **Multiple model support** — Claude Haiku 5.5, Gemini 3 Flash, GPT-5.6 Luna and DeepSeek V4.1 Flash via [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)
-- 🔍 **Web search** with built-in provider tools (Anthropic, OpenAI), toggleable from the prompt menu along with extended thinking
+- 🤖 **Multiple model support** — Claude Haiku 5.5, Gemini 3 Flash and GPT-5.6 Luna via [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)
+- 🔍 **Web search** with built-in provider tools (Anthropic, Google, OpenAI), toggleable from the prompt menu along with extended thinking
 - 🎤 **Dictation** in the prompt with live streaming transcription over WebSocket through [AI Gateway](https://vercel.com/docs/ai-gateway)
 - 📊 **Charts and weather** tool calling with rich UI rendering
 - 🔐 **Authentication** via GitHub OAuth using [Nitro](https://nitro.build) server routes and httpOnly cookies
