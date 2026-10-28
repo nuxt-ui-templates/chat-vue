@@ -3,6 +3,7 @@ import { convertToModelMessages, createUIMessageStream, createUIMessageStreamRes
 import { z } from 'zod'
 import type { AnthropicLanguageModelOptions } from '@ai-sdk/anthropic'
 import { anthropic } from '@ai-sdk/anthropic'
+import type { DeepSeekLanguageModelOptions } from '@ai-sdk/deepseek'
 import type { GoogleLanguageModelOptions } from '@ai-sdk/google'
 // import { google } from '@ai-sdk/google'
 import type { OpenAILanguageModelResponsesOptions } from '@ai-sdk/openai'
@@ -45,7 +46,7 @@ export default defineHandler(async (event) => {
 
   if (!chat.title) {
     const { text: title } = await generateText({
-      model: 'openai/gpt-6-luna',
+      model: 'google/gemini-3.5-flash-lite',
       instructions: `You are a title generator for a chat:
           - Generate a short title based on the first user's message
           - The title should be less than 30 characters long
@@ -89,6 +90,29 @@ export default defineHandler(async (event) => {
 `
     : ''
 
+  const providerOptions = {
+    anthropic: {
+      thinking: reasoning
+        ? { type: 'adaptive', display: 'summarized' }
+        : { type: 'disabled' }
+    } satisfies AnthropicLanguageModelOptions,
+    google: {
+      // Gemini 3 always thinks, the toggle only controls whether the thoughts are shown
+      thinkingConfig: {
+        includeThoughts: reasoning,
+        thinkingLevel: 'low'
+      }
+    } satisfies GoogleLanguageModelOptions,
+    openai: {
+      reasoningEffort: reasoning ? 'low' : 'none',
+      ...(reasoning && { reasoningSummary: 'detailed' })
+    } satisfies OpenAILanguageModelResponsesOptions,
+    deepseek: {
+      thinking: { type: reasoning ? 'enabled' : 'disabled' }
+    } satisfies DeepSeekLanguageModelOptions
+  }
+  const provider = model.split('/')[0] as keyof typeof providerOptions
+
   const abortController = new AbortController()
   event.runtime?.node?.req?.on('close', () => abortController.abort())
 
@@ -119,25 +143,8 @@ ${webSearchInstructions}**RESPONSE QUALITY:**
           weather: weatherTool,
           ...(webSearchTool && { web_search: webSearchTool })
         },
-        providerOptions: {
-          anthropic: {
-            thinking: reasoning
-              ? { type: 'adaptive', display: 'summarized' }
-              : { type: 'disabled' }
-          } satisfies AnthropicLanguageModelOptions,
-          google: {
-            // Gemini 3 always thinks, the toggle only controls whether the thoughts are shown
-            thinkingConfig: {
-              includeThoughts: reasoning,
-              thinkingLevel: 'low'
-            }
-          } satisfies GoogleLanguageModelOptions,
-          openai: {
-            // The web search tool is rejected at minimal effort
-            reasoningEffort: reasoning || webSearchTool ? 'low' : 'minimal',
-            ...(reasoning && { reasoningSummary: 'detailed' })
-          } satisfies OpenAILanguageModelResponsesOptions
-        },
+        // Only send the options of the model's provider, the gateway ignores DeepSeek's when other providers' are present
+        providerOptions: { [provider]: providerOptions[provider] },
         stopWhen: isStepCount(5),
         experimental_transform: smoothStream()
       })
