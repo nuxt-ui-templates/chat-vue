@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { DropdownMenuItem } from '@nuxt/ui'
-import { useModels } from '../../composables/useModels'
 import { useChatSettings } from '../../composables/useChatSettings'
 
 const props = defineProps<{
@@ -9,11 +8,7 @@ const props = defineProps<{
   open?: () => void
 }>()
 
-const { model } = useModels()
 const { webSearch, reasoning } = useChatSettings()
-
-// Web search is a provider-defined tool, only available on Anthropic and OpenAI models.
-const supportsWebSearch = computed(() => !model.value.startsWith('google/'))
 
 const items = computed<DropdownMenuItem[][]>(() => [props.open
   ? [{
@@ -25,9 +20,7 @@ const items = computed<DropdownMenuItem[][]>(() => [props.open
   label: 'Web search',
   icon: 'i-lucide-globe',
   type: 'checkbox',
-  checked: webSearch.value && supportsWebSearch.value,
-  disabled: !supportsWebSearch.value,
-  description: supportsWebSearch.value ? undefined : 'Not available with this model',
+  checked: webSearch.value,
   onUpdateChecked: (checked: boolean) => {
     webSearch.value = checked
   },
