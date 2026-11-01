@@ -3,9 +3,20 @@ import { computed } from 'vue'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useChatSettings } from '../../composables/useChatSettings'
 
+const props = defineProps<{
+  /** Opens the file picker, the menu offers to add files when it is set. */
+  open?: () => void
+}>()
+
 const { webSearch, reasoning } = useChatSettings()
 
-const items = computed<DropdownMenuItem[]>(() => [{
+const items = computed<DropdownMenuItem[][]>(() => [props.open
+  ? [{
+      label: 'Add files or photos',
+      icon: 'i-lucide-paperclip',
+      onSelect: () => props.open?.()
+    }]
+  : [], [{
   label: 'Web search',
   icon: 'i-lucide-globe',
   type: 'checkbox',
@@ -23,7 +34,7 @@ const items = computed<DropdownMenuItem[]>(() => [{
     reasoning.value = checked
   },
   onSelect: (e: Event) => e.preventDefault()
-}])
+}]])
 </script>
 
 <template>

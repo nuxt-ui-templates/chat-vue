@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { useChat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
+import { toFileUIParts } from '@nuxt/ui/utils/ai'
 import type { UIMessage } from 'ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
@@ -82,14 +83,22 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
   }
 })
 
-function handleSubmit(e: Event) {
+const files = ref<File[]>([])
+
+async function handleSubmit(e: Event) {
   e.preventDefault()
-  if (input.value.trim()) {
-    sendMessage({
-      text: input.value
-    })
-    input.value = ''
-  }
+
+  const text = input.value
+  const submitted = files.value
+  if (!text.trim() && !submitted.length) return
+
+  // Cleared before the files are read, so a second submit meanwhile has nothing to send
+  input.value = ''
+  files.value = []
+
+  // Inlined as data URLs, an app with large files would upload them first and send their URLs
+  const parts = await toFileUIParts(submitted)
+  sendMessage(text.trim() ? { text, files: parts } : { files: parts })
 }
 
 const editingMessageId = ref<string | null>(null)
@@ -231,6 +240,16 @@ onMounted(() => {
             </div>
           </template>
 
+          <template #files="{ message, parts }">
+            <UChatAttachment
+              v-for="(part, index) in parts"
+              :key="`${message.id}-${index}`"
+              :name="part.filename"
+              :type="part.mediaType"
+              :url="part.url"
+            />
+          </template>
+
           <template #content="{ message, streaming }">
             <ChatMessageContent
               :message="message"
@@ -262,6 +281,7 @@ onMounted(() => {
           >
             <ChatPrompt
               v-model="input"
+              v-model:files="files"
               :status="status"
               :error="error"
               class="[view-transition-name:chat-prompt] rounded-b-none"
