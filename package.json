@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@octokit/types": "^18.0.0",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.6",
     "@vitejs/plugin-vue": "^6.0.10",
     "drizzle-kit": "^0.31.11",
     "eslint": "^10.14.0",
