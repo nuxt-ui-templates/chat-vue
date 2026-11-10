@@ -65,7 +65,7 @@ export default defineHandler(async (event) => {
       throw new HTTPError({ statusCode: 400, statusMessage: 'Invalid message' })
     })
 
-    await db.insert(tables.messages).values({
+    const [saved] = await db.insert(tables.messages).values({
       id: messageId,
       chatId: id as string,
       role: 'user',
@@ -75,7 +75,11 @@ export default defineHandler(async (event) => {
       set: { parts },
       // Only edit a message of this chat
       setWhere: eq(tables.messages.chatId, id as string)
-    })
+    }).returning({ id: tables.messages.id })
+
+    if (!saved) {
+      throw new HTTPError({ statusCode: 409, statusMessage: 'Message belongs to another chat' })
+    }
   }
 
   // Web search is a provider-defined tool, each provider has its own
