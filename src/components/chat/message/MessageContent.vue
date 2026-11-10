@@ -29,7 +29,7 @@ const emit = defineEmits<{
     :key="`${message.id}-${part.type}-${index}`"
   >
     <UChatReasoning
-      v-if="isReasoningUIPart(part)"
+      v-if="isReasoningUIPart(part) && message.role === 'assistant'"
       :text="part.text"
       :streaming="isPartStreaming(part)"
       chevron="leading"
