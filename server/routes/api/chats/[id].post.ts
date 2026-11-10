@@ -9,6 +9,7 @@ import type { OpenAILanguageModelResponsesOptions } from '@ai-sdk/openai'
 import { openai } from '@ai-sdk/openai'
 import { useUserSession } from '../../../utils/session'
 import { useDrizzle, tables, eq, and } from '../../../utils/drizzle'
+import { userMessageSchema } from '../../../utils/messages'
 import { defineHandler, HTTPError } from 'nitro'
 import { getValidatedRouterParams, readValidatedBody } from 'nitro/h3'
 import { weatherTool } from '../../../utils/tools/weather'
@@ -60,12 +61,21 @@ export default defineHandler(async (event) => {
 
   const lastMessage = messages[messages.length - 1]
   if (lastMessage?.role === 'user' && messages.length > 1) {
+    const { id: messageId, parts } = await userMessageSchema.parseAsync(lastMessage).catch(() => {
+      throw new HTTPError({ statusCode: 400, statusMessage: 'Invalid message' })
+    })
+
     await db.insert(tables.messages).values({
-      id: lastMessage.id,
+      id: messageId,
       chatId: id as string,
       role: 'user',
-      parts: lastMessage.parts
-    }).onConflictDoUpdate({ target: tables.messages.id, set: { parts: lastMessage.parts } })
+      parts
+    }).onConflictDoUpdate({
+      target: tables.messages.id,
+      set: { parts },
+      // Only edit a message of this chat
+      setWhere: eq(tables.messages.chatId, id as string)
+    })
   }
 
   // Web search is a provider-defined tool, each provider has its own
