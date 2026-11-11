@@ -1,3 +1,6 @@
 allowBuilds:
   esbuild: false
   vue-demi: false
+minimumReleaseAgeExclude:
+  - '@comark/vue@0.9.1'
+  - comark@0.9.1
