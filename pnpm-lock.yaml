@@ -197,8 +197,8 @@ importers:
         specifier: ^0.18.0
         version: 0.18.0
       '@nuxt/ui':
-        specifier: ^4.12.1
-        version: 4.12.1(2fa74f96a96b33b3f269eeb10bae4f4c)
+        specifier: ^4.12.2
+        version: 4.12.2(2fa74f96a96b33b3f269eeb10bae4f4c)
       '@shikijs/langs':
         specifier: ^4.6.0
         version: 4.6.0
@@ -1388,8 +1388,8 @@ packages:
     resolution: {integrity: sha512-L+0YiNDh/5C079JiHweAbOJqWD/931N+aqwtRk/wrCpRmTmYgiyIelVbnOv0sevWvGcPouBJRgTC2fxlp3mxoQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  '@nuxt/ui@4.12.1':
-    resolution: {integrity: sha512-1kIyff5whq7gXo17Yp0vsPcjycnBCeekiJtMExC9TaaJftEhxjF1PQZRG0AbwVh0oPKUQUhfz0MhKHn/scW1ZA==}
+  '@nuxt/ui@4.12.2':
+    resolution: {integrity: sha512-C2ne57yUMM4+TmKOnXIZthcMgUkhPLm8Olt1T/HgBNSz5UlKhgyftGqZ8UJXKN6oEN1kfj7X7Y+w1jcySWmJ7A==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       '@inertiajs/vue3': ^2.0.7 || ^3
@@ -5648,7 +5648,7 @@ snapshots:
       pkg-types: 2.3.3
       std-env: 4.3.0
 
-  '@nuxt/ui@4.12.1(2fa74f96a96b33b3f269eeb10bae4f4c)':
+  '@nuxt/ui@4.12.2(2fa74f96a96b33b3f269eeb10bae4f4c)':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@iconify/vue': 5.0.5(vue@3.5.45(typescript@6.0.3))
