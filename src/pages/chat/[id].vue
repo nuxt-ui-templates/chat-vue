@@ -86,10 +86,18 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
 
 const files = ref<File[]>([])
 
+// Set while the files of a message are read, `status` only leaves `ready` once `sendMessage` runs
+const sending = ref(false)
+
 async function send(text: string, attached: File[] = []) {
-  // Inlined as data URLs, an app with large files would upload them first and send their URLs
-  const parts = await toFileUIParts(attached)
-  sendMessage(text.trim() ? { text, files: parts } : { files: parts })
+  sending.value = true
+  try {
+    // Inlined as data URLs, an app with large files would upload them first and send their URLs
+    const parts = await toFileUIParts(attached)
+    sendMessage(text.trim() ? { text, files: parts } : { files: parts })
+  } finally {
+    sending.value = false
+  }
 }
 
 async function handleSubmit(e: Event) {
@@ -97,7 +105,7 @@ async function handleSubmit(e: Event) {
 
   const text = input.value
   const submitted = files.value
-  if (!text.trim() && !submitted.length) return
+  if ((!text.trim() && !submitted.length) || sending.value) return
 
   // Cleared before the files are read, so a second submit meanwhile has nothing to send
   input.value = ''
@@ -109,10 +117,22 @@ async function handleSubmit(e: Event) {
 // Messages sent while a response streams wait here, `UChatPrompt` queues a submit while the chat is busy
 const queue = ref<ChatPromptQueueItem[]>([])
 
-function sendNext() {
+async function sendNext() {
+  if (sending.value) return
+
   const next = queue.value.shift()
-  if (next) {
-    send(next.text, next.files)
+  if (!next) return
+
+  try {
+    await send(next.text, next.files)
+  } catch {
+    // Back at the front of the queue, sending it again is up to the user
+    queue.value.unshift(next)
+    toast.add({
+      description: 'Failed to read the attached files',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
   }
 }
 
