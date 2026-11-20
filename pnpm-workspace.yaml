@@ -1,5 +1,6 @@
 allowBuilds:
   esbuild: false
   vue-demi: false
+
 minimumReleaseAgeExclude:
   - '@nuxt/ui'
