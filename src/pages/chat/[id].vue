@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, toRaw, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { useChat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
-import { toFileUIParts } from '@nuxt/ui/utils/ai'
-import type { UIMessage } from 'ai'
+import { getTextFromMessage, toFileUIParts } from '@nuxt/ui/utils/ai'
+import type { FileUIPart, UIMessage } from 'ai'
 import type { ChatPromptQueueItem } from '@nuxt/ui'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
@@ -48,8 +48,20 @@ if (isOwner.value) {
 
 const input = ref('')
 
-const { messages, status, error, sendMessage, regenerate, stop } = useChat({
+const {
+  messages,
+  status,
+  error,
+  sendMessage,
+  regenerate,
+  stop,
+  experimental_queuedMessages,
+  experimental_removeQueuedMessage,
+  experimental_sendQueuedMessageNow
+} = useChat({
   id: data?.id,
+  // Messages sent while a response is in progress wait in `experimental_queuedMessages` and go out one at a time
+  experimental_queue: true,
   messages: data?.messages,
   transport: new DefaultChatTransport({
     api: `/api/chats/${data?.id}`,
@@ -86,68 +98,105 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
 
 const files = ref<File[]>([])
 
-// Set while the files of a message are read, `status` only leaves `ready` once `sendMessage` runs
-const sending = ref(false)
+// A submitted message waits here while its files are read, then goes to the chat in the order it was sent
+const pending = ref<ChatPromptQueueItem[]>([])
+// The file behind each file part, so a queued message can go back to the prompt with its files
+const filesByUrl = new Map<string, File>()
+let reading = false
 
-async function send(text: string, attached: File[] = []) {
-  sending.value = true
+async function sendPending() {
+  if (reading) return
+
+  reading = true
   try {
-    // Inlined as data URLs, an app with large files would upload them first and send their URLs
-    const parts = await toFileUIParts(attached)
-    sendMessage(text.trim() ? { text, files: parts } : { files: parts })
+    while (pending.value[0]) {
+      const item = pending.value[0]
+      const attached = item.files ?? []
+
+      let parts: FileUIPart[]
+      try {
+        // Inlined as data URLs, an app with large files would upload them first and send their URLs
+        parts = await toFileUIParts(attached)
+      } catch {
+        // It stays at the front, sending it now tries again
+        toast.add({
+          description: 'Failed to read the attached files',
+          icon: 'i-lucide-alert-circle',
+          color: 'error'
+        })
+        return
+      }
+
+      // Removed or put back in the prompt while its files were read
+      if (pending.value[0] !== item) continue
+
+      pending.value.shift()
+      parts.forEach((part, index) => filesByUrl.set(part.url, attached[index]!))
+      sendMessage(item.text.trim() ? { text: item.text, files: parts } : { files: parts })
+    }
   } finally {
-    sending.value = false
+    reading = false
   }
 }
 
-async function handleSubmit(e: Event) {
+function handleSubmit(e: Event) {
   e.preventDefault()
 
-  const text = input.value
-  const submitted = files.value
-  if ((!text.trim() && !submitted.length) || sending.value) return
+  if (!input.value.trim() && !files.value.length) return
 
-  // Cleared before the files are read, so a second submit meanwhile has nothing to send
+  pending.value.push({ text: input.value, files: files.value })
   input.value = ''
   files.value = []
-
-  await send(text, submitted)
+  sendPending()
 }
 
-// Messages sent while a response streams wait here, `UChatPrompt` queues a submit while the chat is busy
-const queue = ref<ChatPromptQueueItem[]>([])
-
-async function sendNext() {
-  if (sending.value) return
-
-  const next = queue.value.shift()
-  if (!next) return
-
-  try {
-    await send(next.text, next.files)
-  } catch {
-    // Back at the front of the queue, sending it again is up to the user
-    queue.value.unshift(next)
-    toast.add({
-      description: 'Failed to read the attached files',
-      icon: 'i-lucide-alert-circle',
-      color: 'error'
-    })
+function toQueueItem(message: UIMessage): ChatPromptQueueItem {
+  return {
+    id: message.id,
+    text: getTextFromMessage(message),
+    files: message.parts.flatMap(part => part.type === 'file' && filesByUrl.has(part.url) ? [filesByUrl.get(part.url)!] : [])
   }
 }
 
-watch(status, (value) => {
-  if (value === 'ready') {
-    sendNext()
+function isSameItem(a: ChatPromptQueueItem, b: ChatPromptQueueItem) {
+  return a.id ? a.id === b.id : toRaw(a) === toRaw(b)
+}
+
+// `UChatPrompt` edits the queue through `v-model:queue`: the chat holds the messages waiting for the response, `pending` the ones whose files are still read
+const queue = computed<ChatPromptQueueItem[]>({
+  get: () => [...experimental_queuedMessages.value.map(toQueueItem), ...pending.value],
+  set: (next) => {
+    for (const item of queue.value.filter(item => !next.some(n => isSameItem(n, item)))) {
+      if (item.id) {
+        experimental_removeQueuedMessage(item.id)
+      } else {
+        pending.value = pending.value.filter(p => !isSameItem(p, item))
+      }
+    }
+
+    // A message submitted while the chat is busy
+    const added = next.filter(item => !queue.value.some(q => isSameItem(q, item)))
+    if (added.length) {
+      pending.value.push(...added)
+      sendPending()
+    }
   }
 })
 
-// A queued message picked to be sent now is at the front of the queue, it goes out once the current response stops
-function onSend() {
-  if (status.value === 'submitted' || status.value === 'streaming') {
-    stop()
+// The file parts of the queued messages are the only ones that can go back to the prompt
+watch(experimental_queuedMessages, (queued) => {
+  const urls = new Set(queued.flatMap(message => message.parts.flatMap(part => part.type === 'file' ? [part.url] : [])))
+  for (const url of filesByUrl.keys()) {
+    if (!urls.has(url)) filesByUrl.delete(url)
+  }
+})
+
+// The chat stops the response and sends the message next, one whose files are still read can't skip ahead
+function onSend(item: ChatPromptQueueItem) {
+  if (item.id) {
+    experimental_sendQueuedMessageNow(item.id)
   } else {
-    sendNext()
+    sendPending()
   }
 }
 

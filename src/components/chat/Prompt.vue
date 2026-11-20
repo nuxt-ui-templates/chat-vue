@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   submit: [event: Event]
-  send: []
+  send: [item: ChatPromptQueueItem]
   stop: []
   reload: []
 }>()
@@ -61,7 +61,7 @@ function appendTranscript(text: string) {
     variant="subtle"
     :ui="{ base: ['px-1.5', dictation !== 'idle' && 'placeholder:italic'] }"
     @submit="emit('submit', $event)"
-    @send="emit('send')"
+    @send="emit('send', $event)"
   >
     <template #footer="{ open }">
       <ChatPromptMenu :open="files ? open : undefined" />
