@@ -1,7 +1,6 @@
 allowBuilds:
   esbuild: false
   vue-demi: false
+
 minimumReleaseAgeExclude:
-  - '@comark/vue@0.9.1'
-  - comark@0.9.1
-  - '@nuxt/ui@4.12.2 || 4.13.0'
+  - '@nuxt/ui'
