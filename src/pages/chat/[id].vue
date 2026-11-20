@@ -5,7 +5,6 @@ import { useChat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
 import { toFileUIParts } from '@nuxt/ui/utils/ai'
 import type { UIMessage } from 'ai'
-import type { ChatPromptQueueItem } from '@nuxt/ui'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useCsrf } from '../../composables/useCsrf'
@@ -48,8 +47,20 @@ if (isOwner.value) {
 
 const input = ref('')
 
-const { messages, status, error, sendMessage, regenerate, stop } = useChat({
+const {
+  messages,
+  status,
+  error,
+  sendMessage,
+  regenerate,
+  stop,
+  experimental_queuedMessages,
+  experimental_removeQueuedMessage,
+  experimental_sendQueuedMessageNow
+} = useChat({
   id: data?.id,
+  // Messages sent while a response is in progress wait in `experimental_queuedMessages` and go out one at a time
+  experimental_queue: true,
   messages: data?.messages,
   transport: new DefaultChatTransport({
     api: `/api/chats/${data?.id}`,
@@ -85,70 +96,30 @@ const { messages, status, error, sendMessage, regenerate, stop } = useChat({
 })
 
 const files = ref<File[]>([])
+// Reading the files is async, each message waits for the one before it to keep the order
+let reading = Promise.resolve()
 
-// Set while the files of a message are read, `status` only leaves `ready` once `sendMessage` runs
-const sending = ref(false)
-
-async function send(text: string, attached: File[] = []) {
-  sending.value = true
-  try {
-    // Inlined as data URLs, an app with large files would upload them first and send their URLs
-    const parts = await toFileUIParts(attached)
-    sendMessage(text.trim() ? { text, files: parts } : { files: parts })
-  } finally {
-    sending.value = false
-  }
-}
-
-async function handleSubmit(e: Event) {
+function handleSubmit(e: Event) {
   e.preventDefault()
 
   const text = input.value
   const submitted = files.value
-  if ((!text.trim() && !submitted.length) || sending.value) return
+  if (!text.trim() && !submitted.length) return
 
-  // Cleared before the files are read, so a second submit meanwhile has nothing to send
   input.value = ''
   files.value = []
 
-  await send(text, submitted)
-}
-
-// Messages sent while a response streams wait here, `UChatPrompt` queues a submit while the chat is busy
-const queue = ref<ChatPromptQueueItem[]>([])
-
-async function sendNext() {
-  if (sending.value) return
-
-  const next = queue.value.shift()
-  if (!next) return
-
-  try {
-    await send(next.text, next.files)
-  } catch {
-    // Back at the front of the queue, sending it again is up to the user
-    queue.value.unshift(next)
+  reading = reading.then(async () => {
+    // Inlined as data URLs, an app with large files would upload them first and send their URLs
+    const parts = await toFileUIParts(submitted)
+    sendMessage(text.trim() ? { text, files: parts } : { files: parts })
+  }).catch(() => {
     toast.add({
       description: 'Failed to read the attached files',
       icon: 'i-lucide-alert-circle',
       color: 'error'
     })
-  }
-}
-
-watch(status, (value) => {
-  if (value === 'ready') {
-    sendNext()
-  }
-})
-
-// A queued message picked to be sent now is at the front of the queue, it goes out once the current response stops
-function onSend() {
-  if (status.value === 'submitted' || status.value === 'streaming') {
-    stop()
-  } else {
-    sendNext()
-  }
+  })
 }
 
 const editingMessageId = ref<string | null>(null)
@@ -332,12 +303,13 @@ onMounted(() => {
             <ChatPrompt
               v-model="input"
               v-model:files="files"
-              v-model:queue="queue"
+              :queue="experimental_queuedMessages"
               :status="status"
               :error="error"
               class="[view-transition-name:chat-prompt] rounded-b-none backdrop-blur-sm"
               @submit="handleSubmit"
-              @send="onSend"
+              @send="message => experimental_sendQueuedMessageNow(message.id)"
+              @remove="message => experimental_removeQueuedMessage(message.id)"
               @stop="stop()"
               @reload="regenerate()"
             />
