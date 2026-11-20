@@ -13,7 +13,8 @@ const props = withDefaults(defineProps<{
   queue?: UIMessage[]
 }>(), {
   status: 'ready',
-  error: undefined
+  error: undefined,
+  queue: undefined
 })
 
 const emit = defineEmits<{
