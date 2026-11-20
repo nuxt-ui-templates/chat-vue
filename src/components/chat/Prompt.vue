@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { ChatStatus } from 'ai'
-import type { ChatPromptQueueItem } from '@nuxt/ui'
+import type { ChatStatus, UIMessage } from 'ai'
 import ModelSelect from '../ModelSelect.vue'
 import ChatPromptMenu from './PromptMenu.vue'
 import ChatDictateButton from './DictateButton.vue'
@@ -10,6 +9,8 @@ const props = withDefaults(defineProps<{
   status?: ChatStatus
   error?: Error
   disabled?: boolean
+  /** The messages waiting for the response, kept by the chat. */
+  queue?: UIMessage[]
 }>(), {
   status: 'ready',
   error: undefined
@@ -17,7 +18,8 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   submit: [event: Event]
-  send: [item: ChatPromptQueueItem]
+  send: [message: UIMessage]
+  remove: [message: UIMessage]
   stop: []
   reload: []
 }>()
@@ -25,8 +27,6 @@ const emit = defineEmits<{
 const input = defineModel<string>({ default: '' })
 // Attachments are only enabled where the parent binds `v-model:files`
 const files = defineModel<File[]>('files')
-// Messages sent during a response wait in a queue where the parent binds `v-model:queue`
-const queue = defineModel<ChatPromptQueueItem[]>('queue')
 
 const dictation = ref<'idle' | 'recording' | 'transcribing'>('idle')
 const dictationPreview = ref('')
@@ -34,7 +34,7 @@ const placeholder = computed(() => {
   if (dictation.value !== 'idle') {
     return dictationPreview.value || (dictation.value === 'recording' ? 'Listening...' : 'Transcribing...')
   }
-  if (queue.value && (props.status === 'submitted' || props.status === 'streaming')) {
+  if (props.queue && (props.status === 'submitted' || props.status === 'streaming')) {
     return 'Queue a follow-up...'
   }
   return undefined
@@ -51,7 +51,7 @@ function appendTranscript(text: string) {
   <UChatPrompt
     v-model="input"
     v-model:files="files"
-    v-model:queue="queue"
+    :queue="queue"
     accept="image/*,application/pdf"
     :status="status"
     :error="error"
@@ -62,6 +62,7 @@ function appendTranscript(text: string) {
     :ui="{ base: ['px-1.5', dictation !== 'idle' && 'placeholder:italic'] }"
     @submit="emit('submit', $event)"
     @send="emit('send', $event)"
+    @remove="emit('remove', $event)"
   >
     <template #footer="{ open }">
       <ChatPromptMenu :open="files ? open : undefined" />

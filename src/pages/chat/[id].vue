@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, watch, toRaw, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { $fetch } from 'ofetch'
 import { useChat } from '@ai-sdk/vue'
 import { DefaultChatTransport } from 'ai'
-import { getTextFromMessage, toFileUIParts } from '@nuxt/ui/utils/ai'
-import type { FileUIPart, UIMessage } from 'ai'
-import type { ChatPromptQueueItem } from '@nuxt/ui'
+import { toFileUIParts } from '@nuxt/ui/utils/ai'
+import type { UIMessage } from 'ai'
 import { useModels } from '../../composables/useModels'
 import { useChats } from '../../composables/useChats'
 import { useCsrf } from '../../composables/useCsrf'
@@ -97,119 +96,30 @@ const {
 })
 
 const files = ref<File[]>([])
-
-// A submitted message waits here while its files are read, then goes to the chat in the order it was sent
-const pending = ref<ChatPromptQueueItem[]>([])
-// The file behind each file part, so a queued message can go back to the prompt with its files
-const filesByUrl = new Map<string, File>()
-let reading = false
-
-function toQueueItem(message: UIMessage): ChatPromptQueueItem {
-  return {
-    id: message.id,
-    text: getTextFromMessage(message),
-    files: message.parts.flatMap(part => part.type === 'file' && filesByUrl.has(part.url) ? [filesByUrl.get(part.url)!] : [])
-  }
-}
-
-function isSameItem(a: ChatPromptQueueItem, b: ChatPromptQueueItem) {
-  return a.id ? a.id === b.id : toRaw(a) === toRaw(b)
-}
-
-// `UChatPrompt` edits the queue through `v-model:queue`: the chat holds the messages waiting for the response, `pending` the ones whose files are still read
-const queue = computed<ChatPromptQueueItem[]>({
-  get: () => [...experimental_queuedMessages.value.map(toQueueItem), ...pending.value],
-  set: (next) => {
-    for (const item of queue.value.filter(item => !next.some(n => isSameItem(n, item)))) {
-      if (item.id) {
-        experimental_removeQueuedMessage(item.id)
-      } else {
-        pending.value = pending.value.filter(p => !isSameItem(p, item))
-      }
-    }
-
-    // A message submitted while the chat is busy
-    const added = next.filter(item => !queue.value.some(q => isSameItem(q, item)))
-    if (added.length) {
-      pending.value.push(...added)
-      sendPending()
-    }
-  }
-})
-
-async function sendPending() {
-  if (reading) return
-
-  reading = true
-  try {
-    while (pending.value[0]) {
-      const item = pending.value[0]
-      const attached = item.files ?? []
-
-      let parts: FileUIPart[]
-      try {
-        // Inlined as data URLs, an app with large files would upload them first and send their URLs
-        parts = await toFileUIParts(attached)
-      } catch {
-        // Removed or put back in the prompt while its files were read
-        if (pending.value[0] !== item) continue
-
-        // It stays at the front, sending it now tries again
-        toast.add({
-          description: 'Failed to read the attached files',
-          icon: 'i-lucide-alert-circle',
-          color: 'error'
-        })
-        return
-      }
-
-      // Removed or put back in the prompt while its files were read
-      if (pending.value[0] !== item) continue
-
-      pending.value.shift()
-      parts.forEach((part, index) => filesByUrl.set(part.url, attached[index]!))
-      sendMessage(item.text.trim() ? { text: item.text, files: parts } : { files: parts })
-      // Sent right away when the chat is idle, the queue doesn't change then
-      pruneFiles()
-    }
-  } finally {
-    reading = false
-  }
-}
+// Reading the files is async, each message waits for the one before it to keep the order
+let reading = Promise.resolve()
 
 function handleSubmit(e: Event) {
   e.preventDefault()
 
-  if (!input.value.trim() && !files.value.length) return
+  const text = input.value
+  const submitted = files.value
+  if (!text.trim() && !submitted.length) return
 
-  pending.value.push({ text: input.value, files: files.value })
   input.value = ''
   files.value = []
-  sendPending()
-}
 
-// The file parts of the queued messages are the only ones that can go back to the prompt
-function pruneFiles() {
-  const urls = new Set(experimental_queuedMessages.value.flatMap((message: UIMessage) => message.parts.flatMap(part => part.type === 'file' ? [part.url] : [])))
-  for (const url of filesByUrl.keys()) {
-    if (!urls.has(url)) filesByUrl.delete(url)
-  }
-}
-
-watch(experimental_queuedMessages, pruneFiles)
-
-// The chat stops the response and sends the message next, one whose files are still read can't skip ahead
-function onSend(item: ChatPromptQueueItem) {
-  if (item.id) {
-    experimental_sendQueuedMessageNow(item.id)
-  } else {
-    sendPending()
-  }
-}
-
-function reload() {
-  pending.value = []
-  regenerate()
+  reading = reading.then(async () => {
+    // Inlined as data URLs, an app with large files would upload them first and send their URLs
+    const parts = await toFileUIParts(submitted)
+    sendMessage(text.trim() ? { text, files: parts } : { files: parts })
+  }).catch(() => {
+    toast.add({
+      description: 'Failed to read the attached files',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
+  })
 }
 
 const editingMessageId = ref<string | null>(null)
@@ -241,8 +151,6 @@ async function saveEdit(message: UIMessage, text: string) {
   }
 
   editingMessageId.value = null
-  // The chat clears its queue when the history changes, the messages still waiting for their files go too
-  pending.value = []
   sendMessage({ text, messageId: message.id })
 }
 
@@ -262,7 +170,6 @@ async function regenerateMessage(message: UIMessage) {
     return
   }
 
-  pending.value = []
   regenerate({ messageId: message.id })
 }
 
@@ -396,14 +303,15 @@ onMounted(() => {
             <ChatPrompt
               v-model="input"
               v-model:files="files"
-              v-model:queue="queue"
+              :queue="experimental_queuedMessages"
               :status="status"
               :error="error"
               class="[view-transition-name:chat-prompt] rounded-b-none backdrop-blur-sm"
               @submit="handleSubmit"
-              @send="onSend"
+              @send="message => experimental_sendQueuedMessageNow(message.id)"
+              @remove="message => experimental_removeQueuedMessage(message.id)"
               @stop="stop()"
-              @reload="reload"
+              @reload="regenerate()"
             />
           </template>
         </UChatMessages>
