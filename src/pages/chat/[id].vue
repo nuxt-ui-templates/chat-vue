@@ -104,52 +104,6 @@ const pending = ref<ChatPromptQueueItem[]>([])
 const filesByUrl = new Map<string, File>()
 let reading = false
 
-async function sendPending() {
-  if (reading) return
-
-  reading = true
-  try {
-    while (pending.value[0]) {
-      const item = pending.value[0]
-      const attached = item.files ?? []
-
-      let parts: FileUIPart[]
-      try {
-        // Inlined as data URLs, an app with large files would upload them first and send their URLs
-        parts = await toFileUIParts(attached)
-      } catch {
-        // It stays at the front, sending it now tries again
-        toast.add({
-          description: 'Failed to read the attached files',
-          icon: 'i-lucide-alert-circle',
-          color: 'error'
-        })
-        return
-      }
-
-      // Removed or put back in the prompt while its files were read
-      if (pending.value[0] !== item) continue
-
-      pending.value.shift()
-      parts.forEach((part, index) => filesByUrl.set(part.url, attached[index]!))
-      sendMessage(item.text.trim() ? { text: item.text, files: parts } : { files: parts })
-    }
-  } finally {
-    reading = false
-  }
-}
-
-function handleSubmit(e: Event) {
-  e.preventDefault()
-
-  if (!input.value.trim() && !files.value.length) return
-
-  pending.value.push({ text: input.value, files: files.value })
-  input.value = ''
-  files.value = []
-  sendPending()
-}
-
 function toQueueItem(message: UIMessage): ChatPromptQueueItem {
   return {
     id: message.id,
@@ -183,13 +137,66 @@ const queue = computed<ChatPromptQueueItem[]>({
   }
 })
 
+async function sendPending() {
+  if (reading) return
+
+  reading = true
+  try {
+    while (pending.value[0]) {
+      const item = pending.value[0]
+      const attached = item.files ?? []
+
+      let parts: FileUIPart[]
+      try {
+        // Inlined as data URLs, an app with large files would upload them first and send their URLs
+        parts = await toFileUIParts(attached)
+      } catch {
+        // Removed or put back in the prompt while its files were read
+        if (pending.value[0] !== item) continue
+
+        // It stays at the front, sending it now tries again
+        toast.add({
+          description: 'Failed to read the attached files',
+          icon: 'i-lucide-alert-circle',
+          color: 'error'
+        })
+        return
+      }
+
+      // Removed or put back in the prompt while its files were read
+      if (pending.value[0] !== item) continue
+
+      pending.value.shift()
+      parts.forEach((part, index) => filesByUrl.set(part.url, attached[index]!))
+      sendMessage(item.text.trim() ? { text: item.text, files: parts } : { files: parts })
+      // Sent right away when the chat is idle, the queue doesn't change then
+      pruneFiles()
+    }
+  } finally {
+    reading = false
+  }
+}
+
+function handleSubmit(e: Event) {
+  e.preventDefault()
+
+  if (!input.value.trim() && !files.value.length) return
+
+  pending.value.push({ text: input.value, files: files.value })
+  input.value = ''
+  files.value = []
+  sendPending()
+}
+
 // The file parts of the queued messages are the only ones that can go back to the prompt
-watch(experimental_queuedMessages, (queued) => {
-  const urls = new Set(queued.flatMap(message => message.parts.flatMap(part => part.type === 'file' ? [part.url] : [])))
+function pruneFiles() {
+  const urls = new Set(experimental_queuedMessages.value.flatMap((message: UIMessage) => message.parts.flatMap(part => part.type === 'file' ? [part.url] : [])))
   for (const url of filesByUrl.keys()) {
     if (!urls.has(url)) filesByUrl.delete(url)
   }
-})
+}
+
+watch(experimental_queuedMessages, pruneFiles)
 
 // The chat stops the response and sends the message next, one whose files are still read can't skip ahead
 function onSend(item: ChatPromptQueueItem) {
@@ -198,6 +205,11 @@ function onSend(item: ChatPromptQueueItem) {
   } else {
     sendPending()
   }
+}
+
+function reload() {
+  pending.value = []
+  regenerate()
 }
 
 const editingMessageId = ref<string | null>(null)
@@ -229,6 +241,8 @@ async function saveEdit(message: UIMessage, text: string) {
   }
 
   editingMessageId.value = null
+  // The chat clears its queue when the history changes, the messages still waiting for their files go too
+  pending.value = []
   sendMessage({ text, messageId: message.id })
 }
 
@@ -248,6 +262,7 @@ async function regenerateMessage(message: UIMessage) {
     return
   }
 
+  pending.value = []
   regenerate({ messageId: message.id })
 }
 
@@ -388,7 +403,7 @@ onMounted(() => {
               @submit="handleSubmit"
               @send="onSend"
               @stop="stop()"
-              @reload="regenerate()"
+              @reload="reload"
             />
           </template>
         </UChatMessages>
